@@ -1,11 +1,13 @@
 package controllers
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/robfig/revel"
-	"labix.org/v2/mgo/bson"
 	"log"
+	"net/http"
 	"revor/app/modules/mongo"
-	"time"
+	"revor/app/modules/utils"
 )
 
 type App struct {
@@ -13,28 +15,73 @@ type App struct {
 	mongo.Mongo
 }
 
+type Response map[string]interface{}
+
+func (r Response) String() (s string) {
+	b, err := json.Marshal(r)
+	if err != nil {
+		s = ""
+		return
+	}
+	s = string(b)
+	return
+}
+
+type LoginResult struct {
+	statusCode int
+	username   string
+	admin      bool
+	token      string
+}
+
+func (r LoginResult) Apply(req *revel.Request, resp *revel.Response) {
+	//the solution is very simple to make json string and inject to the response
+	fmt.Fprint(resp.Out, Response{"username": r.username, "admin": r.admin, "status": r.statusCode, "token": r.token})
+}
+
 func (c App) Index() revel.Result {
 	return c.Render()
 }
 
-func (c App) Cdrs() revel.Result {
-	//var ids []int = c.Params.Bind("ids[]", reflect.TypeOf([]int{}))
-	//var startParameter time.Time
-	//var p = c.Params.Bind("name", reflect.TypeOf(string))
-	//
-	cdrs := c.MongoDatabase.C("cdrs")
-	var startDate = time.Date(2013, 7, 1, 1, 0, 0, 0, time.UTC)
-	var endDate = time.Date(2013, 8, 1, 1, 0, 0, 0, time.UTC)
-	var searchResults []mongo.Cdr
-	//var query = bson.M{"calldate": { $gte: start, $lte: end }}
-	//{ $gte: start, $lte: end }
-	var limit = 10000
-	var query = bson.M{"calldate": bson.M{"$gte": startDate, "$lte": endDate}}
-	var err = cdrs.Find(query).Limit(limit).All(&searchResults)
-	if err != nil {
-		log.Printf("[mongo] Monthly insert failed with error : [%v].", err)
-		return c.RenderJson(searchResults)
+//inner worker login function
+func (c App) ProcessInnerLogin(username, password string) *LoginResult {
+	token := utils.GenerateNewToken(c.Controller)
+	res := &LoginResult{
+		statusCode: http.StatusOK,
+		username:   username,
+		admin:      false,
+		token:      token,
 	}
-	return c.RenderJson(searchResults)
+	if len(username) == 0 {
+		revel.WARN.Println("username is empty can't process login requst.")
+		res.statusCode = http.StatusFound
+		return res
+	}
+	//
+	return res
+}
 
+//
+func (c App) Login(username, password string) revel.Result {
+	res := c.ProcessInnerLogin(username, password)
+	revel.TRACE.Println(" test : " + c.Session["token"])
+	log.Printf("[App] Login session token %s.", c.Session["token"])
+	return res
+}
+
+func (c App) Logout() revel.Result {
+	delete(c.Session, "token")
+	return &LoginResult{
+		statusCode: http.StatusOK,
+	}
+}
+
+func (c App) CurrentUser() revel.Result {
+	res := &LoginResult{
+		statusCode: http.StatusOK,
+		username:   "adminTest",
+		admin:      true,
+		token:      "",
+	}
+	return res
 }
