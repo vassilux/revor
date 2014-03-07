@@ -5,6 +5,7 @@
 For exampel for debian based : apt-get install git mercurial
 ######
 Add GOROOT and GOPATH enverenement variabls to .bachrc as follow :
+
 export GOROOT=$HOME/Projects/golang/go
 
 export GOPATH=$HOME/Projects/golang/mygo
