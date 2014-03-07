@@ -12,3 +12,5 @@ export GOPATH=$HOME/Projects/golang/mygo
 
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
+=
+Execute revel run revor into your host system and see the result on the port 9001
