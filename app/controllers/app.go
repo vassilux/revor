@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/robfig/revel"
-	"log"
+	"labix.org/v2/mgo/bson"
 	"net/http"
+	"revor/app/models"
 	"revor/app/modules/mongo"
 	"revor/app/modules/utils"
 )
@@ -43,29 +44,52 @@ func (c App) Index() revel.Result {
 	return c.Render()
 }
 
-//inner worker login function
-func (c App) ProcessInnerLogin(username, password string) *LoginResult {
+//the authentificaiton for given username and password
+//return LoginResult object
+func (c App) processInnerLogin(username, password string) *LoginResult {
+	var user *models.User
+	user, err := c.getUser(username, password)
+
+	if err != nil {
+		res := &LoginResult{
+			statusCode: http.StatusForbidden,
+			username:   username,
+			admin:      false,
+			token:      "",
+		}
+		return res
+	}
+	//the token for authentificated user
 	token := utils.GenerateNewToken(c.Controller)
+	//the user authentificated
 	res := &LoginResult{
 		statusCode: http.StatusOK,
-		username:   username,
-		admin:      false,
+		username:   user.Username,
+		admin:      user.IsAdmin,
 		token:      token,
-	}
-	if len(username) == 0 {
-		revel.WARN.Println("username is empty can't process login requst.")
-		res.statusCode = http.StatusFound
-		return res
 	}
 	//
 	return res
 }
 
+func (c App) getUser(username, password string) (*models.User, error) {
+	user := models.User{}
+	var collection = c.MongoDatabase.C("users")
+	var err = collection.Find(bson.M{"username": username, "password": password}).One(&user)
+	if err != nil {
+		revel.ERROR.Printf(" [App] User not find [%s] with password [%s]",
+			username, password)
+		return &user, err
+	}
+
+	return &user, nil
+}
+
 //
 func (c App) Login(username, password string) revel.Result {
-	res := c.ProcessInnerLogin(username, password)
-	revel.TRACE.Println(" test : " + c.Session["token"])
-	log.Printf("[App] Login session token %s.", c.Session["token"])
+	res := c.processInnerLogin(username, password)
+	revel.TRACE.Printf(" [App] loggin result for username [%s] and password [%s] with token [%s]",
+		username, password, c.Session["token"])
 	return res
 }
 

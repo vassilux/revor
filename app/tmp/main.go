@@ -5,11 +5,13 @@ import (
 	"flag"
 	"reflect"
 	"github.com/robfig/revel"
-	controllers1 "github.com/robfig/revel/modules/static/app/controllers"
+	controllers0 "github.com/robfig/revel/modules/static/app/controllers"
 	_ "github.com/robfig/revel/modules/testrunner/app"
-	controllers0 "github.com/robfig/revel/modules/testrunner/app/controllers"
+	controllers1 "github.com/robfig/revel/modules/testrunner/app/controllers"
+	_ "revor/app"
 	controllers "revor/app/controllers"
 	_ "revor/app/modules/mongo"
+	_ "revor/app/modules/utils"
 	tests "revor/tests"
 )
 
@@ -35,12 +37,28 @@ func main() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					17: []string{ 
+					44: []string{ 
 					},
 				},
 			},
 			&revel.MethodType{
-				Name: "Cdrs",
+				Name: "Login",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "username", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "password", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "Logout",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "CurrentUser",
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
@@ -49,7 +67,31 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers0.TestRunner)(nil),
+	revel.RegisterController((*controllers0.Static)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Serve",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "ServeModule",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "moduleName", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
+	revel.RegisterController((*controllers1.TestRunner)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
 				Name: "Index",
@@ -83,23 +125,20 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers1.Static)(nil),
+	revel.RegisterController((*controllers.Cdrs)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
-				Name: "Serve",
+				Name: "Cdrs",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
 			},
 			&revel.MethodType{
-				Name: "ServeModule",
+				Name: "CdrsWithDate",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "moduleName", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "start", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "end", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
@@ -108,6 +147,13 @@ func main() {
 		})
 	
 	revel.DefaultValidationKeys = map[string]map[int]string{ 
+		"revor/app/models.(*User).Validate": { 
+			29: "user.Username",
+			37: "user.Name",
+		},
+		"revor/app/models.ValidatePassword": { 
+			45: "password",
+		},
 	}
 	revel.TestSuites = []interface{}{ 
 		(*tests.AppTest)(nil),

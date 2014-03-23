@@ -15,11 +15,58 @@ func (_ tApp) Index(
 	return revel.MainRouter.Reverse("App.Index", args).Url
 }
 
-func (_ tApp) Cdrs(
+func (_ tApp) Login(
+		username string,
+		password string,
 		) string {
 	args := make(map[string]string)
 	
-	return revel.MainRouter.Reverse("App.Cdrs", args).Url
+	revel.Unbind(args, "username", username)
+	revel.Unbind(args, "password", password)
+	return revel.MainRouter.Reverse("App.Login", args).Url
+}
+
+func (_ tApp) Logout(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("App.Logout", args).Url
+}
+
+func (_ tApp) CurrentUser(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("App.CurrentUser", args).Url
+}
+
+
+type tStatic struct {}
+var Static tStatic
+
+
+func (_ tStatic) Serve(
+		prefix string,
+		filepath string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "prefix", prefix)
+	revel.Unbind(args, "filepath", filepath)
+	return revel.MainRouter.Reverse("Static.Serve", args).Url
+}
+
+func (_ tStatic) ServeModule(
+		moduleName string,
+		prefix string,
+		filepath string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "moduleName", moduleName)
+	revel.Unbind(args, "prefix", prefix)
+	revel.Unbind(args, "filepath", filepath)
+	return revel.MainRouter.Reverse("Static.ServeModule", args).Url
 }
 
 
@@ -53,32 +100,26 @@ func (_ tTestRunner) List(
 }
 
 
-type tStatic struct {}
-var Static tStatic
+type tCdrs struct {}
+var Cdrs tCdrs
 
 
-func (_ tStatic) Serve(
-		prefix string,
-		filepath string,
+func (_ tCdrs) Cdrs(
 		) string {
 	args := make(map[string]string)
 	
-	revel.Unbind(args, "prefix", prefix)
-	revel.Unbind(args, "filepath", filepath)
-	return revel.MainRouter.Reverse("Static.Serve", args).Url
+	return revel.MainRouter.Reverse("Cdrs.Cdrs", args).Url
 }
 
-func (_ tStatic) ServeModule(
-		moduleName string,
-		prefix string,
-		filepath string,
+func (_ tCdrs) CdrsWithDate(
+		start string,
+		end string,
 		) string {
 	args := make(map[string]string)
 	
-	revel.Unbind(args, "moduleName", moduleName)
-	revel.Unbind(args, "prefix", prefix)
-	revel.Unbind(args, "filepath", filepath)
-	return revel.MainRouter.Reverse("Static.ServeModule", args).Url
+	revel.Unbind(args, "start", start)
+	revel.Unbind(args, "end", end)
+	return revel.MainRouter.Reverse("Cdrs.CdrsWithDate", args).Url
 }
 
 

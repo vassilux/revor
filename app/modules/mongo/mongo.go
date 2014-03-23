@@ -35,6 +35,9 @@ type Cdr struct {
 	Dst            string        `bson:"dst"`
 }
 
+type User struct {
+}
+
 // Stockage global de la session dont la visibilité est restreinte au package.
 var session *mgo.Session
 

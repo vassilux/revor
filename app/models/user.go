@@ -10,6 +10,7 @@ type User struct {
 	UserId             int
 	Name               string
 	Username, Password string
+	IsAdmin            bool
 	HashedPassword     []byte
 }
 
