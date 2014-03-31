@@ -10,6 +10,9 @@ GET     /logout                                 App.Logout
 GET     /currentUser						    App.CurrentUser
 GET     /cdrs                                   Cdrs.Cdrs
 GET     /cdrs/:start/:end                       Cdrs.CdrsWithDate
+GET     /daily/incomming						Daily.IncommingCalls
+GET     /daily/incomming/:day					Daily.IncommingCallsByDay
+GET     /daily/incomming/:day/:caller			Daily.IncommingCallsByDayCaller
 
 
 # Ignore favicon requests

@@ -3,10 +3,12 @@ package mongo
 import (
 	"github.com/robfig/revel"
 	"labix.org/v2/mgo"
-	"labix.org/v2/mgo/bson"
 	"log"
 	"sync"
-	"time"
+)
+
+const (
+	DB_REQUEST_LIMITS = 10000
 )
 
 // Extension du controlleur.
@@ -16,27 +18,8 @@ type Mongo struct {
 	MongoDatabase *mgo.Database
 }
 
-type Cdr struct {
-	Id             bson.ObjectId `bson:"_id"`
-	Calldate       time.Time     `bson:"calldate"`
-	MetadataDt     time.Time     `bson:"metadataDt"`
-	ClidName       string        `bson:"clidName"`
-	ClidNumber     string        `bson:"clidNumber"`
-	Src            string        `bson:"src"`
-	Channel        string        `bson:"channel"`
-	Dcontext       string        `bson:"dcontext"`
-	Disposition    int           `bson:"disposition"`
-	Answerwaittime int64         `bson:"answerwaittime"`
-	Billsec        int           `bson:"billsec"`
-	Duration       int           `bson:"duration"`
-	Uniqueid       string        `bson:"uniqueid"`
-	Inoutstatus    int           `bson:"inoutstatus"`
-	Recordfile     string        `bson:"recordfile"`
-	Dst            string        `bson:"dst"`
-}
-
-type User struct {
-}
+/*type User struct {
+}*/
 
 // Stockage global de la session dont la visibilité est restreinte au package.
 var session *mgo.Session
