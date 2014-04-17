@@ -39,7 +39,7 @@ func (t AppTest) TestCdrs() {
 }
 
 func (t AppTest) TestCdrsDates() {
-	t.Get("/cdrs/2013-02-01T00:00:00Z/2013-11-31T23:59:59Z")
+	t.Get("/cdrs/2013-02-01T00:00:00Z/2015-04-22T01:00:00Z")
 	t.AssertOk()
 	t.AssertContains("Dst")
 }
@@ -51,21 +51,33 @@ func (t AppTest) TestDailyIncommingCalls() {
 }
 
 func (t AppTest) TestDailyIncommingCallsByDay() {
-	t.Get("/daily/incomming/2013-11-22T01:00:00Z")
+	t.Get("/daily/incomming/2014-04-17T01:00:00Z")
 	t.AssertOk()
 	t.AssertContains("Id")
 }
 
-func (t AppTest) TestDailyIncommingCallsByDayCaller() {
-	t.Get("/daily/incomming/2013-11-22T01:00:00Z/139946532")
+func (t AppTest) TestDailyIncommingCallsByDayAndUser() {
+	t.Get("/daily/incomming/2014-04-17T01:00:00Z/6005")
 	t.AssertOk()
 	t.AssertContains("Id")
 }
 
-func (t AppTest) TestDailyIncommingCallsByDayCallerFailed() {
+func (t AppTest) TestDailyIncommingCallsByDayAndUserFailed() {
 	t.Get("/daily/incomming/2013-11-22T01:00:00Z/81")
 	t.AssertOk()
 	t.AssertContains("null")
+}
+
+func (t AppTest) TestIncommingDidCallsByDay() {
+	t.Get("/daily/didincomming/2014-04-17T01:00:00Z")
+	t.AssertOk()
+	t.AssertContains("Id")
+}
+
+func (t AppTest) TestIncommingDidCallsByDayAndDID() {
+	t.Get("/daily/didincomming/2014-04-17T01:00:00Z/1158")
+	t.AssertOk()
+	t.AssertContains("Id")
 }
 
 func (t AppTest) After() {

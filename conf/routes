@@ -12,7 +12,9 @@ GET     /cdrs                                   Cdrs.Cdrs
 GET     /cdrs/:start/:end                       Cdrs.CdrsWithDate
 GET     /daily/incomming						Daily.IncommingCalls
 GET     /daily/incomming/:day					Daily.IncommingCallsByDay
-GET     /daily/incomming/:day/:caller			Daily.IncommingCallsByDayCaller
+GET     /daily/incomming/:day/:user				Daily.IncommingCallsByDayUser
+GET     /daily/didincomming/:day				Daily.IncommingDidCallsByDay
+GET     /daily/didincomming/:day/:did			Daily.IncommingDidCallsByDayDid
 
 
 # Ignore favicon requests

@@ -41,35 +41,6 @@ func (p tApp) CurrentUser(
 }
 
 
-type tStatic struct {}
-var Static tStatic
-
-
-func (p tStatic) Serve(
-		prefix string,
-		filepath string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "prefix", prefix)
-	revel.Unbind(args, "filepath", filepath)
-	return revel.MainRouter.Reverse("Static.Serve", args).Url
-}
-
-func (p tStatic) ServeModule(
-		moduleName string,
-		prefix string,
-		filepath string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "moduleName", moduleName)
-	revel.Unbind(args, "prefix", prefix)
-	revel.Unbind(args, "filepath", filepath)
-	return revel.MainRouter.Reverse("Static.ServeModule", args).Url
-}
-
-
 type tTestRunner struct {}
 var TestRunner tTestRunner
 
@@ -100,6 +71,35 @@ func (p tTestRunner) List(
 }
 
 
+type tStatic struct {}
+var Static tStatic
+
+
+func (p tStatic) Serve(
+		prefix string,
+		filepath string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "prefix", prefix)
+	revel.Unbind(args, "filepath", filepath)
+	return revel.MainRouter.Reverse("Static.Serve", args).Url
+}
+
+func (p tStatic) ServeModule(
+		moduleName string,
+		prefix string,
+		filepath string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "moduleName", moduleName)
+	revel.Unbind(args, "prefix", prefix)
+	revel.Unbind(args, "filepath", filepath)
+	return revel.MainRouter.Reverse("Static.ServeModule", args).Url
+}
+
+
 type tDaily struct {}
 var Daily tDaily
 
@@ -120,15 +120,35 @@ func (p tDaily) IncommingCallsByDay(
 	return revel.MainRouter.Reverse("Daily.IncommingCallsByDay", args).Url
 }
 
-func (p tDaily) IncommingCallsByDayCaller(
+func (p tDaily) IncommingCallsByDayUser(
 		day string,
-		caller string,
+		user string,
 		) string {
 	args := make(map[string]string)
 	
 	revel.Unbind(args, "day", day)
-	revel.Unbind(args, "caller", caller)
-	return revel.MainRouter.Reverse("Daily.IncommingCallsByDayCaller", args).Url
+	revel.Unbind(args, "user", user)
+	return revel.MainRouter.Reverse("Daily.IncommingCallsByDayUser", args).Url
+}
+
+func (p tDaily) IncommingDidCallsByDay(
+		day string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	return revel.MainRouter.Reverse("Daily.IncommingDidCallsByDay", args).Url
+}
+
+func (p tDaily) IncommingDidCallsByDayDid(
+		day string,
+		did string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "did", did)
+	return revel.MainRouter.Reverse("Daily.IncommingDidCallsByDayDid", args).Url
 }
 
 

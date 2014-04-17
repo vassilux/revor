@@ -17,7 +17,7 @@ func (c Cdrs) Cdrs() revel.Result {
 	var endDate = time.Date(2013, 8, 1, 1, 0, 0, 0, time.UTC)
 	var searchResults []models.Cdr
 	var limit = 10000
-	var query = bson.M{"calldate": bson.M{"$gte": startDate, "$lte": endDate}}
+	var query = bson.M{"call_date": bson.M{"$gte": startDate, "$lte": endDate}}
 	var err = cdrs.Find(query).Limit(limit).All(&searchResults)
 	if err != nil {
 		revel.ERROR.Printf("[Cdrs] Got error from mongo : [%v].", err)
@@ -48,7 +48,7 @@ func (c Cdrs) CdrsWithDate(start string, end string) revel.Result {
 	}
 	//
 	var limit = 10000
-	var query = bson.M{"calldate": bson.M{"$gte": startDate, "$lte": endDate}}
+	var query = bson.M{"call_date": bson.M{"$gte": startDate, "$lte": endDate}}
 	err = cdrs.Find(query).Limit(limit).All(&searchResults)
 	if err != nil {
 		revel.ERROR.Printf("[Cdrs] Monthly insert failed with error : [%v].\r\n", err)

@@ -3,9 +3,9 @@ package models
 import ()
 
 type DailyCall struct {
-	Id              string
-	MetaData        MetaData
-	AnswereWaitTime int64
-	CallDaily       int
-	DurationDaily   int
+	Id              string   `bson:"_id"`
+	Meta            MetaData `bson:"metadata"`
+	AnswereWaitTime int      `bson:"answer_wait_time"`
+	CallDaily       int      `bson:"call_daily"`
+	DurationDaily   int      `bson:"duration_daily"`
 }
