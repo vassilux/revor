@@ -5,6 +5,14 @@ import (
 	"net/http"
 )
 
+var (
+	testUser     = "testUser"
+	testPassword = "testpassword"
+	testAdmin    = "true"
+	testDate     = "2014-04-17T01:00:00Z"
+	testDID      = "1158"
+)
+
 type AppTest struct {
 	revel.TestSuite
 }
@@ -17,6 +25,18 @@ func (t AppTest) TestThatIndexPageWorks() {
 	t.Get("/")
 	t.AssertOk()
 	t.AssertContains("Application Is Ready")
+}
+
+func (t AppTest) TestCreateDeleteUser() {
+	t.Get("/createuser/" + testUser + "/" + testPassword + "/" + testAdmin)
+	t.AssertOk()
+	t.AssertStatus(http.StatusOK)
+	t.AssertContains("\"status\":200")
+	//
+	t.Get("/deleteuser/" + testUser + "/" + testPassword)
+	t.AssertOk()
+	t.AssertStatus(http.StatusOK)
+	t.AssertContains("\"status\":200")
 }
 
 func (t AppTest) TestLoginOK() {
@@ -41,7 +61,7 @@ func (t AppTest) TestCdrs() {
 func (t AppTest) TestCdrsDates() {
 	t.Get("/cdrs/2013-02-01T00:00:00Z/2015-04-22T01:00:00Z")
 	t.AssertOk()
-	t.AssertContains("Dst")
+	t.AssertContains("dst")
 }
 
 func (t AppTest) TestDailyIncommingCalls() {
@@ -53,13 +73,13 @@ func (t AppTest) TestDailyIncommingCalls() {
 func (t AppTest) TestDailyIncommingCallsByDay() {
 	t.Get("/daily/incomming/2014-04-17T01:00:00Z")
 	t.AssertOk()
-	t.AssertContains("Id")
+	t.AssertContains("id")
 }
 
 func (t AppTest) TestDailyIncommingCallsByDayAndUser() {
-	t.Get("/daily/incomming/2014-04-17T01:00:00Z/6005")
+	t.Get("/daily/incomming/" + testDate)
 	t.AssertOk()
-	t.AssertContains("Id")
+	t.AssertContains("id")
 }
 
 func (t AppTest) TestDailyIncommingCallsByDayAndUserFailed() {
@@ -69,15 +89,15 @@ func (t AppTest) TestDailyIncommingCallsByDayAndUserFailed() {
 }
 
 func (t AppTest) TestIncommingDidCallsByDay() {
-	t.Get("/daily/didincomming/2014-04-17T01:00:00Z")
+	t.Get("/daily/didincomming/" + testDate)
 	t.AssertOk()
-	t.AssertContains("Id")
+	t.AssertContains("id")
 }
 
 func (t AppTest) TestIncommingDidCallsByDayAndDID() {
-	t.Get("/daily/didincomming/2014-04-17T01:00:00Z/1158")
+	t.Get("/daily/didincomming/" + testDate + "/" + testDID)
 	t.AssertOk()
-	t.AssertContains("Id")
+	t.AssertContains("id")
 }
 
 func (t AppTest) After() {

@@ -5,7 +5,7 @@ import (
 )
 
 type MetaData struct {
-	User        string    `bson:"user"`
-	Dt          time.Time `bson:"dt"`
-	Disposition int       `bson:"disposition"`
+	User        string    `json:"user" 			bson:"user"`
+	Dt          time.Time `json:"date"			bson:"dt"`
+	Disposition int       `json:"disposition"	bson:"disposition"`
 }

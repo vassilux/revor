@@ -7,11 +7,9 @@ import (
 )
 
 type User struct {
-	UserId             int
-	Name               string
-	Username, Password string
-	IsAdmin            bool
-	HashedPassword     []byte
+	Username string `json:"userName"			bson:"user_name"`
+	Password string `json:"password"			bson:"password"`
+	IsAdmin  bool   `json:"isAdmin"			    bson:"is_admin"`
 }
 
 func (u *User) String() string {
@@ -31,7 +29,7 @@ func (user *User) Validate(v *revel.Validation) {
 	ValidatePassword(v, user.Password).
 		Key("user.Password")
 
-	v.Check(user.Name,
+	v.Check(user.Username,
 		revel.Required{},
 		revel.MaxSize{100},
 	)

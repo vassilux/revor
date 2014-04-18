@@ -35,9 +35,18 @@ type LoginResult struct {
 	token      string
 }
 
+type HttpRequestResult struct {
+	statusCode int
+}
+
 func (r LoginResult) Apply(req *revel.Request, resp *revel.Response) {
 	//the solution is very simple to make json string and inject to the response
 	fmt.Fprint(resp.Out, Response{"username": r.username, "admin": r.admin, "status": r.statusCode, "token": r.token})
+}
+
+func (r HttpRequestResult) Apply(req *revel.Request, resp *revel.Response) {
+	//the solution is very simple to make json string and inject to the response
+	fmt.Fprint(resp.Out, Response{"status": r.statusCode})
 }
 
 func (c App) Index() revel.Result {
@@ -79,7 +88,7 @@ func (c App) getUser(username, password string) (*models.User, error) {
 	if err != nil {
 		revel.ERROR.Printf(" [App] User not find [%s] with password [%s]",
 			username, password)
-		return &user, err
+		return nil, err
 	}
 
 	return &user, nil
@@ -108,4 +117,59 @@ func (c App) CurrentUser() revel.Result {
 		token:      "",
 	}
 	return res
+}
+
+func (c App) CreateUser(username, password string, admin bool) revel.Result {
+	user, err := c.getUser(username, password)
+	if user != nil {
+		revel.ERROR.Printf(" [App CreateUser ] Can not create user [%s] cause user exist get error [%v] and user [%v]",
+			username, err, user)
+		c.Response.Status = http.StatusConflict
+		return c.Render()
+	}
+	var collection = c.MongoDatabase.C("users")
+	//
+	newUser := models.User{}
+	newUser.Username = username
+	newUser.Password = password
+	err = collection.Insert(newUser)
+	if err != nil {
+		revel.ERROR.Printf(" [App CreateUser ] Can not create user [%s], get error [%v]",
+			username, err)
+		c.Response.Status = http.StatusExpectationFailed
+		return c.Render()
+	}
+	c.Response.Status = http.StatusOK
+	//
+	return &HttpRequestResult{
+		statusCode: http.StatusOK,
+	}
+}
+
+func (c App) DeleteUser(username, password string) revel.Result {
+	user, err := c.getUser(username, password)
+	if user == nil {
+		revel.ERROR.Printf(" [App DeleteUser ] Can not find user [%s]. Get an error  [%v]",
+			username, err)
+		c.Response.Status = http.StatusConflict
+		return c.Render()
+	}
+	var collection = c.MongoDatabase.C("users")
+	//
+	newUser := models.User{}
+	newUser.Username = username
+	newUser.Password = password
+	var selector = bson.M{"username": username, "password": password}
+	err = collection.Remove(selector)
+	if err != nil {
+		revel.ERROR.Printf(" [App DeleteUser] Can not remove user [%s], get error [%v]",
+			username, err)
+		c.Response.Status = http.StatusExpectationFailed
+		return c.Render()
+	}
+	c.Response.Status = http.StatusOK
+	//
+	return &HttpRequestResult{
+		statusCode: http.StatusOK,
+	}
 }

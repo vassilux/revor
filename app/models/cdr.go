@@ -6,35 +6,35 @@ import (
 )
 
 type Cdr struct {
-	Id             bson.ObjectId `bson:"_id"`
-	Calldate       time.Time     `bson:"call_date"`
-	MetadataDt     time.Time     `bson:"metadata_date"`
-	ClidName       string        `bson:"clid_name"`
-	ClidNumber     string        `bson:"clid_number"`
-	Src            string        `bson:"src"`
-	Channel        string        `bson:"channel"`
-	Dcontext       string        `bson:"dcontext"`
-	DispositionStr string        `bson:"disposition_str"`
-	Disposition    int           `bson:"disposition"`
-	AnswerWaitTime int           `bson:"answer_wait_time"`
-	Billsec        int           `bson:"billsec"`
-	Duration       int           `bson:"duration"`
-	Uniqueid       string        `bson:"uniqueid"`
-	InoutStatus    int           `bson:"inout_status"`
-	RecordFile     string        `bson:"record_file"`
-	Dst            string        `bson:"dst"`
-	Dnid           string        `bson:"dnid"`
-	Dstchannel     string        `bson:"dst_channel"`
-	CallDetails    []CallDetail  `bson:"call_details"`
+	Id             bson.ObjectId `json:"id"                 bson:"_id"`
+	Calldate       time.Time     `json:"callDate"			bson:"call_date"`
+	MetadataDt     time.Time     `json:"metadataDate"		bson:"metadata_date"`
+	ClidName       string        `json:"clidName"           bson:"clid_name"`
+	ClidNumber     string        `bson:"clid_number"		json:"clidNumber"`
+	Src            string        `json:"src"				bson:"src"`
+	Channel        string        `json:"channel" 			bson:"channel"`
+	Dcontext       string        `json:"dcontext"			bson:"dcontext"`
+	DispositionStr string        `json:"dispositionStr"		bson:"disposition_str"`
+	Disposition    int           `json:"disposition"		bson:"disposition"`
+	AnswerWaitTime int           `json:"answerWaitTime"		bson:"answer_wait_time"`
+	Billsec        int           `json:"billSec"			bson:"billsec"`
+	Duration       int           `json:"duration"			bson:"duration"`
+	UniqueId       string        `json:"uniqueId"			bson:"uniqueid"`
+	InoutStatus    int           `json:"inoutStatus"		bson:"inout_status"`
+	RecordFile     string        `json:"recordFile"			bson:"record_file"`
+	Dst            string        `json:"dst"				bson:"dst"`
+	Dnid           string        `json:"dnid"				bson:"dnid"`
+	Dstchannel     string        `json:"dstChannel"			bson:"dst_channel"`
+	CallDetails    []CallDetail  `json:"callDetails"		bson:"call_details"`
 }
 
 type CallDetail struct {
-	EventType string    `bson:"event_type"`
-	EventTime time.Time `bson:"event_time"`
-	CidNum    string    `bson:"cid_num"`
-	CidDnid   string    `bson:"cid_dnid"`
-	Exten     string    `bson:"exten"`
-	UniqueId  string    `bson:"uniqueId"`
-	LinkedId  string    `bson:"linkedId"`
-	Peer      string    `bson:"peer"`
+	EventType string    `json:"eventType"		bson:"event_type"`
+	EventTime time.Time `json:"eventTime"		bson:"event_time"`
+	CidNum    string    `json:"cidNum"			bson:"cid_num"`
+	CidDnid   string    `json:"cidDnid"			bson:"cid_dnid"`
+	Exten     string    `json:"exten"			bson:"exten"`
+	UniqueId  string    `json:"uniqueId"		bson:"uniqueId"`
+	LinkedId  string    `json:"linkedId"		bson:"linkedId"`
+	Peer      string    `json:"peer"			bson:"peer"`
 }
