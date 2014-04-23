@@ -100,6 +100,12 @@ func (t AppTest) TestIncommingDidCallsByDayAndDID() {
 	t.AssertContains("id")
 }
 
+func (t AppTest) TestIncommingDidCalls() {
+	t.Get("/daily/didcallsincomming/" + testDate)
+	t.AssertOk()
+	t.AssertContains("id")
+}
+
 func (t AppTest) After() {
 	println("Tear down")
 }

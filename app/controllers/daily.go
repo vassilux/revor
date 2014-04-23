@@ -83,7 +83,7 @@ func (c Daily) IncommingDidCallsByDay(day string) revel.Result {
 	var searchResults []models.DailyCall
 	startDate, err := time.Parse(time.RFC3339, day)
 	if err != nil {
-		revel.WARN.Printf("[Daily DID] Failed to parse the start date : [%v].\r\n", err)
+		revel.ERROR.Printf("[Daily DID] Failed to parse the start date : [%v].\r\n", err)
 		panic(err)
 	}
 	startDayDate := time.Date(startDate.Year(), startDate.Month(), startDate.Day(), 0, 0, 0, 0, time.UTC)
@@ -124,4 +124,50 @@ func (c Daily) IncommingDidCallsByDayDid(day string, did string) revel.Result {
 	}
 	revel.TRACE.Printf("[Daily DID] send to the client response of %d records.\r\n", len(searchResults))
 	return c.RenderJson(searchResults)
+}
+
+func (c Daily) IncommingCallsByDid(day string) revel.Result {
+	results := mongo.GetDidCalls(day, c.MongoDatabase)
+	return c.RenderJson(results)
+	/*incomming := c.MongoDatabase.C("dailydid_incomming")
+	startDate, err := time.Parse(time.RFC3339, day)
+	if err != nil {
+		revel.WARN.Printf("[Daily Calls By Did] Failed to parse the start date : [%v].\r\n", err)
+		panic(err)
+	}
+	startDayDate := time.Date(startDate.Year(), startDate.Month(), startDate.Day(), 0, 0, 0, 0, time.UTC)
+	endDayDate := time.Date(startDate.Year(), startDate.Month(), startDate.Day(), 23, 59, 59, 0, time.UTC)
+	myMatch := bson.M{
+		"$match": bson.M{
+			"metadata.dt": bson.M{"$gte": startDayDate, "$lte": endDayDate},
+		},
+	}
+	//
+	myProject := bson.M{
+		"$project": bson.M{
+			"did":        "$metadata.user",
+			"call_daily": 1,
+		},
+	}
+	myGroup := bson.M{
+		"$group": bson.M{
+			"_id":        "$did",
+			"callsCount": bson.M{"$sum": "$call_daily"},
+		},
+	}
+	mySort := bson.M{
+		"$sort": bson.M{
+			"callsCount": -1,
+		},
+	}
+	//
+	operations := []bson.M{myMatch, myProject, myGroup, mySort}
+	results := []bson.M{}
+	pipe := incomming.Pipe(operations)
+	err = pipe.All(&results)
+	if err != nil {
+		revel.ERROR.Printf("[Daily DID] Failed to get recortds [%v].\r\n", err)
+		panic(err)
+	}
+	return c.RenderJson(results)*/
 }

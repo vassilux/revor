@@ -8,14 +8,14 @@ type tApp struct {}
 var App tApp
 
 
-func (p tApp) Index(
+func (_ tApp) Index(
 		) string {
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("App.Index", args).Url
 }
 
-func (p tApp) Login(
+func (_ tApp) Login(
 		username string,
 		password string,
 		) string {
@@ -26,21 +26,21 @@ func (p tApp) Login(
 	return revel.MainRouter.Reverse("App.Login", args).Url
 }
 
-func (p tApp) Logout(
+func (_ tApp) Logout(
 		) string {
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("App.Logout", args).Url
 }
 
-func (p tApp) CurrentUser(
+func (_ tApp) CurrentUser(
 		) string {
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("App.CurrentUser", args).Url
 }
 
-func (p tApp) CreateUser(
+func (_ tApp) CreateUser(
 		username string,
 		password string,
 		admin bool,
@@ -53,7 +53,7 @@ func (p tApp) CreateUser(
 	return revel.MainRouter.Reverse("App.CreateUser", args).Url
 }
 
-func (p tApp) DeleteUser(
+func (_ tApp) DeleteUser(
 		username string,
 		password string,
 		) string {
@@ -64,12 +64,19 @@ func (p tApp) DeleteUser(
 	return revel.MainRouter.Reverse("App.DeleteUser", args).Url
 }
 
+func (_ tApp) EventStream(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("App.EventStream", args).Url
+}
+
 
 type tStatic struct {}
 var Static tStatic
 
 
-func (p tStatic) Serve(
+func (_ tStatic) Serve(
 		prefix string,
 		filepath string,
 		) string {
@@ -80,7 +87,7 @@ func (p tStatic) Serve(
 	return revel.MainRouter.Reverse("Static.Serve", args).Url
 }
 
-func (p tStatic) ServeModule(
+func (_ tStatic) ServeModule(
 		moduleName string,
 		prefix string,
 		filepath string,
@@ -98,14 +105,14 @@ type tTestRunner struct {}
 var TestRunner tTestRunner
 
 
-func (p tTestRunner) Index(
+func (_ tTestRunner) Index(
 		) string {
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("TestRunner.Index", args).Url
 }
 
-func (p tTestRunner) Run(
+func (_ tTestRunner) Run(
 		suite string,
 		test string,
 		) string {
@@ -116,7 +123,7 @@ func (p tTestRunner) Run(
 	return revel.MainRouter.Reverse("TestRunner.Run", args).Url
 }
 
-func (p tTestRunner) List(
+func (_ tTestRunner) List(
 		) string {
 	args := make(map[string]string)
 	
@@ -128,14 +135,14 @@ type tDaily struct {}
 var Daily tDaily
 
 
-func (p tDaily) IncommingCalls(
+func (_ tDaily) IncommingCalls(
 		) string {
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("Daily.IncommingCalls", args).Url
 }
 
-func (p tDaily) IncommingCallsByDay(
+func (_ tDaily) IncommingCallsByDay(
 		day string,
 		) string {
 	args := make(map[string]string)
@@ -144,7 +151,7 @@ func (p tDaily) IncommingCallsByDay(
 	return revel.MainRouter.Reverse("Daily.IncommingCallsByDay", args).Url
 }
 
-func (p tDaily) IncommingCallsByDayUser(
+func (_ tDaily) IncommingCallsByDayUser(
 		day string,
 		user string,
 		) string {
@@ -155,7 +162,7 @@ func (p tDaily) IncommingCallsByDayUser(
 	return revel.MainRouter.Reverse("Daily.IncommingCallsByDayUser", args).Url
 }
 
-func (p tDaily) IncommingDidCallsByDay(
+func (_ tDaily) IncommingDidCallsByDay(
 		day string,
 		) string {
 	args := make(map[string]string)
@@ -164,7 +171,7 @@ func (p tDaily) IncommingDidCallsByDay(
 	return revel.MainRouter.Reverse("Daily.IncommingDidCallsByDay", args).Url
 }
 
-func (p tDaily) IncommingDidCallsByDayDid(
+func (_ tDaily) IncommingDidCallsByDayDid(
 		day string,
 		did string,
 		) string {
@@ -175,19 +182,28 @@ func (p tDaily) IncommingDidCallsByDayDid(
 	return revel.MainRouter.Reverse("Daily.IncommingDidCallsByDayDid", args).Url
 }
 
+func (_ tDaily) IncommingCallsByDid(
+		day string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	return revel.MainRouter.Reverse("Daily.IncommingCallsByDid", args).Url
+}
+
 
 type tCdrs struct {}
 var Cdrs tCdrs
 
 
-func (p tCdrs) Cdrs(
+func (_ tCdrs) Cdrs(
 		) string {
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("Cdrs.Cdrs", args).Url
 }
 
-func (p tCdrs) CdrsWithDate(
+func (_ tCdrs) CdrsWithDate(
 		start string,
 		end string,
 		) string {

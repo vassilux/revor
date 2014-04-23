@@ -9,3 +9,8 @@ type DailyCall struct {
 	CallDaily       int      `json:"callDaily"			bson:"call_daily"`
 	DurationDaily   int      `json:"durationDaily"		bson:"duration_daily"`
 }
+
+type UserCalls struct {
+	Id         string `json:"id"					bson:"_id"`
+	CallsCount string `json:"callsCount"			bson:"calls_count"`
+}

@@ -1,14 +1,17 @@
 package controllers
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/robfig/revel"
 	"labix.org/v2/mgo/bson"
 	"net/http"
+	"revor/app/broker"
 	"revor/app/models"
 	"revor/app/modules/mongo"
 	"revor/app/modules/utils"
+	//"time"
 )
 
 type App struct {
@@ -172,4 +175,27 @@ func (c App) DeleteUser(username, password string) revel.Result {
 	return &HttpRequestResult{
 		statusCode: http.StatusOK,
 	}
+}
+
+func (c App) EventStream() revel.Result {
+	w := c.Response.Out
+	messageChan := make(chan string)
+	broker.MyBroker.NewClients <- messageChan
+	defer func() {
+		broker.MyBroker.DefunctClients <- messageChan
+	}()
+	w.Header().Set("Content-Type", "text/event-stream")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("Connection", "keep-alive")
+	for {
+		var data bytes.Buffer
+		select {
+		case msg := <-messageChan:
+			data.WriteString(fmt.Sprintf("event: %s\n", "dashboard_event"))
+			data.WriteString(fmt.Sprintf("data: %s\n", msg))
+			w.Write(data.Bytes())
+			return nil
+		}
+	}
+	return nil
 }

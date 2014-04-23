@@ -17,6 +17,8 @@ GET     /daily/incomming/:day						Daily.IncommingCallsByDay
 GET     /daily/incomming/:day/:user					Daily.IncommingCallsByDayUser
 GET     /daily/didincomming/:day					Daily.IncommingDidCallsByDay
 GET     /daily/didincomming/:day/:did				Daily.IncommingDidCallsByDayDid
+GET     /daily/didcallsincomming/:day/				Daily.IncommingCallsByDid
+GET		/events										App.EventStream
 
 
 # Ignore favicon requests

@@ -9,6 +9,7 @@ import (
 	_ "github.com/robfig/revel/modules/testrunner/app"
 	controllers1 "github.com/robfig/revel/modules/testrunner/app/controllers"
 	_ "revor/app"
+	_ "revor/app/broker"
 	controllers "revor/app/controllers"
 	_ "revor/app/modules/mongo"
 	_ "revor/app/modules/utils"
@@ -37,7 +38,7 @@ func main() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					53: []string{ 
+					56: []string{ 
 					},
 				},
 			},
@@ -72,9 +73,9 @@ func main() {
 					&revel.MethodArg{Name: "admin", Type: reflect.TypeOf((*bool)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-					128: []string{ 
+					131: []string{ 
 					},
-					140: []string{ 
+					143: []string{ 
 					},
 				},
 			},
@@ -85,10 +86,17 @@ func main() {
 					&revel.MethodArg{Name: "password", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-					155: []string{ 
+					158: []string{ 
 					},
-					168: []string{ 
+					171: []string{ 
 					},
+				},
+			},
+			&revel.MethodType{
+				Name: "EventStream",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
 				},
 			},
 			
@@ -191,6 +199,14 @@ func main() {
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
 					&revel.MethodArg{Name: "did", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "IncommingCallsByDid",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
