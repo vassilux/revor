@@ -1,13 +1,11 @@
 package app
 
 import (
-	//"github.com/cbonello/revel-csrf"
 	"github.com/robfig/revel"
-	"log"
 )
 
 var CSRFFilter = func(c *revel.Controller, fc []revel.Filter) {
-	log.Printf("[init] CSRFFilter cross origin allowed")
+	revel.TRACE.Println("CSRFFilter cross origin allowed")
 	c.Response.Out.Header().Set("Access-Control-Allow-Origin", "*")
 	c.Response.Out.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	c.Response.Out.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token")

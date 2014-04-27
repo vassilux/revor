@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/robfig/revel"
+	"labix.org/v2/mgo/bson"
 	"revor/app/modules/mongo"
 	"time"
 )
@@ -82,20 +83,28 @@ func (b *Broker) Start() {
 
 }
 
-//Very simple broadcast of new data fro realtime notificaiton
+//Broadcaster of new data for realtime notification
 //Redis queue can be used as realtime source notificateur
 func processFetchEvens() {
 	session, db := mongo.GetDatabase()
-	var testDate = "2015-04-17T01:00:00Z"
-	results := mongo.GetDidCalls(testDate, db)
+	timenow := time.Now()
+	var currentDateString = timenow.Format(time.RFC3339)
+	didCalls := mongo.GetDidCalls(currentDateString, db)
+	peerInCalls := mongo.GetPeerInCalls(currentDateString, db)
+	peerOutCalls := mongo.GetPeerOutCalls(currentDateString, db)
+	results := bson.M{
+		"didCalls":     didCalls,
+		"peerInCalls":  peerInCalls,
+		"peerOutCalls": peerOutCalls,
+	}
 	data, err := json.Marshal(results)
 	if err == nil {
 		MyBroker.Messages <- fmt.Sprintf("%s", data)
-		revel.TRACE.Printf("Broadcast message [%s] to %d clients", data, len(MyBroker.Clients))
 	}
 	if session != nil {
 		session.Close()
 	}
+	revel.TRACE.Printf("Broadcast message [%s] to %d clients", data, len(MyBroker.Clients))
 }
 
 func broker() {
@@ -103,7 +112,7 @@ func broker() {
 	MyBroker.Start()
 	go func() {
 		for i := 0; ; i++ {
-			// Create a little message to send to clients,
+			// Create a message to send to clients,
 			// including the current time.
 			if len(MyBroker.Clients) > 0 {
 				processFetchEvens()

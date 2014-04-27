@@ -187,6 +187,7 @@ func (c App) EventStream() revel.Result {
 	w.Header().Set("Content-Type", "text/event-stream")
 	w.Header().Set("Cache-Control", "no-cache")
 	w.Header().Set("Connection", "keep-alive")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	for {
 		var data bytes.Buffer
 		select {
@@ -195,6 +196,22 @@ func (c App) EventStream() revel.Result {
 			data.WriteString(fmt.Sprintf("data: %s\n", msg))
 			w.Write(data.Bytes())
 			return nil
+		}
+	}
+	return nil
+}
+
+func (c App) EventPoll() revel.Result {
+	messageChan := make(chan string)
+	broker.MyBroker.NewClients <- messageChan
+	defer func() {
+		broker.MyBroker.DefunctClients <- messageChan
+	}()
+	//
+	for {
+		select {
+		case msg := <-messageChan:
+			return c.RenderJson(Response{"data": msg})
 		}
 	}
 	return nil
