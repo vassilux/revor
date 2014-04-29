@@ -15,9 +15,8 @@ GET     /cdrs/:start/:end                       	Cdrs.CdrsWithDate
 GET     /daily/incomming							Daily.IncommingCalls
 GET     /daily/incomming/:day						Daily.IncommingCallsByDay
 GET     /daily/incomming/:day/:user					Daily.IncommingCallsByDayUser
-GET     /daily/didincomming/:day					Daily.IncommingDidCallsByDay
-GET     /daily/didincomming/:day/:did				Daily.IncommingDidCallsByDayDid
-GET     /daily/didcallsincomming/:day/				Daily.IncommingCallsByDid
+GET     /daily/didincomming/:day/				    Daily.IncommingDidCallsForDayByDid
+GET     /daily/didincomming/:day/:did				Daily.IncommingDidCallsForDayDid
 GET		/events										App.EventStream
 GET		/poll										App.EventPoll
 

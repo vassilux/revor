@@ -3,6 +3,7 @@ package tests
 import (
 	"github.com/robfig/revel"
 	"net/http"
+	"time"
 )
 
 var (
@@ -10,7 +11,7 @@ var (
 	testPassword = "testpassword"
 	testAdmin    = "true"
 	testDate     = "2014-04-17T01:00:00Z"
-	testDID      = "1158"
+	testDID      = "1157"
 )
 
 type AppTest struct {
@@ -19,6 +20,8 @@ type AppTest struct {
 
 func (t AppTest) Before() {
 	println("Set up")
+	timenow := time.Now()
+	testDate = timenow.Format(time.RFC3339)
 }
 
 func (t AppTest) TestThatIndexPageWorks() {
@@ -71,7 +74,7 @@ func (t AppTest) TestDailyIncommingCalls() {
 }
 
 func (t AppTest) TestDailyIncommingCallsByDay() {
-	t.Get("/daily/incomming/2014-04-17T01:00:00Z")
+	t.Get("/daily/incomming/" + testDate)
 	t.AssertOk()
 	t.AssertContains("id")
 }
@@ -83,7 +86,7 @@ func (t AppTest) TestDailyIncommingCallsByDayAndUser() {
 }
 
 func (t AppTest) TestDailyIncommingCallsByDayAndUserFailed() {
-	t.Get("/daily/incomming/2013-11-22T01:00:00Z/81")
+	t.Get("/daily/incomming/" + testDate + "/81")
 	t.AssertOk()
 	t.AssertContains("null")
 }
@@ -96,12 +99,6 @@ func (t AppTest) TestIncommingDidCallsByDay() {
 
 func (t AppTest) TestIncommingDidCallsByDayAndDID() {
 	t.Get("/daily/didincomming/" + testDate + "/" + testDID)
-	t.AssertOk()
-	t.AssertContains("id")
-}
-
-func (t AppTest) TestIncommingDidCalls() {
-	t.Get("/daily/didcallsincomming/" + testDate)
 	t.AssertOk()
 	t.AssertContains("id")
 }

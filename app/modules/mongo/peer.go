@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-//Extract the numbers of calls by did for given date
+//Extract the numbers of calls by peer for given date
 func GetPeerInCalls(day string, mongoDb *mgo.Database) []bson.M {
 	incomming := mongoDb.C("dailyanalytics_incomming")
 	results := []bson.M{}
@@ -24,7 +24,7 @@ func GetPeerInCalls(day string, mongoDb *mgo.Database) []bson.M {
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"peer":       "$metadata.user",
+			"peer":       "$metadata.dst",
 			"call_daily": 1,
 		},
 	}
@@ -50,7 +50,7 @@ func GetPeerInCalls(day string, mongoDb *mgo.Database) []bson.M {
 	return results
 }
 
-//Extract the numbers of calls by did for given date
+//Extract the numbers of calls by peer for given date
 func GetPeerOutCalls(day string, mongoDb *mgo.Database) []bson.M {
 	incomming := mongoDb.C("dailyanalytics_outgoing")
 	results := []bson.M{}
@@ -68,7 +68,7 @@ func GetPeerOutCalls(day string, mongoDb *mgo.Database) []bson.M {
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"peer":       "$metadata.user",
+			"peer":       "$metadata.dst",
 			"call_daily": 1,
 		},
 	}

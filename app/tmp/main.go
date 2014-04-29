@@ -194,15 +194,7 @@ func main() {
 				},
 			},
 			&revel.MethodType{
-				Name: "IncommingDidCallsByDay",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "IncommingDidCallsByDayDid",
+				Name: "IncommingDidCallsForDayDid",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
 					&revel.MethodArg{Name: "did", Type: reflect.TypeOf((*string)(nil)) },
@@ -211,7 +203,7 @@ func main() {
 				},
 			},
 			&revel.MethodType{
-				Name: "IncommingCallsByDid",
+				Name: "IncommingDidCallsForDayByDid",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
 				},
