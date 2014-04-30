@@ -10,7 +10,7 @@ type Cdr struct {
 	Calldate       time.Time     `json:"callDate"			bson:"call_date"`
 	MetadataDt     time.Time     `json:"metadataDate"		bson:"metadata_date"`
 	ClidName       string        `json:"clidName"           bson:"clid_name"`
-	ClidNumber     string        `bson:"clid_number"		json:"clidNumber"`
+	ClidNumber     string        `json:"clidNumber"		    bson:"clid_number"`
 	Src            string        `json:"src"				bson:"src"`
 	Channel        string        `json:"channel" 			bson:"channel"`
 	Dcontext       string        `json:"dcontext"			bson:"dcontext"`
