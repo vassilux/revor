@@ -24,19 +24,22 @@ func GetDidCalls(day string, mongoDb *mgo.Database) []bson.M {
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"did":        "$metadata.dst",
-			"call_daily": 1,
+			"did":         "$metadata.dst",
+			"disposition": "$metadata.disposition",
+			"call_daily":  1,
 		},
 	}
 	myGroup := bson.M{
 		"$group": bson.M{
 			"_id":        "$did",
-			"callsCount": bson.M{"$sum": "$call_daily"},
+			"status":     bson.M{"$addToSet": "$disposition"},
+			"callsCount": bson.M{"$addToSet": "$call_daily"},
 		},
 	}
+
 	mySort := bson.M{
 		"$sort": bson.M{
-			"callsCount": -1,
+			"_id": 1,
 		},
 	}
 	//
