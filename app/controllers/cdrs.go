@@ -33,7 +33,7 @@ func (c Cdrs) Cdrs() revel.Result {
 //If the provided dates is not valids a panic raised with 500 status code send as the response
 func (c Cdrs) CdrsWithDate(start string, end string) revel.Result {
 	revel.TRACE.Printf("Get start [%s] and end [%s] dates for cdrs.\r\n", start, end)
-	var searchResults []models.Cdr
+	searchResults := []bson.M{} //[]models.Cdr
 	cdrs := c.MongoDatabase.C("cdrs")
 	startDate, err := time.Parse(time.RFC3339, start)
 	if err != nil {
@@ -56,6 +56,33 @@ func (c Cdrs) CdrsWithDate(start string, end string) revel.Result {
 		//return c.RenderJson(searchResults)
 	}
 	revel.TRACE.Printf("[Cdrs] send to the client response of %d records.\r\n", len(searchResults))
+	return c.RenderJson(searchResults)
+
+}
+
+//Find the call details by the given uniqueid
+func (c Cdrs) CdrDetails(uniqueid string) revel.Result {
+	searchResults := []bson.M{} //[]models.Cdr
+	cdrs := c.MongoDatabase.C("cdrs")
+	myMatch := bson.M{
+		"$match": bson.M{
+			"uniqueId": uniqueid,
+		},
+	}
+	//
+	myProject := bson.M{
+		"$project": bson.M{
+			"uniqueId":    "$uniqueId",
+			"callDetails": "$call_details",
+		},
+	}
+	operations := []bson.M{myMatch, myProject}
+	pipe := cdrs.Pipe(operations)
+	err := pipe.All(&searchResults)
+	if err != nil {
+		revel.ERROR.Printf("[Cdrs] Cdr details for the given uniqueId [%s] failed with error : [%v].\r\n", uniqueid, err)
+		panic(err)
+	}
 	return c.RenderJson(searchResults)
 
 }

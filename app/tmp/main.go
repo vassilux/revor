@@ -231,6 +231,14 @@ func main() {
 				RenderArgNames: map[int][]string{ 
 				},
 			},
+			&revel.MethodType{
+				Name: "CdrDetails",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "uniqueid", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
 			
 		})
 	

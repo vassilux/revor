@@ -12,6 +12,7 @@ GET     /createuser/:username/:password/:admin		App.CreateUser
 GET     /deleteuser/:username/:password/    		App.DeleteUser
 GET     /cdrs                                   	Cdrs.Cdrs
 GET     /cdrs/:start/:end                       	Cdrs.CdrsWithDate
+GET     /cdrdetails/:uniqueid                      	Cdrs.CdrDetails
 GET     /daily/incomming							Daily.IncommingCalls
 GET     /daily/incomming/:day						Daily.IncommingCallsByDay
 GET     /daily/incomming/:day/:user					Daily.IncommingCallsByDayUser

@@ -212,4 +212,13 @@ func (p tCdrs) CdrsWithDate(
 	return revel.MainRouter.Reverse("Cdrs.CdrsWithDate", args).Url
 }
 
+func (p tCdrs) CdrDetails(
+		uniqueid string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "uniqueid", uniqueid)
+	return revel.MainRouter.Reverse("Cdrs.CdrDetails", args).Url
+}
+
 
