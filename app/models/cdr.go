@@ -38,3 +38,9 @@ type CallDetail struct {
 	LinkedId  string    `json:"linkedId"		bson:"linkedId"`
 	Peer      string    `json:"peer"			bson:"peer"`
 }
+
+type CdrSearchParam struct {
+	Name      string
+	Condition string
+	Data      string
+}

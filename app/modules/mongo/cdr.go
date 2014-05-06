@@ -5,7 +5,8 @@ import (
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
 	"revor/app/models"
-	//"time"
+	"strconv"
+	"time"
 )
 
 //Extract the cdr records by the given parameters
@@ -13,28 +14,95 @@ func GetCdrs(paramsMap map[string]models.CdrSearchParam, mongoDb *mgo.Database) 
 	fmt.Printf("Get start [%s] and end [%s] dates for cdrs.\r\n",
 		paramsMap["startdate"].Data, paramsMap["enddate"].Data)
 	searchResults := []bson.M{}
-	/*searchResults := []bson.M{} //[]models.Cdr
-	cdrs := c.MongoDatabase.C("cdrs")
-	startDate, err := time.Parse(time.RFC3339, start)
-	if err != nil {
-		revel.ERROR.Printf("Failed to parse the start date : [%v].\r\n", err)
-		panic(err)
+	var query = bson.M{}
+
+	startDateParam, startDateParamOk := paramsMap["startdate"]
+	endDateParam, endDateParamOk := paramsMap["enddate"]
+
+	if startDateParamOk && endDateParamOk {
+		startDate, err := time.Parse(time.RFC3339, startDateParam.Data)
+		if err != nil {
+			panic(err)
+		}
+		endDate, err := time.Parse(time.RFC3339, endDateParam.Data)
+		if err != nil {
+			panic(err)
+		}
+		var datesParams = bson.M{startDateParam.Condition: startDate, endDateParam.Condition: endDate}
+		query["call_date"] = datesParams
 	}
-	endDate, err := time.Parse(time.RFC3339, end)
-	if err != nil {
-		revel.ERROR.Printf("Failed to parse the end date : [%v].\r\n", err)
-		//return c.RenderJson(searchResults)
-		panic(err)
+
+	disposition, dispositionOk := paramsMap["disposition"]
+	if dispositionOk {
+		fmt.Printf("Add disposition parameter [%s].\r\n",
+			disposition.Data)
+		dispositionValue, err := strconv.Atoi(disposition.Data)
+		if err != nil {
+			panic(err)
+		}
+		//can be used for more that on values
+		//arr := []int{dispositionValue}
+		//var dispositionParam = bson.M{"$in": arr}
+		query["disposition"] = dispositionValue //dispositionParam
 	}
+
+	duration, durationOk := paramsMap["duration"]
+	if durationOk {
+		fmt.Printf("Add duration parameter [%s].\r\n",
+			duration.Data)
+		durationValue, err := strconv.Atoi(duration.Data)
+		if err != nil {
+			panic(err)
+		}
+
+		if len(duration.Condition) == 0 {
+			query["duration"] = durationValue
+		} else {
+			query["duration"] = bson.M{duration.Condition: durationValue}
+		}
+
+	}
+	destination, destinationOk := paramsMap["destination"]
+	if destinationOk {
+		fmt.Printf("Add destination parameter [%s].\r\n",
+			destination.Data)
+		if len(destination.Condition) == 0 {
+			query["dst"] = destination.Data
+		} else {
+			query["dst"] = bson.M{"$regex": destination.Data}
+		}
+
+	}
+	callerId, callerIdOk := paramsMap["callerid"]
+	if callerIdOk {
+		fmt.Printf("Add callerId parameter [%s].\r\n",
+			callerId.Data)
+		if len(callerId.Condition) == 0 {
+			query["clid_number"] = callerId.Data
+		} else {
+			query["clid_number"] = bson.M{callerId.Condition: callerId.Data}
+		}
+
+	}
+
+	direction, directionOk := paramsMap["direction"]
+	if directionOk {
+		fmt.Printf("Add direction parameter [%s].\r\n",
+			direction.Data)
+		directionValue, err := strconv.Atoi(direction.Data)
+		if err != nil {
+			panic(err)
+		}
+		query["inout_status"] = directionValue
+	}
+
+	cdrs := mongoDb.C("cdrs")
 	//
 	var limit = 10000
-	var query = bson.M{"call_date": bson.M{"$gte": startDate, "$lte": endDate}}
-	err = cdrs.Find(query).Limit(limit).All(&searchResults)
+	//hop hop look for
+	err := cdrs.Find(query).Limit(limit).All(&searchResults)
 	if err != nil {
-		revel.ERROR.Printf("[Cdrs] Monthly insert failed with error : [%v].\r\n", err)
 		panic(err)
-		//return c.RenderJson(searchResults)
 	}
-	revel.TRACE.Printf("[Cdrs] send to the client response of %d records.\r\n", len(searchResults))*/
 	return searchResults
 }

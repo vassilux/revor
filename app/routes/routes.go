@@ -79,35 +79,6 @@ func (p tApp) EventPoll(
 }
 
 
-type tStatic struct {}
-var Static tStatic
-
-
-func (p tStatic) Serve(
-		prefix string,
-		filepath string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "prefix", prefix)
-	revel.Unbind(args, "filepath", filepath)
-	return revel.MainRouter.Reverse("Static.Serve", args).Url
-}
-
-func (p tStatic) ServeModule(
-		moduleName string,
-		prefix string,
-		filepath string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "moduleName", moduleName)
-	revel.Unbind(args, "prefix", prefix)
-	revel.Unbind(args, "filepath", filepath)
-	return revel.MainRouter.Reverse("Static.ServeModule", args).Url
-}
-
-
 type tTestRunner struct {}
 var TestRunner tTestRunner
 
@@ -135,6 +106,35 @@ func (p tTestRunner) List(
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("TestRunner.List", args).Url
+}
+
+
+type tStatic struct {}
+var Static tStatic
+
+
+func (p tStatic) Serve(
+		prefix string,
+		filepath string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "prefix", prefix)
+	revel.Unbind(args, "filepath", filepath)
+	return revel.MainRouter.Reverse("Static.Serve", args).Url
+}
+
+func (p tStatic) ServeModule(
+		moduleName string,
+		prefix string,
+		filepath string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "moduleName", moduleName)
+	revel.Unbind(args, "prefix", prefix)
+	revel.Unbind(args, "filepath", filepath)
+	return revel.MainRouter.Reverse("Static.ServeModule", args).Url
 }
 
 
@@ -219,6 +219,15 @@ func (p tCdrs) CdrDetails(
 	
 	revel.Unbind(args, "uniqueid", uniqueid)
 	return revel.MainRouter.Reverse("Cdrs.CdrDetails", args).Url
+}
+
+func (p tCdrs) CdrWithParams(
+		params string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "params", params)
+	return revel.MainRouter.Reverse("Cdrs.CdrWithParams", args).Url
 }
 
 

@@ -19,7 +19,6 @@ type AppTest struct {
 }
 
 func (t AppTest) Before() {
-	println("Set up")
 	timenow := time.Now()
 	testDate = timenow.Format(time.RFC3339)
 }
@@ -54,17 +53,6 @@ func (t AppTest) TestLoginFailed() {
 	t.AssertOk()
 	t.AssertStatus(http.StatusOK)
 	t.AssertContains("\"status\":403")
-}
-
-func (t AppTest) TestCdrs() {
-	t.Get("/cdrs")
-	t.AssertOk()
-}
-
-func (t AppTest) TestCdrsDates() {
-	t.Get("/cdrs/2013-02-01T00:00:00Z/2015-04-22T01:00:00Z")
-	t.AssertOk()
-	t.AssertContains("dst")
 }
 
 func (t AppTest) TestDailyIncommingCalls() {

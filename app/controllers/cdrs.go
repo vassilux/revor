@@ -1,9 +1,13 @@
 package controllers
 
 import (
+	"errors"
 	"github.com/robfig/revel"
 	"labix.org/v2/mgo/bson"
+	"net/http"
 	"revor/app/models"
+	"revor/app/modules/mongo"
+	"strings"
 	"time"
 )
 
@@ -85,4 +89,41 @@ func (c Cdrs) CdrDetails(uniqueid string) revel.Result {
 	}
 	return c.RenderJson(searchResults)
 
+}
+
+func fetchParamsFromString(params string) (result models.CdrSearchParam, err error) {
+	paramsArr := strings.Split(params, ",")
+	if len(paramsArr) != 3 {
+		err = errors.New("Failed parsing params. Parameter string must contents 3 tokens")
+		return result, err
+	}
+	result.Name = paramsArr[0]
+	result.Condition = paramsArr[1]
+	result.Data = paramsArr[2]
+	return result, nil
+}
+
+func (c Cdrs) CdrWithParams(params string) revel.Result {
+	searchResults := []bson.M{}
+	revel.TRACE.Printf("[Cdrs] Cdr process params : [%s].\r\n", params)
+	paramsArr := strings.Split(params, "&")
+	var paramsMap = make(map[string]models.CdrSearchParam)
+	if len(paramsArr) == 0 {
+		c.Response.Status = http.StatusBadRequest
+		return c.Render()
+	}
+	for i := range paramsArr {
+		var err error
+		var param models.CdrSearchParam
+		param, err = fetchParamsFromString(paramsArr[i])
+		if err != nil {
+			revel.TRACE.Printf("[Cdrs] Failed parse parameter [%s].\r\n", paramsArr[i])
+			c.Response.Status = http.StatusBadRequest
+			return c.Render()
+		}
+		paramsMap[param.Name] = param
+		revel.TRACE.Printf("[Cdrs] params[%d] : [%s].\r\n", i, paramsArr[i])
+	}
+	searchResults = mongo.GetCdrs(paramsMap, c.MongoDatabase)
+	return c.RenderJson(searchResults)
 }
