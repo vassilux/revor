@@ -40,6 +40,13 @@ func (p tApp) CurrentUser(
 	return revel.MainRouter.Reverse("App.CurrentUser", args).Url
 }
 
+func (p tApp) ListUsers(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("App.ListUsers", args).Url
+}
+
 func (p tApp) CreateUser(
 		username string,
 		password string,

@@ -12,7 +12,6 @@ import (
 	"revor/app/modules/mongo"
 	"revor/app/modules/utils"
 	"strconv"
-	//"time"
 )
 
 type App struct {
@@ -138,6 +137,11 @@ func (c App) CurrentUser() revel.Result {
 	}
 
 	return res
+}
+
+func (c App) ListUsers() revel.Result {
+	results := mongo.ListUsers(c.MongoDatabase)
+	return c.RenderJson(results)
 }
 
 func (c App) CreateUser(username, password string, admin bool) revel.Result {

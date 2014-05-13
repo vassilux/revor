@@ -8,6 +8,7 @@ GET     /                                       	App.Index
 GET     /login                                  	App.Login
 GET     /logout                                 	App.Logout
 GET     /currentuser						    	App.CurrentUser
+GET		/users										App.ListUsers
 GET     /createuser/:username/:password/:admin		App.CreateUser
 GET     /deleteuser/:username/:password/    		App.DeleteUser
 GET     /cdrs                                   	Cdrs.Cdrs

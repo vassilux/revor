@@ -38,7 +38,7 @@ func main() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					58: []string{ 
+					57: []string{ 
 					},
 				},
 			},
@@ -66,6 +66,13 @@ func main() {
 				},
 			},
 			&revel.MethodType{
+				Name: "ListUsers",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
 				Name: "CreateUser",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "username", Type: reflect.TypeOf((*string)(nil)) },
@@ -73,9 +80,9 @@ func main() {
 					&revel.MethodArg{Name: "admin", Type: reflect.TypeOf((*bool)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-					149: []string{ 
+					153: []string{ 
 					},
-					161: []string{ 
+					165: []string{ 
 					},
 				},
 			},
@@ -86,9 +93,9 @@ func main() {
 					&revel.MethodArg{Name: "password", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-					176: []string{ 
+					180: []string{ 
 					},
-					189: []string{ 
+					193: []string{ 
 					},
 				},
 			},
