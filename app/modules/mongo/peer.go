@@ -24,19 +24,28 @@ func GetPeerInCalls(day string, mongoDb *mgo.Database) []bson.M {
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"peer":       "$metadata.dst",
-			"call_daily": 1,
+			"did":         "$metadata.dst",
+			"disposition": "$metadata.disposition",
+			"call_daily":  1,
 		},
 	}
+	/*myGroup := bson.M{
+		"$group": bson.M{
+			"_id":        "$did",
+			"status":     bson.M{"$addToSet": "$disposition"},
+			"callsCount": bson.M{"$addToSet": "$call_daily"},
+		},
+	}*/
 	myGroup := bson.M{
 		"$group": bson.M{
-			"_id":        "$peer",
-			"callsCount": bson.M{"$sum": "$call_daily"},
+			"_id":          "$did",
+			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_daily"}},
 		},
 	}
+
 	mySort := bson.M{
 		"$sort": bson.M{
-			"callsCount": -1,
+			"_id": 1,
 		},
 	}
 	//
@@ -52,7 +61,7 @@ func GetPeerInCalls(day string, mongoDb *mgo.Database) []bson.M {
 
 //Extract the numbers of calls by peer for given date
 func GetPeerOutCalls(day string, mongoDb *mgo.Database) []bson.M {
-	incomming := mongoDb.C("dailyanalytics_outgoing")
+	collection := mongoDb.C("dailyanalytics_outgoing")
 	results := []bson.M{}
 	startDate, err := time.Parse(time.RFC3339, day)
 	if err != nil {
@@ -68,24 +77,33 @@ func GetPeerOutCalls(day string, mongoDb *mgo.Database) []bson.M {
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"peer":       "$metadata.dst",
-			"call_daily": 1,
+			"did":         "$metadata.dst",
+			"disposition": "$metadata.disposition",
+			"call_daily":  1,
 		},
 	}
+	/*myGroup := bson.M{
+		"$group": bson.M{
+			"_id":        "$did",
+			"status":     bson.M{"$addToSet": "$disposition"},
+			"callsCount": bson.M{"$addToSet": "$call_daily"},
+		},
+	}*/
 	myGroup := bson.M{
 		"$group": bson.M{
-			"_id":        "$peer",
-			"callsCount": bson.M{"$sum": "$call_daily"},
+			"_id":          "$did",
+			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_daily"}},
 		},
 	}
+
 	mySort := bson.M{
 		"$sort": bson.M{
-			"callsCount": -1,
+			"_id": 1,
 		},
 	}
 	//
 	operations := []bson.M{myMatch, myProject, myGroup, mySort}
-	pipe := incomming.Pipe(operations)
+	pipe := collection.Pipe(operations)
 	err = pipe.All(&results)
 	if err != nil {
 		panic(err)

@@ -11,6 +11,7 @@ import (
 	"revor/app/models"
 	"revor/app/modules/mongo"
 	"revor/app/modules/utils"
+	"strconv"
 	//"time"
 )
 
@@ -44,7 +45,8 @@ type HttpRequestResult struct {
 
 func (r LoginResult) Apply(req *revel.Request, resp *revel.Response) {
 	//the solution is very simple to make json string and inject to the response
-	fmt.Fprint(resp.Out, Response{"username": r.username, "admin": r.admin, "status": r.statusCode, "token": r.token})
+	fmt.Fprint(resp.Out, Response{"username": r.username, "admin": r.admin,
+		"status": r.statusCode, "token": r.token})
 }
 
 func (r HttpRequestResult) Apply(req *revel.Request, resp *revel.Response) {
@@ -100,25 +102,41 @@ func (c App) getUser(username, password string) (*models.User, error) {
 //
 func (c App) Login(username, password string) revel.Result {
 	res := c.processInnerLogin(username, password)
-	revel.TRACE.Printf(" [App] loggin result for username [%s] and password [%s] with token [%s]",
-		username, password, c.Session["token"])
+	c.Session["username"] = res.username
+	c.Session["token"] = res.token
+	adminString := strconv.FormatBool(res.admin)
+	c.Session["admin"] = adminString
+
+	revel.TRACE.Printf(" [App] loggin result for username [%s] and password [%s]",
+		username, password)
 	return res
 }
 
 func (c App) Logout() revel.Result {
+	delete(c.Session, "username")
 	delete(c.Session, "token")
+	delete(c.Session, "admin")
 	return &LoginResult{
 		statusCode: http.StatusOK,
 	}
 }
 
 func (c App) CurrentUser() revel.Result {
+	ok := c.Session["token"]
+	if len(ok) == 0 {
+		res := &LoginResult{
+			statusCode: http.StatusForbidden,
+		}
+		return res
+	}
+	admin, _ := strconv.ParseBool(c.Session["admin"])
 	res := &LoginResult{
 		statusCode: http.StatusOK,
-		username:   "adminTest",
-		admin:      true,
-		token:      "",
+		username:   c.Session["username"],
+		admin:      admin,
+		token:      c.Session["token"],
 	}
+
 	return res
 }
 
