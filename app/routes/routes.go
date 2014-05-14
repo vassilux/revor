@@ -47,15 +47,36 @@ func (p tApp) ListUsers(
 	return revel.MainRouter.Reverse("App.ListUsers", args).Url
 }
 
+func (p tApp) UpdateUser(
+		username string,
+		password string,
+		firstname string,
+		lastname string,
+		isadmin string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "username", username)
+	revel.Unbind(args, "password", password)
+	revel.Unbind(args, "firstname", firstname)
+	revel.Unbind(args, "lastname", lastname)
+	revel.Unbind(args, "isadmin", isadmin)
+	return revel.MainRouter.Reverse("App.UpdateUser", args).Url
+}
+
 func (p tApp) CreateUser(
 		username string,
 		password string,
+		firstname string,
+		lastname string,
 		admin bool,
 		) string {
 	args := make(map[string]string)
 	
 	revel.Unbind(args, "username", username)
 	revel.Unbind(args, "password", password)
+	revel.Unbind(args, "firstname", firstname)
+	revel.Unbind(args, "lastname", lastname)
 	revel.Unbind(args, "admin", admin)
 	return revel.MainRouter.Reverse("App.CreateUser", args).Url
 }

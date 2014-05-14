@@ -7,9 +7,11 @@ import (
 )
 
 type User struct {
-	Username string `json:"userName"			bson:"user_name"`
-	Password string `json:"password"			bson:"password"`
-	IsAdmin  bool   `json:"isAdmin"			    bson:"is_admin"`
+	Username  string `json:"userName"			bson:"username"`
+	Password  string `json:"password"			bson:"password"`
+	FirstName string `json:"firstName"			bson:"firstname"`
+	LastName  string `json:"lastName"			bson:"lastname"`
+	IsAdmin   bool   `json:"isAdmin"			bson:"isadmin"`
 }
 
 func (u *User) String() string {

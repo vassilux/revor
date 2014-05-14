@@ -38,7 +38,7 @@ func main() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					57: []string{ 
+					60: []string{ 
 					},
 				},
 			},
@@ -73,16 +73,32 @@ func main() {
 				},
 			},
 			&revel.MethodType{
+				Name: "UpdateUser",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "username", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "password", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "firstname", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "lastname", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "isadmin", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+					163: []string{ 
+					},
+					166: []string{ 
+					},
+				},
+			},
+			&revel.MethodType{
 				Name: "CreateUser",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "username", Type: reflect.TypeOf((*string)(nil)) },
 					&revel.MethodArg{Name: "password", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "firstname", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "lastname", Type: reflect.TypeOf((*string)(nil)) },
 					&revel.MethodArg{Name: "admin", Type: reflect.TypeOf((*bool)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-					153: []string{ 
-					},
-					165: []string{ 
+					175: []string{ 
 					},
 				},
 			},
@@ -93,9 +109,7 @@ func main() {
 					&revel.MethodArg{Name: "password", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-					180: []string{ 
-					},
-					193: []string{ 
+					189: []string{ 
 					},
 				},
 			},
@@ -263,14 +277,15 @@ func main() {
 	
 	revel.DefaultValidationKeys = map[string]map[int]string{ 
 		"revor/app/models.(*User).Validate": { 
-			27: "user.Username",
-			35: "user.Username",
+			29: "user.Username",
+			37: "user.Username",
 		},
 		"revor/app/models.ValidatePassword": { 
-			43: "password",
+			45: "password",
 		},
 	}
 	revel.TestSuites = []interface{}{ 
+		(*tests.UserTest)(nil),
 		(*tests.CdrTest)(nil),
 		(*tests.AppTest)(nil),
 	}

@@ -83,6 +83,7 @@ func (t AppTest) TestIncommingDidCallsByDay() {
 	t.Get("/daily/didincomming/" + testDate)
 	t.AssertOk()
 	t.AssertContains("id")
+
 }
 
 func (t AppTest) TestIncommingDidCallsByDayAndDID() {

@@ -33,8 +33,10 @@ func (r Response) String() (s string) {
 
 type LoginResult struct {
 	statusCode int
-	username   string
-	admin      bool
+	userName   string
+	firstName  string
+	lastName   string
+	isAdmin    bool
 	token      string
 }
 
@@ -44,7 +46,8 @@ type HttpRequestResult struct {
 
 func (r LoginResult) Apply(req *revel.Request, resp *revel.Response) {
 	//the solution is very simple to make json string and inject to the response
-	fmt.Fprint(resp.Out, Response{"username": r.username, "admin": r.admin,
+	fmt.Fprint(resp.Out, Response{"userName": r.userName, "firstName": r.firstName,
+		"lastName": r.lastName, "isAdmin": r.isAdmin,
 		"status": r.statusCode, "token": r.token})
 }
 
@@ -66,8 +69,10 @@ func (c App) processInnerLogin(username, password string) *LoginResult {
 	if err != nil {
 		res := &LoginResult{
 			statusCode: http.StatusForbidden,
-			username:   username,
-			admin:      false,
+			userName:   username,
+			firstName:  "",
+			lastName:   "",
+			isAdmin:    false,
 			token:      "",
 		}
 		return res
@@ -77,8 +82,10 @@ func (c App) processInnerLogin(username, password string) *LoginResult {
 	//the user authentificated
 	res := &LoginResult{
 		statusCode: http.StatusOK,
-		username:   user.Username,
-		admin:      user.IsAdmin,
+		userName:   username,
+		firstName:  user.FirstName,
+		lastName:   user.LastName,
+		isAdmin:    user.IsAdmin,
 		token:      token,
 	}
 	//
@@ -101,9 +108,9 @@ func (c App) getUser(username, password string) (*models.User, error) {
 //
 func (c App) Login(username, password string) revel.Result {
 	res := c.processInnerLogin(username, password)
-	c.Session["username"] = res.username
+	c.Session["username"] = res.userName
 	c.Session["token"] = res.token
-	adminString := strconv.FormatBool(res.admin)
+	adminString := strconv.FormatBool(res.isAdmin)
 	c.Session["admin"] = adminString
 
 	revel.TRACE.Printf(" [App] loggin result for username [%s] and password [%s]",
@@ -131,8 +138,8 @@ func (c App) CurrentUser() revel.Result {
 	admin, _ := strconv.ParseBool(c.Session["admin"])
 	res := &LoginResult{
 		statusCode: http.StatusOK,
-		username:   c.Session["username"],
-		admin:      admin,
+		userName:   c.Session["username"],
+		isAdmin:    admin,
 		token:      c.Session["token"],
 	}
 
@@ -144,27 +151,29 @@ func (c App) ListUsers() revel.Result {
 	return c.RenderJson(results)
 }
 
-func (c App) CreateUser(username, password string, admin bool) revel.Result {
-	user, err := c.getUser(username, password)
-	if user != nil {
-		revel.ERROR.Printf(" [App CreateUser ] Can not create user [%s] cause user exist get error [%v] and user [%v]",
-			username, err, user)
-		c.Response.Status = http.StatusConflict
-		return c.Render()
-	}
-	var collection = c.MongoDatabase.C("users")
-	//
-	newUser := models.User{}
-	newUser.Username = username
-	newUser.Password = password
-	err = collection.Insert(newUser)
+func (c App) UpdateUser(username, password, firstname, lastname, isadmin string) revel.Result {
+	admin, _ := strconv.ParseBool(isadmin)
+	revel.TRACE.Printf(" [App UpdateUser ] Try update user [%s] , [%s], [%s], [%s], [%s]",
+		username, password, firstname, lastname, isadmin)
+	err := mongo.UpdateUser(username, password, firstname, lastname, admin, c.MongoDatabase)
 	if err != nil {
-		revel.ERROR.Printf(" [App CreateUser ] Can not create user [%s], get error [%v]",
-			username, err)
-		c.Response.Status = http.StatusExpectationFailed
+		revel.ERROR.Printf(" [App UpdateUser ] Can't update user [%s] , [%s], [%s], [%s], [%s]",
+			username, password, firstname, lastname, isadmin)
+		c.Response.Status = http.StatusNotFound
 		return c.Render()
 	}
 	c.Response.Status = http.StatusOK
+	return c.Render()
+}
+
+func (c App) CreateUser(username, password, firstname, lastname string, admin bool) revel.Result {
+	err := mongo.CreateUser(username, password, firstname, lastname, admin, c.MongoDatabase)
+	if err != nil {
+		revel.ERROR.Printf(" [App CreateUser ] Can not create user [%s] cause user exist get error [%v]",
+			username, err)
+		c.Response.Status = http.StatusConflict
+		return c.Render()
+	}
 	//
 	return &HttpRequestResult{
 		statusCode: http.StatusOK,
@@ -172,27 +181,13 @@ func (c App) CreateUser(username, password string, admin bool) revel.Result {
 }
 
 func (c App) DeleteUser(username, password string) revel.Result {
-	user, err := c.getUser(username, password)
-	if user == nil {
-		revel.ERROR.Printf(" [App DeleteUser ] Can not find user [%s]. Get an error  [%v]",
+	err := mongo.DeleteUser(username, password, c.MongoDatabase)
+	if err != nil {
+		revel.ERROR.Printf(" [App DeleteUser ] Can not delete user [%s] cause user exist get error [%v]",
 			username, err)
 		c.Response.Status = http.StatusConflict
 		return c.Render()
 	}
-	var collection = c.MongoDatabase.C("users")
-	//
-	newUser := models.User{}
-	newUser.Username = username
-	newUser.Password = password
-	var selector = bson.M{"username": username, "password": password}
-	err = collection.Remove(selector)
-	if err != nil {
-		revel.ERROR.Printf(" [App DeleteUser] Can not remove user [%s], get error [%v]",
-			username, err)
-		c.Response.Status = http.StatusExpectationFailed
-		return c.Render()
-	}
-	c.Response.Status = http.StatusOK
 	//
 	return &HttpRequestResult{
 		statusCode: http.StatusOK,

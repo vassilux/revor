@@ -1,7 +1,7 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
-
+#
 module:testrunner
 
 GET     /                                       	App.Index
@@ -9,8 +9,9 @@ GET     /login                                  	App.Login
 GET     /logout                                 	App.Logout
 GET     /currentuser						    	App.CurrentUser
 GET		/users										App.ListUsers
-GET     /createuser/:username/:password/:admin		App.CreateUser
+POST    /createuser									App.CreateUser
 GET     /deleteuser/:username/:password/    		App.DeleteUser
+POST    /updateuser						    		App.UpdateUser
 GET     /cdrs                                   	Cdrs.Cdrs
 GET     /cdrs/:start/:end                       	Cdrs.CdrsWithDate
 GET     /cdrs/:params                         	    Cdrs.CdrWithParams
