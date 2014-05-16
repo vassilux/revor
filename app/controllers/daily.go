@@ -41,23 +41,9 @@ func (c Daily) IncommingCallsByDay(day string) revel.Result {
 //return a json stream with calls on success otherwise http status 500
 func (c Daily) IncommingCallsByDayUser(day string, user string) revel.Result {
 	revel.TRACE.Printf("[Daily] Get incomming call by day for the date [%s] and caller [%s].\r\n", day, user)
-	incomming := c.MongoDatabase.C("dailyanalytics_incomming")
-	var searchResults []models.DailyCall
-	startDate, err := time.Parse(time.RFC3339, day)
-	if err != nil {
-		revel.WARN.Printf("[Daily] Failed to parse the start date : [%v].\r\n", err)
-		panic(err)
-	}
-	startDayDate := time.Date(startDate.Year(), startDate.Month(), startDate.Day(), 0, 0, 0, 0, time.UTC)
-	endDayDate := time.Date(startDate.Year(), startDate.Month(), startDate.Day(), 23, 59, 59, 0, time.UTC)
-	var query = bson.M{"metadata.dt": bson.M{"$gte": startDayDate, "$lte": endDayDate}, "metadata.dst": user}
-	err = incomming.Find(query).Limit(mongo.DB_REQUEST_LIMITS).All(&searchResults)
-	if err != nil {
-		revel.WARN.Printf("[Daily] Got error from mongo : [%v].\r\n", err)
-		return c.RenderJson(searchResults)
-	}
-	revel.TRACE.Printf("[Daily] send to the client response of %d records.\r\n", len(searchResults))
-	return c.RenderJson(searchResults)
+	results := mongo.GetPeerInCallsForUser(day, user, c.MongoDatabase)
+	revel.TRACE.Printf("[Daily] send to the client response of %d records.\r\n", len(results))
+	return c.RenderJson(results)
 }
 
 //did parts
@@ -76,5 +62,32 @@ func (c Daily) IncommingDidCallsForDayByDid(day string) revel.Result {
 	revel.TRACE.Printf("[Daily DID] Get incomming call by did for the given date [%s].\r\n", day)
 	results := mongo.GetDidCalls(day, c.MongoDatabase)
 	revel.TRACE.Printf("[Daily DID] Send to the client response of %d records.\r\n", len(results))
+	return c.RenderJson(results)
+}
+
+//Fetch all datas for peers
+//return a json stream with calls on success otherwise http status 500
+func (c Daily) PeersDatas(day string) revel.Result {
+	revel.TRACE.Printf("[Daily PEERSDATAS] Get incomming call for the given date [%s].\r\n", day)
+	results := bson.M{}
+	inCalls := mongo.GetPeerInCalls(day, c.MongoDatabase)
+	outCalls := mongo.GetPeerOutCalls(day, c.MongoDatabase)
+	results["inCalls"] = inCalls
+	results["outCalls"] = outCalls
+	revel.TRACE.Printf("[Daily PEERSDATAS] Send to the client response of %d records.\r\n", len(results))
+	return c.RenderJson(results)
+}
+
+//Fetch all datas for the given day and given user
+//return a json stream with calls on success otherwise http status 500
+func (c Daily) PeerDatas(day string, user string) revel.Result {
+	revel.TRACE.Printf("[Daily PEERDATAS] Get incomming call for the given date [%s].\r\n", day)
+	results := bson.M{}
+	inCalls := mongo.GetPeerInCallsForUser(day, user, c.MongoDatabase)
+	revel.TRACE.Printf("[Daily PEERSDATAS] Get outgoing call for the given date [%s].\r\n", day)
+	outCalls := mongo.GetPeerOutCallsForUser(day, user, c.MongoDatabase)
+	results["inCalls"] = inCalls
+	results["outCalls"] = outCalls
+	revel.TRACE.Printf("[Daily PEERDATAS] Send to the client response of %d records.\r\n", len(results))
 	return c.RenderJson(results)
 }

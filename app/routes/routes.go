@@ -217,6 +217,26 @@ func (p tDaily) IncommingDidCallsForDayByDid(
 	return revel.MainRouter.Reverse("Daily.IncommingDidCallsForDayByDid", args).Url
 }
 
+func (p tDaily) PeersDatas(
+		day string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	return revel.MainRouter.Reverse("Daily.PeersDatas", args).Url
+}
+
+func (p tDaily) PeerDatas(
+		day string,
+		user string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "user", user)
+	return revel.MainRouter.Reverse("Daily.PeerDatas", args).Url
+}
+
 
 type tCdrs struct {}
 var Cdrs tCdrs

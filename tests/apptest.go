@@ -55,43 +55,6 @@ func (t AppTest) TestLoginFailed() {
 	t.AssertContains("\"status\":403")
 }
 
-func (t AppTest) TestDailyIncommingCalls() {
-	t.Get("/daily/incomming")
-	t.AssertOk()
-	t.AssertStatus(http.StatusOK)
-}
-
-func (t AppTest) TestDailyIncommingCallsByDay() {
-	t.Get("/daily/incomming/" + testDate)
-	t.AssertOk()
-	t.AssertContains("id")
-}
-
-func (t AppTest) TestDailyIncommingCallsByDayAndUser() {
-	t.Get("/daily/incomming/" + testDate)
-	t.AssertOk()
-	t.AssertContains("id")
-}
-
-func (t AppTest) TestDailyIncommingCallsByDayAndUserFailed() {
-	t.Get("/daily/incomming/" + testDate + "/81")
-	t.AssertOk()
-	t.AssertContains("null")
-}
-
-func (t AppTest) TestIncommingDidCallsByDay() {
-	t.Get("/daily/didincomming/" + testDate)
-	t.AssertOk()
-	t.AssertContains("id")
-
-}
-
-func (t AppTest) TestIncommingDidCallsByDayAndDID() {
-	t.Get("/daily/didincomming/" + testDate + "/" + testDID)
-	t.AssertOk()
-	t.AssertContains("id")
-}
-
 func (t AppTest) After() {
 	println("Tear down")
 }

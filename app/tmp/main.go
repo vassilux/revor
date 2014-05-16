@@ -231,6 +231,23 @@ func main() {
 				RenderArgNames: map[int][]string{ 
 				},
 			},
+			&revel.MethodType{
+				Name: "PeersDatas",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "PeerDatas",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "user", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
 			
 		})
 	
@@ -287,6 +304,7 @@ func main() {
 	revel.TestSuites = []interface{}{ 
 		(*tests.UserTest)(nil),
 		(*tests.CdrTest)(nil),
+		(*tests.DailyTest)(nil),
 		(*tests.AppTest)(nil),
 	}
 
