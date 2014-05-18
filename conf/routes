@@ -16,7 +16,7 @@ GET     /cdrs                                   	Cdrs.Cdrs
 GET     /cdrs/:start/:end                       	Cdrs.CdrsWithDate
 GET     /cdrs/:params                         	    Cdrs.CdrWithParams
 GET     /cdrdetails/:uniqueid                      	Cdrs.CdrDetails
-GET     /daily/peersdatas/:day						Daily.PeersDatas
+GET     /daily/peerdatas/:day						Daily.PeersDatas
 GET     /daily/peerdatas/:day/:user					Daily.PeerDatas
 GET     /daily/incomming							Daily.IncommingCalls
 GET     /daily/incomming/:day						Daily.IncommingCallsByDay
