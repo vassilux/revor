@@ -265,6 +265,45 @@ func main() {
 			
 		})
 	
+	revel.RegisterController((*controllers.Monthly)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "IncommingDidCallsForMonthDid",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "did", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "IncommingDidCallsForMonthByDid",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "PeersDatas",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "PeerDatas",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "user", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
 	revel.RegisterController((*controllers.Cdrs)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
@@ -320,6 +359,7 @@ func main() {
 		(*tests.CdrTest)(nil),
 		(*tests.DailyTest)(nil),
 		(*tests.AppTest)(nil),
+		(*tests.MonthlyTest)(nil),
 	}
 
 	revel.Run(*port)

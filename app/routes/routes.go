@@ -252,6 +252,51 @@ func (p tDaily) PeerDatas(
 }
 
 
+type tMonthly struct {}
+var Monthly tMonthly
+
+
+func (p tMonthly) IncommingDidCallsForMonthDid(
+		day string,
+		did string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "did", did)
+	return revel.MainRouter.Reverse("Monthly.IncommingDidCallsForMonthDid", args).Url
+}
+
+func (p tMonthly) IncommingDidCallsForMonthByDid(
+		day string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	return revel.MainRouter.Reverse("Monthly.IncommingDidCallsForMonthByDid", args).Url
+}
+
+func (p tMonthly) PeersDatas(
+		day string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	return revel.MainRouter.Reverse("Monthly.PeersDatas", args).Url
+}
+
+func (p tMonthly) PeerDatas(
+		day string,
+		user string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "user", user)
+	return revel.MainRouter.Reverse("Monthly.PeerDatas", args).Url
+}
+
+
 type tCdrs struct {}
 var Cdrs tCdrs
 
