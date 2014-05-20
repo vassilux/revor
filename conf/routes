@@ -12,6 +12,8 @@ GET		/users										App.ListUsers
 POST    /createuser									App.CreateUser
 GET     /deleteuser/:username/:password/    		App.DeleteUser
 POST    /updateuser						    		App.UpdateUser
+GET     /dids						    		    App.GetDids
+GET     /peers						    		    App.GetPeers
 GET     /cdrs                                   	Cdrs.Cdrs
 GET     /cdrs/:start/:end                       	Cdrs.CdrsWithDate
 GET     /cdrs/:params                         	    Cdrs.CdrWithParams

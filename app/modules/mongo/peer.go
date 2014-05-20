@@ -211,3 +211,32 @@ func GetPeerOutCallsForUser(day string, user string, mongoDb *mgo.Database) []bs
 
 	return results
 }
+
+func GetPeers(mongoDb *mgo.Database) []bson.M {
+	incomming := mongoDb.C("peers")
+	results := []bson.M{}
+
+	//
+	myProject := bson.M{
+		"$project": bson.M{
+			"id":      "$peer",
+			"comment": "$comment",
+			"value":   "$value",
+		},
+	}
+
+	mySort := bson.M{
+		"$sort": bson.M{
+			"id": 1,
+		},
+	}
+	//
+	operations := []bson.M{myProject, mySort}
+	pipe := incomming.Pipe(operations)
+	err := pipe.All(&results)
+	if err != nil {
+		panic(err)
+	}
+
+	return results
+}

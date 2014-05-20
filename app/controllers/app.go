@@ -194,6 +194,18 @@ func (c App) DeleteUser(username, password string) revel.Result {
 	}
 }
 
+func (c App) GetDids() revel.Result {
+	revel.TRACE.Printf("[App GetDids].\r\n")
+	results := mongo.GetDids(c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c App) GetPeers() revel.Result {
+	revel.TRACE.Printf("[App GetPeers].\r\n")
+	results := mongo.GetPeers(c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
 func (c App) EventStream() revel.Result {
 	w := c.Response.Out
 	messageChan := make(chan string)

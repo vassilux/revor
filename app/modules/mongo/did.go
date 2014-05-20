@@ -100,3 +100,32 @@ func GetDidCallsByDayAndDid(day string, did string, mongoDb *mgo.Database) []bso
 
 	return results
 }
+
+func GetDids(mongoDb *mgo.Database) []bson.M {
+	incomming := mongoDb.C("dids")
+	results := []bson.M{}
+
+	//
+	myProject := bson.M{
+		"$project": bson.M{
+			"id":      "$did",
+			"comment": "$comment",
+			"value":   "$value",
+		},
+	}
+
+	mySort := bson.M{
+		"$sort": bson.M{
+			"id": 1,
+		},
+	}
+	//
+	operations := []bson.M{myProject, mySort}
+	pipe := incomming.Pipe(operations)
+	err := pipe.All(&results)
+	if err != nil {
+		panic(err)
+	}
+
+	return results
+}
