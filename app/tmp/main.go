@@ -150,6 +150,36 @@ func main() {
 				},
 			},
 			&revel.MethodType{
+				Name: "CreatePeer",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "value", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "comment", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "UpdatePeer",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "value", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "comment", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "DeletePeer",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+					308: []string{ 
+					},
+				},
+			},
+			&revel.MethodType{
 				Name: "EventStream",
 				Args: []*revel.MethodArg{ 
 				},
@@ -416,6 +446,7 @@ func main() {
 		},
 	}
 	revel.TestSuites = []interface{}{ 
+		(*tests.PeerTest)(nil),
 		(*tests.UserTest)(nil),
 		(*tests.CdrTest)(nil),
 		(*tests.DailyTest)(nil),

@@ -141,6 +141,41 @@ func (p tApp) GetPeers(
 	return revel.MainRouter.Reverse("App.GetPeers", args).Url
 }
 
+func (p tApp) CreatePeer(
+		id string,
+		value string,
+		comment string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	revel.Unbind(args, "value", value)
+	revel.Unbind(args, "comment", comment)
+	return revel.MainRouter.Reverse("App.CreatePeer", args).Url
+}
+
+func (p tApp) UpdatePeer(
+		id string,
+		value string,
+		comment string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	revel.Unbind(args, "value", value)
+	revel.Unbind(args, "comment", comment)
+	return revel.MainRouter.Reverse("App.UpdatePeer", args).Url
+}
+
+func (p tApp) DeletePeer(
+		id string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("App.DeletePeer", args).Url
+}
+
 func (p tApp) EventStream(
 		) string {
 	args := make(map[string]string)

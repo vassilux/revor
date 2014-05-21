@@ -264,6 +264,55 @@ func (c App) GetPeers() revel.Result {
 	return c.RenderJson(results)
 }
 
+func (c App) CreatePeer(id, value, comment string) revel.Result {
+	revel.TRACE.Printf("[App CreatePeer].\r\n")
+	err := mongo.CreatePeer(id, value, comment, c.MongoDatabase)
+	if err != nil {
+		revel.ERROR.Printf(" [App CreatePeer ] Can not create peer [%s] cause peer exist get error [%v]",
+			id, err)
+		c.Response.Status = http.StatusBadRequest
+		return &HttpRequestResult{
+			statusCode: http.StatusBadRequest,
+		}
+	}
+	//
+	return &HttpRequestResult{
+		statusCode: http.StatusOK,
+	}
+}
+
+func (c App) UpdatePeer(id, value, comment string) revel.Result {
+	revel.TRACE.Printf("[App UpdatePeer].\r\n")
+	err := mongo.UpdatePeer(id, value, comment, c.MongoDatabase)
+	if err != nil {
+		revel.ERROR.Printf(" [App CreatePeer ] Can not update peer [%s] cause peer exist get error [%v]",
+			id, err)
+		c.Response.Status = http.StatusBadRequest
+		return &HttpRequestResult{
+			statusCode: http.StatusBadRequest,
+		}
+	}
+	//
+	return &HttpRequestResult{
+		statusCode: http.StatusOK,
+	}
+}
+
+func (c App) DeletePeer(id string) revel.Result {
+	revel.TRACE.Printf("[App DeletePeer].\r\n")
+	err := mongo.DeletePeer(id, c.MongoDatabase)
+	if err != nil {
+		revel.ERROR.Printf(" [App DeletePeer ] Can not delete peer [%s] cause get the error [%v]",
+			id, err)
+		c.Response.Status = http.StatusConflict
+		return c.Render()
+	}
+	//
+	return &HttpRequestResult{
+		statusCode: http.StatusOK,
+	}
+}
+
 func (c App) EventStream() revel.Result {
 	w := c.Response.Out
 	messageChan := make(chan string)

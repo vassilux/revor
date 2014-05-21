@@ -1,9 +1,11 @@
 package mongo
 
 import (
+	"errors"
 	"fmt"
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
+	"revor/app/models"
 	"time"
 )
 
@@ -25,7 +27,7 @@ func GetPeerInCalls(day string, mongoDb *mgo.Database) []bson.M {
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"did":         "$metadata.dst",
+			"peer":        "$metadata.dst",
 			"disposition": "$metadata.disposition",
 			"call_daily":  1,
 		},
@@ -33,7 +35,7 @@ func GetPeerInCalls(day string, mongoDb *mgo.Database) []bson.M {
 
 	myGroup := bson.M{
 		"$group": bson.M{
-			"_id":          "$did",
+			"_id":          "$peer",
 			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_daily"}},
 		},
 	}
@@ -73,7 +75,7 @@ func GetPeerInCallsForUser(day string, user string, mongoDb *mgo.Database) []bso
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"did":         "$metadata.dst",
+			"peer":        "$metadata.dst",
 			"disposition": "$metadata.disposition",
 			"call_daily":  1,
 		},
@@ -81,7 +83,7 @@ func GetPeerInCallsForUser(day string, user string, mongoDb *mgo.Database) []bso
 	//
 	myGroup := bson.M{
 		"$group": bson.M{
-			"_id":          "$did",
+			"_id":          "$peer",
 			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_daily"}},
 		},
 	}
@@ -120,7 +122,7 @@ func GetPeerOutCalls(day string, mongoDb *mgo.Database) []bson.M {
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"did":         "$metadata.dst",
+			"peer":        "$metadata.dst",
 			"disposition": "$metadata.disposition",
 			"call_daily":  1,
 		},
@@ -128,7 +130,7 @@ func GetPeerOutCalls(day string, mongoDb *mgo.Database) []bson.M {
 
 	myGroup := bson.M{
 		"$group": bson.M{
-			"_id":          "$did",
+			"_id":          "$peer",
 			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_daily"}},
 		},
 	}
@@ -168,7 +170,7 @@ func GetPeerOutCallsForUser(day string, user string, mongoDb *mgo.Database) []bs
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"did":         "$metadata.dst",
+			"peer":        "$metadata.dst",
 			"disposition": "$metadata.disposition",
 			"call_daily":  1,
 		},
@@ -176,7 +178,7 @@ func GetPeerOutCallsForUser(day string, user string, mongoDb *mgo.Database) []bs
 
 	myGroup := bson.M{
 		"$group": bson.M{
-			"_id":          "$did",
+			"_id":          "$peer",
 			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_daily"}},
 		},
 	}
@@ -248,7 +250,7 @@ func GetMonthPeerInCalls(day string, mongoDb *mgo.Database) []bson.M {
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"did":          "$metadata.dst",
+			"peer":         "$metadata.dst",
 			"disposition":  "$metadata.disposition",
 			"call_monthly": 1,
 		},
@@ -256,7 +258,7 @@ func GetMonthPeerInCalls(day string, mongoDb *mgo.Database) []bson.M {
 
 	myGroup := bson.M{
 		"$group": bson.M{
-			"_id":          "$did",
+			"_id":          "$peer",
 			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_monthly"}},
 		},
 	}
@@ -296,7 +298,7 @@ func GetMonthPeerInCallsForUser(day string, user string, mongoDb *mgo.Database) 
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"did":          "$metadata.dst",
+			"peer":         "$metadata.dst",
 			"disposition":  "$metadata.disposition",
 			"call_monthly": 1,
 		},
@@ -304,7 +306,7 @@ func GetMonthPeerInCallsForUser(day string, user string, mongoDb *mgo.Database) 
 	//
 	myGroup := bson.M{
 		"$group": bson.M{
-			"_id":          "$did",
+			"_id":          "$peer",
 			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_monthly"}},
 		},
 	}
@@ -344,21 +346,21 @@ func GetMonthPeerOutCalls(day string, mongoDb *mgo.Database) []bson.M {
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"did":          "$metadata.dst",
+			"peer":         "$metadata.dst",
 			"disposition":  "$metadata.disposition",
 			"call_monthly": 1,
 		},
 	}
 	/*myGroup := bson.M{
 		"$group": bson.M{
-			"_id":        "$did",
+			"_id":        "$peer",
 			"status":     bson.M{"$addToSet": "$disposition"},
 			"callsCount": bson.M{"$addToSet": "$call_daily"},
 		},
 	}*/
 	myGroup := bson.M{
 		"$group": bson.M{
-			"_id":          "$did",
+			"_id":          "$peer",
 			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_monthly"}},
 		},
 	}
@@ -398,7 +400,7 @@ func GetMonthPeerOutCallsForUser(day string, user string, mongoDb *mgo.Database)
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"did":          "$metadata.dst",
+			"peer":         "$metadata.dst",
 			"disposition":  "$metadata.disposition",
 			"call_monthly": 1,
 		},
@@ -406,7 +408,7 @@ func GetMonthPeerOutCallsForUser(day string, user string, mongoDb *mgo.Database)
 
 	myGroup := bson.M{
 		"$group": bson.M{
-			"_id":          "$did",
+			"_id":          "$peer",
 			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_monthly"}},
 		},
 	}
@@ -444,7 +446,7 @@ func GetYearPeerInCalls(year int, mongoDb *mgo.Database) []bson.M {
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"did":          "$metadata.dst",
+			"peer":         "$metadata.dst",
 			"disposition":  "$metadata.disposition",
 			"call_monthly": 1,
 		},
@@ -452,7 +454,7 @@ func GetYearPeerInCalls(year int, mongoDb *mgo.Database) []bson.M {
 
 	myGroup := bson.M{
 		"$group": bson.M{
-			"_id":          "$did",
+			"_id":          "$peer",
 			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_monthly"}},
 		},
 	}
@@ -487,7 +489,7 @@ func GetYearPeerInCallsForUser(year int, user string, mongoDb *mgo.Database) []b
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"did":          "$metadata.dst",
+			"peer":         "$metadata.dst",
 			"disposition":  "$metadata.disposition",
 			"call_monthly": 1,
 		},
@@ -495,7 +497,7 @@ func GetYearPeerInCallsForUser(year int, user string, mongoDb *mgo.Database) []b
 	//
 	myGroup := bson.M{
 		"$group": bson.M{
-			"_id":          "$did",
+			"_id":          "$peer",
 			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_monthly"}},
 		},
 	}
@@ -529,7 +531,7 @@ func GetYearPeerOutCalls(year int, mongoDb *mgo.Database) []bson.M {
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"did":          "$metadata.dst",
+			"peer":         "$metadata.dst",
 			"disposition":  "$metadata.disposition",
 			"call_monthly": 1,
 		},
@@ -537,7 +539,7 @@ func GetYearPeerOutCalls(year int, mongoDb *mgo.Database) []bson.M {
 
 	myGroup := bson.M{
 		"$group": bson.M{
-			"_id":          "$did",
+			"_id":          "$peer",
 			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_monthly"}},
 		},
 	}
@@ -573,7 +575,7 @@ func GetYearPeerOutCallsForUser(year int, user string, mongoDb *mgo.Database) []
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"did":          "$metadata.dst",
+			"peer":         "$metadata.dst",
 			"disposition":  "$metadata.disposition",
 			"call_monthly": 1,
 		},
@@ -581,7 +583,7 @@ func GetYearPeerOutCallsForUser(year int, user string, mongoDb *mgo.Database) []
 
 	myGroup := bson.M{
 		"$group": bson.M{
-			"_id":          "$did",
+			"_id":          "$peer",
 			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_monthly"}},
 		},
 	}
@@ -600,4 +602,71 @@ func GetYearPeerOutCallsForUser(year int, user string, mongoDb *mgo.Database) []
 	}
 
 	return results
+}
+
+//
+func GetPeer(id string, mongoDb *mgo.Database) (*models.Peer, error) {
+	peer := models.Peer{}
+	var collection = mongoDb.C("peers")
+	var err = collection.Find(bson.M{"peer": id}).One(&peer)
+	if err != nil {
+		return nil, err
+	}
+
+	return &peer, nil
+}
+
+//CRUD part
+func CreatePeer(id, value, comment string, mongoDb *mgo.Database) error {
+	peer, err := GetPeer(id, mongoDb)
+	if peer != nil {
+		return err
+	}
+	var collection = mongoDb.C("peers")
+	//
+	//
+	newPeer := models.Peer{}
+	newPeer.Peer = id
+	newPeer.Value = value
+	newPeer.Comment = comment
+	err = collection.Insert(&newPeer)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func UpdatePeer(id, value, comment string, mongoDb *mgo.Database) error {
+	peer := models.Peer{}
+	var collection = mongoDb.C("peers")
+	change := mgo.Change{
+		Update:    bson.M{"peer": id, "value": value, "comment": comment},
+		ReturnNew: true,
+	}
+	_, err := collection.Find(bson.M{"peer": id}).Apply(change, &peer)
+	if err != nil {
+		return err
+	}
+	if peer.Peer != id {
+		msg := fmt.Sprint("Can't udpate a peer with the given id %s.", id)
+		return errors.New(msg)
+	}
+	return nil
+}
+
+func DeletePeer(id string, mongoDb *mgo.Database) error {
+
+	peer, err := GetPeer(id, mongoDb)
+	if peer == nil {
+		return err
+	}
+	var collection = mongoDb.C("peers")
+	//
+	var selector = bson.M{"peer": id}
+	err = collection.Remove(selector)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -19,6 +19,10 @@ GET     /deletedid/:id/					    		App.DeleteDid
 POST    /updatedid						    		App.UpdateDid
 #
 GET     /peers						    		    App.GetPeers
+POST    /createpeer									App.CreatePeer
+GET     /deletepeer/:id/					    	App.DeletePeer
+POST    /updatepeer						    		App.UpdatePeer
+#
 GET     /cdrs                                   	Cdrs.Cdrs
 GET     /cdrs/:start/:end                       	Cdrs.CdrsWithDate
 GET     /cdrs/:params                         	    Cdrs.CdrWithParams
