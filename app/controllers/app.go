@@ -159,11 +159,15 @@ func (c App) UpdateUser(username, password, firstname, lastname, isadmin string)
 	if err != nil {
 		revel.ERROR.Printf(" [App UpdateUser ] Can't update user [%s] , [%s], [%s], [%s], [%s]",
 			username, password, firstname, lastname, isadmin)
-		c.Response.Status = http.StatusNotFound
-		return c.Render()
+		c.Response.Status = http.StatusBadRequest
+		return &HttpRequestResult{
+			statusCode: http.StatusBadRequest,
+		}
 	}
-	c.Response.Status = http.StatusOK
-	return c.Render()
+
+	return &HttpRequestResult{
+		statusCode: http.StatusOK,
+	}
 }
 
 func (c App) CreateUser(username, password, firstname, lastname string, admin bool) revel.Result {
@@ -171,10 +175,13 @@ func (c App) CreateUser(username, password, firstname, lastname string, admin bo
 	if err != nil {
 		revel.ERROR.Printf(" [App CreateUser ] Can not create user [%s] cause user exist get error [%v]",
 			username, err)
-		c.Response.Status = http.StatusConflict
-		return c.Render()
+		c.Response.Status = http.StatusBadRequest
+		return &HttpRequestResult{
+			statusCode: http.StatusBadRequest,
+		}
 	}
 	//
+
 	return &HttpRequestResult{
 		statusCode: http.StatusOK,
 	}
@@ -185,8 +192,10 @@ func (c App) DeleteUser(username, password string) revel.Result {
 	if err != nil {
 		revel.ERROR.Printf(" [App DeleteUser ] Can not delete user [%s] cause user exist get error [%v]",
 			username, err)
-		c.Response.Status = http.StatusConflict
-		return c.Render()
+		c.Response.Status = http.StatusBadRequest
+		return &HttpRequestResult{
+			statusCode: http.StatusBadRequest,
+		}
 	}
 	//
 	return &HttpRequestResult{
@@ -194,36 +203,58 @@ func (c App) DeleteUser(username, password string) revel.Result {
 	}
 }
 
-func (c App) GetDids(id, value, comment string) revel.Result {
+func (c App) GetDids() revel.Result {
 	revel.TRACE.Printf("[App GetDids].\r\n")
 	results := mongo.GetDids(c.MongoDatabase)
 	return c.RenderJson(results)
 }
 
-func (c App) CreateDid() revel.Result {
+func (c App) CreateDid(id, value, comment string) revel.Result {
 	revel.TRACE.Printf("[App CreateDid].\r\n")
-	//results := mongo.GetDids(c.MongoDatabase)
-	c.Response.Status = http.StatusNotImplemented
-	return &HttpRequestResult{
-		statusCode: http.StatusNotImplemented,
+	err := mongo.CreateDid(id, value, comment, c.MongoDatabase)
+	if err != nil {
+		revel.ERROR.Printf(" [App CreateDid ] Can not create did [%s] cause did exist get error [%v]",
+			id, err)
+		c.Response.Status = http.StatusBadRequest
+		return &HttpRequestResult{
+			statusCode: http.StatusBadRequest,
+		}
 	}
-}
-
-func (c App) DeleteDid(id string) revel.Result {
-	revel.TRACE.Printf("[App DeleteDid].\r\n")
-	//results := mongo.GetDids(c.MongoDatabase)
-	c.Response.Status = http.StatusNotImplemented
+	//
 	return &HttpRequestResult{
-		statusCode: http.StatusNotImplemented,
+		statusCode: http.StatusOK,
 	}
 }
 
 func (c App) UpdateDid(id, value, comment string) revel.Result {
 	revel.TRACE.Printf("[App UpdateDid].\r\n")
-	//results := mongo.GetDids(c.MongoDatabase)
-	c.Response.Status = http.StatusNotImplemented
+	err := mongo.UpdateDid(id, value, comment, c.MongoDatabase)
+	if err != nil {
+		revel.ERROR.Printf(" [App CreateDid ] Can not update did [%s] cause did exist get error [%v]",
+			id, err)
+		c.Response.Status = http.StatusBadRequest
+		return &HttpRequestResult{
+			statusCode: http.StatusBadRequest,
+		}
+	}
+	//
 	return &HttpRequestResult{
-		statusCode: http.StatusNotImplemented,
+		statusCode: http.StatusOK,
+	}
+}
+
+func (c App) DeleteDid(id string) revel.Result {
+	revel.TRACE.Printf("[App DeleteDid].\r\n")
+	err := mongo.DeleteDid(id, c.MongoDatabase)
+	if err != nil {
+		revel.ERROR.Printf(" [App DeleteDid ] Can not delete did [%s] cause get the error [%v]",
+			id, err)
+		c.Response.Status = http.StatusConflict
+		return c.Render()
+	}
+	//
+	return &HttpRequestResult{
+		statusCode: http.StatusOK,
 	}
 }
 

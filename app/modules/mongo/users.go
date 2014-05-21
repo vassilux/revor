@@ -61,23 +61,6 @@ func UpdateUser(username, password, firstname, lastname string, admin bool, mong
 	if user.Username != username {
 		return errors.New("Can't udpate the given user")
 	}
-	/*user, err := GetUser(username, password, mongoDb)
-	if user != nil {
-		return err
-	}
-	var collection = mongoDb.C("users")
-	//
-	newUser := models.User{}
-	newUser.Username = username
-	newUser.FirstName = firstname
-	newUser.LastName = lastname
-	newUser.Password = password
-	newUser.IsAdmin = admin
-	err = collection.Insert(newUser)
-	if err != nil {
-		return err
-	}*/
-
 	return nil
 }
 

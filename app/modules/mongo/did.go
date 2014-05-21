@@ -1,8 +1,11 @@
 package mongo
 
 import (
+	"errors"
+	"fmt"
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
+	"revor/app/models"
 	"time"
 )
 
@@ -317,4 +320,71 @@ func GetDidYearCalls(year int, mongoDb *mgo.Database) []bson.M {
 	}
 
 	return results
+}
+
+//
+func GetDid(id string, mongoDb *mgo.Database) (*models.Did, error) {
+	did := models.Did{}
+	var collection = mongoDb.C("dids")
+	var err = collection.Find(bson.M{"did": id}).One(&did)
+	if err != nil {
+		return nil, err
+	}
+
+	return &did, nil
+}
+
+//CRUD part
+func CreateDid(id, value, comment string, mongoDb *mgo.Database) error {
+	did, err := GetDid(id, mongoDb)
+	if did != nil {
+		return err
+	}
+	var collection = mongoDb.C("dids")
+	//
+	//
+	newDid := models.Did{}
+	newDid.Did = id
+	newDid.Value = value
+	newDid.Comment = comment
+	err = collection.Insert(&newDid)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func UpdateDid(id, value, comment string, mongoDb *mgo.Database) error {
+	did := models.Did{}
+	var collection = mongoDb.C("dids")
+	change := mgo.Change{
+		Update:    bson.M{"did": id, "value": value, "comment": comment},
+		ReturnNew: true,
+	}
+	_, err := collection.Find(bson.M{"did": id}).Apply(change, &did)
+	if err != nil {
+		return err
+	}
+	if did.Did != id {
+		msg := fmt.Sprint("Can't udpate a did with the given id %s.", id)
+		return errors.New(msg)
+	}
+	return nil
+}
+
+func DeleteDid(id string, mongoDb *mgo.Database) error {
+
+	did, err := GetDid(id, mongoDb)
+	if did == nil {
+		return err
+	}
+	var collection = mongoDb.C("dids")
+	//
+	var selector = bson.M{"did": id}
+	err = collection.Remove(selector)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

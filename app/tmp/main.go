@@ -82,10 +82,6 @@ func main() {
 					&revel.MethodArg{Name: "isadmin", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-					163: []string{ 
-					},
-					166: []string{ 
-					},
 				},
 			},
 			&revel.MethodType{
@@ -98,8 +94,6 @@ func main() {
 					&revel.MethodArg{Name: "admin", Type: reflect.TypeOf((*bool)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-					175: []string{ 
-					},
 				},
 			},
 			&revel.MethodType{
@@ -109,16 +103,11 @@ func main() {
 					&revel.MethodArg{Name: "password", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-					189: []string{ 
-					},
 				},
 			},
 			&revel.MethodType{
 				Name: "GetDids",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "value", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "comment", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
@@ -126,14 +115,9 @@ func main() {
 			&revel.MethodType{
 				Name: "CreateDid",
 				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "DeleteDid",
-				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "value", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "comment", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
@@ -146,6 +130,16 @@ func main() {
 					&revel.MethodArg{Name: "comment", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "DeleteDid",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+					253: []string{ 
+					},
 				},
 			},
 			&revel.MethodType{

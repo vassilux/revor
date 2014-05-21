@@ -93,6 +93,13 @@ func (p tApp) DeleteUser(
 }
 
 func (p tApp) GetDids(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("App.GetDids", args).Url
+}
+
+func (p tApp) CreateDid(
 		id string,
 		value string,
 		comment string,
@@ -102,23 +109,7 @@ func (p tApp) GetDids(
 	revel.Unbind(args, "id", id)
 	revel.Unbind(args, "value", value)
 	revel.Unbind(args, "comment", comment)
-	return revel.MainRouter.Reverse("App.GetDids", args).Url
-}
-
-func (p tApp) CreateDid(
-		) string {
-	args := make(map[string]string)
-	
 	return revel.MainRouter.Reverse("App.CreateDid", args).Url
-}
-
-func (p tApp) DeleteDid(
-		id string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "id", id)
-	return revel.MainRouter.Reverse("App.DeleteDid", args).Url
 }
 
 func (p tApp) UpdateDid(
@@ -132,6 +123,15 @@ func (p tApp) UpdateDid(
 	revel.Unbind(args, "value", value)
 	revel.Unbind(args, "comment", comment)
 	return revel.MainRouter.Reverse("App.UpdateDid", args).Url
+}
+
+func (p tApp) DeleteDid(
+		id string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("App.DeleteDid", args).Url
 }
 
 func (p tApp) GetPeers(
