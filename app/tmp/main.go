@@ -116,6 +116,34 @@ func main() {
 			&revel.MethodType{
 				Name: "GetDids",
 				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "value", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "comment", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "CreateDid",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "DeleteDid",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "UpdateDid",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "value", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "comment", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
@@ -265,6 +293,45 @@ func main() {
 			
 		})
 	
+	revel.RegisterController((*controllers.Yearly)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "IncommingDidCallsForYearDid",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "year", Type: reflect.TypeOf((*int)(nil)) },
+					&revel.MethodArg{Name: "did", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "IncommingDidCallsForYearByDid",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "year", Type: reflect.TypeOf((*int)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "PeersDatas",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "year", Type: reflect.TypeOf((*int)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "PeerDatas",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "year", Type: reflect.TypeOf((*int)(nil)) },
+					&revel.MethodArg{Name: "user", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
 	revel.RegisterController((*controllers.Monthly)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
@@ -358,8 +425,10 @@ func main() {
 		(*tests.UserTest)(nil),
 		(*tests.CdrTest)(nil),
 		(*tests.DailyTest)(nil),
+		(*tests.YearlyTest)(nil),
 		(*tests.AppTest)(nil),
 		(*tests.MonthlyTest)(nil),
+		(*tests.DidTest)(nil),
 	}
 
 	revel.Run(*port)

@@ -93,10 +93,45 @@ func (p tApp) DeleteUser(
 }
 
 func (p tApp) GetDids(
+		id string,
+		value string,
+		comment string,
 		) string {
 	args := make(map[string]string)
 	
+	revel.Unbind(args, "id", id)
+	revel.Unbind(args, "value", value)
+	revel.Unbind(args, "comment", comment)
 	return revel.MainRouter.Reverse("App.GetDids", args).Url
+}
+
+func (p tApp) CreateDid(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("App.CreateDid", args).Url
+}
+
+func (p tApp) DeleteDid(
+		id string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("App.DeleteDid", args).Url
+}
+
+func (p tApp) UpdateDid(
+		id string,
+		value string,
+		comment string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	revel.Unbind(args, "value", value)
+	revel.Unbind(args, "comment", comment)
+	return revel.MainRouter.Reverse("App.UpdateDid", args).Url
 }
 
 func (p tApp) GetPeers(
@@ -249,6 +284,51 @@ func (p tDaily) PeerDatas(
 	revel.Unbind(args, "day", day)
 	revel.Unbind(args, "user", user)
 	return revel.MainRouter.Reverse("Daily.PeerDatas", args).Url
+}
+
+
+type tYearly struct {}
+var Yearly tYearly
+
+
+func (p tYearly) IncommingDidCallsForYearDid(
+		year int,
+		did string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "year", year)
+	revel.Unbind(args, "did", did)
+	return revel.MainRouter.Reverse("Yearly.IncommingDidCallsForYearDid", args).Url
+}
+
+func (p tYearly) IncommingDidCallsForYearByDid(
+		year int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "year", year)
+	return revel.MainRouter.Reverse("Yearly.IncommingDidCallsForYearByDid", args).Url
+}
+
+func (p tYearly) PeersDatas(
+		year int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "year", year)
+	return revel.MainRouter.Reverse("Yearly.PeersDatas", args).Url
+}
+
+func (p tYearly) PeerDatas(
+		year int,
+		user string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "year", year)
+	revel.Unbind(args, "user", user)
+	return revel.MainRouter.Reverse("Yearly.PeerDatas", args).Url
 }
 
 

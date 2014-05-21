@@ -194,10 +194,37 @@ func (c App) DeleteUser(username, password string) revel.Result {
 	}
 }
 
-func (c App) GetDids() revel.Result {
+func (c App) GetDids(id, value, comment string) revel.Result {
 	revel.TRACE.Printf("[App GetDids].\r\n")
 	results := mongo.GetDids(c.MongoDatabase)
 	return c.RenderJson(results)
+}
+
+func (c App) CreateDid() revel.Result {
+	revel.TRACE.Printf("[App CreateDid].\r\n")
+	//results := mongo.GetDids(c.MongoDatabase)
+	c.Response.Status = http.StatusNotImplemented
+	return &HttpRequestResult{
+		statusCode: http.StatusNotImplemented,
+	}
+}
+
+func (c App) DeleteDid(id string) revel.Result {
+	revel.TRACE.Printf("[App DeleteDid].\r\n")
+	//results := mongo.GetDids(c.MongoDatabase)
+	c.Response.Status = http.StatusNotImplemented
+	return &HttpRequestResult{
+		statusCode: http.StatusNotImplemented,
+	}
+}
+
+func (c App) UpdateDid(id, value, comment string) revel.Result {
+	revel.TRACE.Printf("[App UpdateDid].\r\n")
+	//results := mongo.GetDids(c.MongoDatabase)
+	c.Response.Status = http.StatusNotImplemented
+	return &HttpRequestResult{
+		statusCode: http.StatusNotImplemented,
+	}
 }
 
 func (c App) GetPeers() revel.Result {

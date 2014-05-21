@@ -12,7 +12,12 @@ GET		/users										App.ListUsers
 POST    /createuser									App.CreateUser
 GET     /deleteuser/:username/:password/    		App.DeleteUser
 POST    /updateuser						    		App.UpdateUser
+#
 GET     /dids						    		    App.GetDids
+POST    /createdid									App.CreateDid
+GET     /deletedid/:id/					    		App.DeleteDid
+POST    /updatedid						    		App.UpdateDid
+#
 GET     /peers						    		    App.GetPeers
 GET     /cdrs                                   	Cdrs.Cdrs
 GET     /cdrs/:start/:end                       	Cdrs.CdrsWithDate
@@ -30,6 +35,11 @@ GET     /monthly/didincomming/:day/				    Monthly.IncommingDidCallsForMonthByDi
 GET     /monthly/didincomming/:day/:did				Monthly.IncommingDidCallsForMonthDid
 GET     /monthly/peerdatas/:day						Monthly.PeersDatas
 GET     /monthly/peerdatas/:day/:user			    Monthly.PeerDatas
+#
+GET     /yearly/didincomming/:year/				    Yearly.IncommingDidCallsForYearByDid
+GET     /yearly/didincomming/:year/:did				Yearly.IncommingDidCallsForYearDid
+GET     /yearly/peerdatas/:year						Yearly.PeersDatas
+GET     /yearly/peerdatas/:year/:user			    Yearly.PeerDatas
 #
 GET		/events										App.EventStream
 GET		/poll										App.EventPoll

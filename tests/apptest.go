@@ -55,14 +55,6 @@ func (t AppTest) TestLoginFailed() {
 	t.AssertContains("\"status\":403")
 }
 
-func (t AppTest) TestGetDidis() {
-	t.Get("/dids")
-	t.AssertOk()
-	t.AssertStatus(http.StatusOK)
-	t.AssertContains("id")
-	t.AssertContains("comment")
-}
-
 func (t AppTest) After() {
 	println("Tear down")
 }
