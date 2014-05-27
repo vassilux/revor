@@ -69,7 +69,7 @@ func GetPeerInCallsForUser(day string, user string, mongoDb *mgo.Database) []bso
 	myMatch := bson.M{
 		"$match": bson.M{
 			"metadata.dt":  bson.M{"$gte": startDayDate, "$lte": endDayDate},
-			"metadata.dst": user,
+			"metadata.dst": bson.RegEx{user, "i"},
 		},
 	}
 	//
@@ -164,7 +164,7 @@ func GetPeerOutCallsForUser(day string, user string, mongoDb *mgo.Database) []bs
 	myMatch := bson.M{
 		"$match": bson.M{
 			"metadata.dt":  bson.M{"$gte": startDayDate, "$lte": endDayDate},
-			"metadata.dst": user,
+			"metadata.dst": bson.RegEx{user, "i"},
 		},
 	}
 	//
@@ -292,7 +292,7 @@ func GetMonthPeerInCallsForUser(day string, user string, mongoDb *mgo.Database) 
 	myMatch := bson.M{
 		"$match": bson.M{
 			"metadata.dt":  startDayDate, //bson.M{"$gte": startDayDate, "$lte": endDayDate},
-			"metadata.dst": user,
+			"metadata.dst": bson.RegEx{user, "i"},
 		},
 	}
 	//
@@ -394,7 +394,7 @@ func GetMonthPeerOutCallsForUser(day string, user string, mongoDb *mgo.Database)
 	myMatch := bson.M{
 		"$match": bson.M{
 			"metadata.dt":  startDayDate, //  bson.M{"$gte": startDayDate, "$lte": endDayDate},
-			"metadata.dst": user,
+			"metadata.dst": bson.RegEx{user, "i"},
 		},
 	}
 	//
@@ -483,7 +483,7 @@ func GetYearPeerInCallsForUser(year int, user string, mongoDb *mgo.Database) []b
 	myMatch := bson.M{
 		"$match": bson.M{
 			"metadata.dt":  bson.M{"$gte": startDayDate, "$lte": endDayDate},
-			"metadata.dst": user,
+			"metadata.dst": bson.RegEx{user, "i"},
 		},
 	}
 	//
@@ -569,7 +569,7 @@ func GetYearPeerOutCallsForUser(year int, user string, mongoDb *mgo.Database) []
 	myMatch := bson.M{
 		"$match": bson.M{
 			"metadata.dt":  bson.M{"$gte": startDayDate, "$lte": endDayDate},
-			"metadata.dst": user,
+			"metadata.dst": bson.RegEx{user, "i"},
 		},
 	}
 	//

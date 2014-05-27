@@ -69,7 +69,7 @@ func GetDidCallsByDayAndDid(day string, did string, mongoDb *mgo.Database) []bso
 	myMatch := bson.M{
 		"$match": bson.M{
 			"metadata.dt":  bson.M{"$gte": startDayDate, "$lte": endDayDate},
-			"metadata.dst": did,
+			"metadata.dst": bson.RegEx{did, "i"},
 		},
 	}
 	//
@@ -147,7 +147,7 @@ func GetDidCallsByMonthAndDid(day string, did string, mongoDb *mgo.Database) []b
 	myMatch := bson.M{
 		"$match": bson.M{
 			"metadata.dt":  startDayDate, //bson.M{"$gte": startDayDate, "$lte": endDayDate},
-			"metadata.dst": did,
+			"metadata.dst": bson.RegEx{did, "i"},
 		},
 	}
 	//
@@ -242,7 +242,7 @@ func GetDidCallsByYearAndDid(year int, did string, mongoDb *mgo.Database) []bson
 	myMatch := bson.M{
 		"$match": bson.M{
 			"metadata.dt":  bson.M{"$gte": startDayDate, "$lte": endDayDate},
-			"metadata.dst": did,
+			"metadata.dst": bson.RegEx{did, "i"},
 		},
 	}
 
