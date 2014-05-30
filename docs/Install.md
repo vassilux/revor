@@ -8,9 +8,9 @@ En cas si ce service n'set pas configurer proceder à la configuration à la fin
 
 
 
-2.Créer un nouveu le repertore /opt/revor/1.0.0
+2.Créer un nouveu repertore /opt/revor/1.0.0. Répértoire 1.0.0 est donné au titre indicatif.
 
-3.Deposer le ficheir revor.tar.gz dans le répertoire de la version crée par example /opt/revor/1.0.0 et faire tar xvzf revor.tar.gz
+3.Deposer le ficheir revor.tar.gz dans le répertoire de la version crée par example /opt/revor/1.0.0 et faire tar -xvzf revor.tar.gz
 4.Vérifier la configuration de l'application à partir de répértoire /opt/revel/current/src/app/conf
 5.Crée un lien symbolique vers le repertoire current ls -s /opt/revor/current /opt/revor/1.0.0
-
+6.Redémarrer le sirvice revor via supervisor.
