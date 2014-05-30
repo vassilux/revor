@@ -1,7 +1,12 @@
-Procedure d'installation de 
 
-1.Vérifier si le repertorie /opt/revor/current existe sinon créér
-Note : vérifier que le service supervisor est bine configurer pour l'application revor
+Procedure d'installation de l'application.
+
+1.Vérifier si le repertorie /opt/revor/current existe sinon créér.
+
+Vérifier que le service supervisor est bien configuré pour l'application revor.
+En cas si ce service n'set pas configurer proceder à la configuration à la fin d'installation.
+
+
 
 2.Créer un nouveu le repertore /opt/revor/1.0.0
 
