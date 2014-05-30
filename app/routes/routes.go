@@ -8,14 +8,14 @@ type tApp struct {}
 var App tApp
 
 
-func (p tApp) Index(
+func (_ tApp) Index(
 		) string {
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("App.Index", args).Url
 }
 
-func (p tApp) Login(
+func (_ tApp) Login(
 		username string,
 		password string,
 		) string {
@@ -26,28 +26,28 @@ func (p tApp) Login(
 	return revel.MainRouter.Reverse("App.Login", args).Url
 }
 
-func (p tApp) Logout(
+func (_ tApp) Logout(
 		) string {
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("App.Logout", args).Url
 }
 
-func (p tApp) CurrentUser(
+func (_ tApp) CurrentUser(
 		) string {
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("App.CurrentUser", args).Url
 }
 
-func (p tApp) ListUsers(
+func (_ tApp) ListUsers(
 		) string {
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("App.ListUsers", args).Url
 }
 
-func (p tApp) UpdateUser(
+func (_ tApp) UpdateUser(
 		username string,
 		password string,
 		firstname string,
@@ -64,7 +64,7 @@ func (p tApp) UpdateUser(
 	return revel.MainRouter.Reverse("App.UpdateUser", args).Url
 }
 
-func (p tApp) CreateUser(
+func (_ tApp) CreateUser(
 		username string,
 		password string,
 		firstname string,
@@ -81,7 +81,7 @@ func (p tApp) CreateUser(
 	return revel.MainRouter.Reverse("App.CreateUser", args).Url
 }
 
-func (p tApp) DeleteUser(
+func (_ tApp) DeleteUser(
 		username string,
 		password string,
 		) string {
@@ -92,14 +92,14 @@ func (p tApp) DeleteUser(
 	return revel.MainRouter.Reverse("App.DeleteUser", args).Url
 }
 
-func (p tApp) GetDids(
+func (_ tApp) GetDids(
 		) string {
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("App.GetDids", args).Url
 }
 
-func (p tApp) CreateDid(
+func (_ tApp) CreateDid(
 		id string,
 		value string,
 		comment string,
@@ -112,7 +112,7 @@ func (p tApp) CreateDid(
 	return revel.MainRouter.Reverse("App.CreateDid", args).Url
 }
 
-func (p tApp) UpdateDid(
+func (_ tApp) UpdateDid(
 		id string,
 		value string,
 		comment string,
@@ -125,7 +125,7 @@ func (p tApp) UpdateDid(
 	return revel.MainRouter.Reverse("App.UpdateDid", args).Url
 }
 
-func (p tApp) DeleteDid(
+func (_ tApp) DeleteDid(
 		id string,
 		) string {
 	args := make(map[string]string)
@@ -134,14 +134,14 @@ func (p tApp) DeleteDid(
 	return revel.MainRouter.Reverse("App.DeleteDid", args).Url
 }
 
-func (p tApp) GetPeers(
+func (_ tApp) GetPeers(
 		) string {
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("App.GetPeers", args).Url
 }
 
-func (p tApp) CreatePeer(
+func (_ tApp) CreatePeer(
 		id string,
 		value string,
 		comment string,
@@ -154,7 +154,7 @@ func (p tApp) CreatePeer(
 	return revel.MainRouter.Reverse("App.CreatePeer", args).Url
 }
 
-func (p tApp) UpdatePeer(
+func (_ tApp) UpdatePeer(
 		id string,
 		value string,
 		comment string,
@@ -167,7 +167,7 @@ func (p tApp) UpdatePeer(
 	return revel.MainRouter.Reverse("App.UpdatePeer", args).Url
 }
 
-func (p tApp) DeletePeer(
+func (_ tApp) DeletePeer(
 		id string,
 		) string {
 	args := make(map[string]string)
@@ -176,14 +176,14 @@ func (p tApp) DeletePeer(
 	return revel.MainRouter.Reverse("App.DeletePeer", args).Url
 }
 
-func (p tApp) EventStream(
+func (_ tApp) EventStream(
 		) string {
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("App.EventStream", args).Url
 }
 
-func (p tApp) EventPoll(
+func (_ tApp) EventPoll(
 		) string {
 	args := make(map[string]string)
 	
@@ -191,11 +191,41 @@ func (p tApp) EventPoll(
 }
 
 
+type tTestRunner struct {}
+var TestRunner tTestRunner
+
+
+func (_ tTestRunner) Index(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("TestRunner.Index", args).Url
+}
+
+func (_ tTestRunner) Run(
+		suite string,
+		test string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "suite", suite)
+	revel.Unbind(args, "test", test)
+	return revel.MainRouter.Reverse("TestRunner.Run", args).Url
+}
+
+func (_ tTestRunner) List(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("TestRunner.List", args).Url
+}
+
+
 type tStatic struct {}
 var Static tStatic
 
 
-func (p tStatic) Serve(
+func (_ tStatic) Serve(
 		prefix string,
 		filepath string,
 		) string {
@@ -206,7 +236,7 @@ func (p tStatic) Serve(
 	return revel.MainRouter.Reverse("Static.Serve", args).Url
 }
 
-func (p tStatic) ServeModule(
+func (_ tStatic) ServeModule(
 		moduleName string,
 		prefix string,
 		filepath string,
@@ -220,158 +250,11 @@ func (p tStatic) ServeModule(
 }
 
 
-type tTestRunner struct {}
-var TestRunner tTestRunner
-
-
-func (p tTestRunner) Index(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("TestRunner.Index", args).Url
-}
-
-func (p tTestRunner) Run(
-		suite string,
-		test string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "suite", suite)
-	revel.Unbind(args, "test", test)
-	return revel.MainRouter.Reverse("TestRunner.Run", args).Url
-}
-
-func (p tTestRunner) List(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("TestRunner.List", args).Url
-}
-
-
-type tDaily struct {}
-var Daily tDaily
-
-
-func (p tDaily) IncommingCalls(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("Daily.IncommingCalls", args).Url
-}
-
-func (p tDaily) IncommingCallsByDay(
-		day string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	return revel.MainRouter.Reverse("Daily.IncommingCallsByDay", args).Url
-}
-
-func (p tDaily) IncommingCallsByDayUser(
-		day string,
-		user string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	revel.Unbind(args, "user", user)
-	return revel.MainRouter.Reverse("Daily.IncommingCallsByDayUser", args).Url
-}
-
-func (p tDaily) IncommingDidCallsForDayDid(
-		day string,
-		did string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	revel.Unbind(args, "did", did)
-	return revel.MainRouter.Reverse("Daily.IncommingDidCallsForDayDid", args).Url
-}
-
-func (p tDaily) IncommingDidCallsForDayByDid(
-		day string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	return revel.MainRouter.Reverse("Daily.IncommingDidCallsForDayByDid", args).Url
-}
-
-func (p tDaily) PeersDatas(
-		day string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	return revel.MainRouter.Reverse("Daily.PeersDatas", args).Url
-}
-
-func (p tDaily) PeerDatas(
-		day string,
-		user string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	revel.Unbind(args, "user", user)
-	return revel.MainRouter.Reverse("Daily.PeerDatas", args).Url
-}
-
-
-type tYearly struct {}
-var Yearly tYearly
-
-
-func (p tYearly) IncommingDidCallsForYearDid(
-		year int,
-		did string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "year", year)
-	revel.Unbind(args, "did", did)
-	return revel.MainRouter.Reverse("Yearly.IncommingDidCallsForYearDid", args).Url
-}
-
-func (p tYearly) IncommingDidCallsForYearByDid(
-		year int,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "year", year)
-	return revel.MainRouter.Reverse("Yearly.IncommingDidCallsForYearByDid", args).Url
-}
-
-func (p tYearly) PeersDatas(
-		year int,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "year", year)
-	return revel.MainRouter.Reverse("Yearly.PeersDatas", args).Url
-}
-
-func (p tYearly) PeerDatas(
-		year int,
-		user string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "year", year)
-	revel.Unbind(args, "user", user)
-	return revel.MainRouter.Reverse("Yearly.PeerDatas", args).Url
-}
-
-
 type tMonthly struct {}
 var Monthly tMonthly
 
 
-func (p tMonthly) IncommingDidCallsForMonthDid(
+func (_ tMonthly) IncommingDidCallsForMonthDid(
 		day string,
 		did string,
 		) string {
@@ -382,7 +265,7 @@ func (p tMonthly) IncommingDidCallsForMonthDid(
 	return revel.MainRouter.Reverse("Monthly.IncommingDidCallsForMonthDid", args).Url
 }
 
-func (p tMonthly) IncommingDidCallsForMonthByDid(
+func (_ tMonthly) IncommingDidCallsForMonthByDid(
 		day string,
 		) string {
 	args := make(map[string]string)
@@ -391,7 +274,7 @@ func (p tMonthly) IncommingDidCallsForMonthByDid(
 	return revel.MainRouter.Reverse("Monthly.IncommingDidCallsForMonthByDid", args).Url
 }
 
-func (p tMonthly) PeersDatas(
+func (_ tMonthly) PeersDatas(
 		day string,
 		) string {
 	args := make(map[string]string)
@@ -400,7 +283,7 @@ func (p tMonthly) PeersDatas(
 	return revel.MainRouter.Reverse("Monthly.PeersDatas", args).Url
 }
 
-func (p tMonthly) PeerDatas(
+func (_ tMonthly) PeerDatas(
 		day string,
 		user string,
 		) string {
@@ -412,18 +295,135 @@ func (p tMonthly) PeerDatas(
 }
 
 
+type tYearly struct {}
+var Yearly tYearly
+
+
+func (_ tYearly) IncommingDidCallsForYearDid(
+		year int,
+		did string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "year", year)
+	revel.Unbind(args, "did", did)
+	return revel.MainRouter.Reverse("Yearly.IncommingDidCallsForYearDid", args).Url
+}
+
+func (_ tYearly) IncommingDidCallsForYearByDid(
+		year int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "year", year)
+	return revel.MainRouter.Reverse("Yearly.IncommingDidCallsForYearByDid", args).Url
+}
+
+func (_ tYearly) PeersDatas(
+		year int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "year", year)
+	return revel.MainRouter.Reverse("Yearly.PeersDatas", args).Url
+}
+
+func (_ tYearly) PeerDatas(
+		year int,
+		user string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "year", year)
+	revel.Unbind(args, "user", user)
+	return revel.MainRouter.Reverse("Yearly.PeerDatas", args).Url
+}
+
+
+type tDaily struct {}
+var Daily tDaily
+
+
+func (_ tDaily) IncommingCalls(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Daily.IncommingCalls", args).Url
+}
+
+func (_ tDaily) IncommingCallsByDay(
+		day string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	return revel.MainRouter.Reverse("Daily.IncommingCallsByDay", args).Url
+}
+
+func (_ tDaily) IncommingCallsByDayUser(
+		day string,
+		user string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "user", user)
+	return revel.MainRouter.Reverse("Daily.IncommingCallsByDayUser", args).Url
+}
+
+func (_ tDaily) IncommingDidCallsForDayDid(
+		day string,
+		did string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "did", did)
+	return revel.MainRouter.Reverse("Daily.IncommingDidCallsForDayDid", args).Url
+}
+
+func (_ tDaily) IncommingDidCallsForDayByDid(
+		day string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	return revel.MainRouter.Reverse("Daily.IncommingDidCallsForDayByDid", args).Url
+}
+
+func (_ tDaily) PeersDatas(
+		day string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	return revel.MainRouter.Reverse("Daily.PeersDatas", args).Url
+}
+
+func (_ tDaily) PeerDatas(
+		day string,
+		user string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "user", user)
+	return revel.MainRouter.Reverse("Daily.PeerDatas", args).Url
+}
+
+
 type tCdrs struct {}
 var Cdrs tCdrs
 
 
-func (p tCdrs) Cdrs(
+func (_ tCdrs) Cdrs(
 		) string {
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("Cdrs.Cdrs", args).Url
 }
 
-func (p tCdrs) CdrsWithDate(
+func (_ tCdrs) CdrsWithDate(
 		start string,
 		end string,
 		) string {
@@ -434,7 +434,7 @@ func (p tCdrs) CdrsWithDate(
 	return revel.MainRouter.Reverse("Cdrs.CdrsWithDate", args).Url
 }
 
-func (p tCdrs) CdrDetails(
+func (_ tCdrs) CdrDetails(
 		uniqueid string,
 		) string {
 	args := make(map[string]string)
@@ -443,7 +443,7 @@ func (p tCdrs) CdrDetails(
 	return revel.MainRouter.Reverse("Cdrs.CdrDetails", args).Url
 }
 
-func (p tCdrs) CdrWithParams(
+func (_ tCdrs) CdrWithParams(
 		params string,
 		) string {
 	args := make(map[string]string)

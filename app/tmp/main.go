@@ -5,9 +5,9 @@ import (
 	"flag"
 	"reflect"
 	"github.com/robfig/revel"
-	controllers0 "github.com/robfig/revel/modules/static/app/controllers"
+	controllers1 "github.com/robfig/revel/modules/static/app/controllers"
 	_ "github.com/robfig/revel/modules/testrunner/app"
-	controllers1 "github.com/robfig/revel/modules/testrunner/app/controllers"
+	controllers0 "github.com/robfig/revel/modules/testrunner/app/controllers"
 	_ "revor/app"
 	_ "revor/app/broker"
 	controllers "revor/app/controllers"
@@ -196,31 +196,7 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers0.Static)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Serve",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "ServeModule",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "moduleName", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			
-		})
-	
-	revel.RegisterController((*controllers1.TestRunner)(nil),
+	revel.RegisterController((*controllers0.TestRunner)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
 				Name: "Index",
@@ -254,34 +230,34 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers.Daily)(nil),
+	revel.RegisterController((*controllers1.Static)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
-				Name: "IncommingCalls",
+				Name: "Serve",
 				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
 			},
 			&revel.MethodType{
-				Name: "IncommingCallsByDay",
+				Name: "ServeModule",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "moduleName", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
 			},
+			
+		})
+	
+	revel.RegisterController((*controllers.Monthly)(nil),
+		[]*revel.MethodType{
 			&revel.MethodType{
-				Name: "IncommingCallsByDayUser",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "user", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "IncommingDidCallsForDayDid",
+				Name: "IncommingDidCallsForMonthDid",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
 					&revel.MethodArg{Name: "did", Type: reflect.TypeOf((*string)(nil)) },
@@ -290,7 +266,7 @@ func main() {
 				},
 			},
 			&revel.MethodType{
-				Name: "IncommingDidCallsForDayByDid",
+				Name: "IncommingDidCallsForMonthByDid",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
 				},
@@ -356,10 +332,34 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers.Monthly)(nil),
+	revel.RegisterController((*controllers.Daily)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
-				Name: "IncommingDidCallsForMonthDid",
+				Name: "IncommingCalls",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "IncommingCallsByDay",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "IncommingCallsByDayUser",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "user", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "IncommingDidCallsForDayDid",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
 					&revel.MethodArg{Name: "did", Type: reflect.TypeOf((*string)(nil)) },
@@ -368,7 +368,7 @@ func main() {
 				},
 			},
 			&revel.MethodType{
-				Name: "IncommingDidCallsForMonthByDid",
+				Name: "IncommingDidCallsForDayByDid",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
 				},
@@ -446,14 +446,14 @@ func main() {
 		},
 	}
 	revel.TestSuites = []interface{}{ 
-		(*tests.PeerTest)(nil),
 		(*tests.UserTest)(nil),
-		(*tests.CdrTest)(nil),
 		(*tests.DailyTest)(nil),
 		(*tests.YearlyTest)(nil),
+		(*tests.DidTest)(nil),
+		(*tests.CdrTest)(nil),
+		(*tests.PeerTest)(nil),
 		(*tests.AppTest)(nil),
 		(*tests.MonthlyTest)(nil),
-		(*tests.DidTest)(nil),
 	}
 
 	revel.Run(*port)
