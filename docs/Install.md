@@ -1,16 +1,41 @@
+----------
+revor 
+----------
 
-Procedure d'installation de l'application.
+ 
+### Installation 
+Copier le ficheir revor_[version].tar.gz sur la machine cible dans le repertoire /opt/revor
+Exécuter tar xvzf revor_[version].tar.gz
 
-1.Vérifier si le repertorie /opt/revor/current existe sinon créér.
+Ce placer dans le repertoire : cd /opt/revor/revor_[version]
 
-Vérifier que le service supervisor est bien configuré pour l'application revor.
-En cas si ce service n'set pas configurer proceder à la configuration à la fin d'installation.
+> **NOTE:**
+>
+> - En cas d'une nouvelle installation copier le ficheir revor.supervisor.conf dans le répertoire /etc/supervisor/conf.d
+>
+> - Copier le fichier /opt/revor/revor_[version]/config.sample.json dans /opt/revor/revor_[version]/config.json
+> - Addapter ce fichier en cas de besoin à votre environement cible
+
+
+Vérifier si l'application est en cours d'execution via console de supervisor : supervisorctl
+Si l'application est en court d'exécution arrêter l'application : stop revor
+Quitter le console : exit
+
+Crée un lien symbolic ls -s /opt/revor/current /opt/revor/revor_[version]
+> **NOTE:**
+>
+> - En cas si le répertoire existe /opt/revor/current. Supprimer rm -rf /opt/revor/current
+
+### Configuraiton
+Copier le fichier config.sample.json en config.json : cp config.sample.json config.json
+Addapter ce fichier à la configuraiton de système : le dialplan de iPBX et les besoin du client.
+
+
+### Mise à jour 
+Mise à jour est identique à l'installation sans la partie de la configuration.
+
+Il faut copier le ficheir de la configuration actuel (/opt/revor/current/config.json) dans le repertoire /opt/revor/revor_[version] 
 
 
 
-2.Créer un nouveu repertore /opt/revor/1.0.0. Répértoire 1.0.0 est donné au titre indicatif.
 
-3.Deposer le ficheir revor.tar.gz dans le répertoire de la version crée par example /opt/revor/1.0.0 et faire tar -xvzf revor.tar.gz
-4.Vérifier la configuration de l'application à partir de répértoire /opt/revel/current/src/app/conf
-5.Crée un lien symbolique vers le repertoire current ls -s /opt/revor/current /opt/revor/1.0.0
-6.Redémarrer le sirvice revor via supervisor.
