@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/robfig/revel"
+	"github.com/revel/revel"
 	"labix.org/v2/mgo/bson"
 	"revor/app/models"
 	"revor/app/modules/mongo"

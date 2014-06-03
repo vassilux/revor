@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/robfig/revel"
+	"github.com/revel/revel"
 )
 
 var CSRFFilter = func(c *revel.Controller, fc []revel.Filter) {

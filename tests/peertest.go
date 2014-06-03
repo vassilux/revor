@@ -1,7 +1,7 @@
 package tests
 
 import (
-	"github.com/robfig/revel"
+	"github.com/revel/revel"
 	"net/http"
 	"net/url"
 )

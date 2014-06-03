@@ -3,7 +3,7 @@ package utils
 import (
 	"crypto/rand"
 	"encoding/base64"
-	"github.com/robfig/revel"
+	"github.com/revel/revel"
 	"io"
 )
 
