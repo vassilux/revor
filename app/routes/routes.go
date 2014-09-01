@@ -250,75 +250,44 @@ func (_ tTestRunner) List(
 }
 
 
-type tDaily struct {}
-var Daily tDaily
+type tCdrs struct {}
+var Cdrs tCdrs
 
 
-func (_ tDaily) IncommingCalls(
+func (_ tCdrs) Cdrs(
 		) string {
 	args := make(map[string]string)
 	
-	return revel.MainRouter.Reverse("Daily.IncommingCalls", args).Url
+	return revel.MainRouter.Reverse("Cdrs.Cdrs", args).Url
 }
 
-func (_ tDaily) IncommingCallsByDay(
-		day string,
+func (_ tCdrs) CdrsWithDate(
+		start string,
+		end string,
 		) string {
 	args := make(map[string]string)
 	
-	revel.Unbind(args, "day", day)
-	return revel.MainRouter.Reverse("Daily.IncommingCallsByDay", args).Url
+	revel.Unbind(args, "start", start)
+	revel.Unbind(args, "end", end)
+	return revel.MainRouter.Reverse("Cdrs.CdrsWithDate", args).Url
 }
 
-func (_ tDaily) IncommingCallsByDayUser(
-		day string,
-		user string,
+func (_ tCdrs) CdrDetails(
+		uniqueid string,
 		) string {
 	args := make(map[string]string)
 	
-	revel.Unbind(args, "day", day)
-	revel.Unbind(args, "user", user)
-	return revel.MainRouter.Reverse("Daily.IncommingCallsByDayUser", args).Url
+	revel.Unbind(args, "uniqueid", uniqueid)
+	return revel.MainRouter.Reverse("Cdrs.CdrDetails", args).Url
 }
 
-func (_ tDaily) IncommingDidCallsForDayDid(
-		day string,
-		did string,
+func (_ tCdrs) CdrWithParams(
+		params string,
 		) string {
 	args := make(map[string]string)
 	
-	revel.Unbind(args, "day", day)
-	revel.Unbind(args, "did", did)
-	return revel.MainRouter.Reverse("Daily.IncommingDidCallsForDayDid", args).Url
-}
-
-func (_ tDaily) IncommingDidCallsForDayByDid(
-		day string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	return revel.MainRouter.Reverse("Daily.IncommingDidCallsForDayByDid", args).Url
-}
-
-func (_ tDaily) PeersDatas(
-		day string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	return revel.MainRouter.Reverse("Daily.PeersDatas", args).Url
-}
-
-func (_ tDaily) PeerDatas(
-		day string,
-		user string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	revel.Unbind(args, "user", user)
-	return revel.MainRouter.Reverse("Daily.PeerDatas", args).Url
+	revel.Unbind(args, "params", params)
+	return revel.MainRouter.Reverse("Cdrs.CdrWithParams", args).Url
 }
 
 
@@ -412,44 +381,75 @@ func (_ tMonthly) PeerDatas(
 }
 
 
-type tCdrs struct {}
-var Cdrs tCdrs
+type tDaily struct {}
+var Daily tDaily
 
 
-func (_ tCdrs) Cdrs(
+func (_ tDaily) IncommingCalls(
 		) string {
 	args := make(map[string]string)
 	
-	return revel.MainRouter.Reverse("Cdrs.Cdrs", args).Url
+	return revel.MainRouter.Reverse("Daily.IncommingCalls", args).Url
 }
 
-func (_ tCdrs) CdrsWithDate(
-		start string,
-		end string,
+func (_ tDaily) IncommingCallsByDay(
+		day string,
 		) string {
 	args := make(map[string]string)
 	
-	revel.Unbind(args, "start", start)
-	revel.Unbind(args, "end", end)
-	return revel.MainRouter.Reverse("Cdrs.CdrsWithDate", args).Url
+	revel.Unbind(args, "day", day)
+	return revel.MainRouter.Reverse("Daily.IncommingCallsByDay", args).Url
 }
 
-func (_ tCdrs) CdrDetails(
-		uniqueid string,
+func (_ tDaily) IncommingCallsByDayUser(
+		day string,
+		user string,
 		) string {
 	args := make(map[string]string)
 	
-	revel.Unbind(args, "uniqueid", uniqueid)
-	return revel.MainRouter.Reverse("Cdrs.CdrDetails", args).Url
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "user", user)
+	return revel.MainRouter.Reverse("Daily.IncommingCallsByDayUser", args).Url
 }
 
-func (_ tCdrs) CdrWithParams(
-		params string,
+func (_ tDaily) IncommingDidCallsForDayDid(
+		day string,
+		did string,
 		) string {
 	args := make(map[string]string)
 	
-	revel.Unbind(args, "params", params)
-	return revel.MainRouter.Reverse("Cdrs.CdrWithParams", args).Url
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "did", did)
+	return revel.MainRouter.Reverse("Daily.IncommingDidCallsForDayDid", args).Url
+}
+
+func (_ tDaily) IncommingDidCallsForDayByDid(
+		day string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	return revel.MainRouter.Reverse("Daily.IncommingDidCallsForDayByDid", args).Url
+}
+
+func (_ tDaily) PeersDatas(
+		day string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	return revel.MainRouter.Reverse("Daily.PeersDatas", args).Url
+}
+
+func (_ tDaily) PeerDatas(
+		day string,
+		user string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "user", user)
+	return revel.MainRouter.Reverse("Daily.PeerDatas", args).Url
 }
 
 

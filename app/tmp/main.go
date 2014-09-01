@@ -254,64 +254,42 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers.Daily)(nil),
+	revel.RegisterController((*controllers.Cdrs)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
-				Name: "IncommingCalls",
+				Name: "Cdrs",
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
 				},
 			},
 			&revel.MethodType{
-				Name: "IncommingCallsByDay",
+				Name: "CdrsWithDate",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "start", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "end", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
 			},
 			&revel.MethodType{
-				Name: "IncommingCallsByDayUser",
+				Name: "CdrDetails",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "user", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "uniqueid", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
 			},
 			&revel.MethodType{
-				Name: "IncommingDidCallsForDayDid",
+				Name: "CdrWithParams",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "did", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "params", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "IncommingDidCallsForDayByDid",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "PeersDatas",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "PeerDatas",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "user", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
+					113: []string{ 
+					},
+					122: []string{ 
+					},
 				},
 			},
 			
@@ -395,42 +373,64 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers.Cdrs)(nil),
+	revel.RegisterController((*controllers.Daily)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
-				Name: "Cdrs",
+				Name: "IncommingCalls",
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
 				},
 			},
 			&revel.MethodType{
-				Name: "CdrsWithDate",
+				Name: "IncommingCallsByDay",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "start", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "end", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
 			},
 			&revel.MethodType{
-				Name: "CdrDetails",
+				Name: "IncommingCallsByDayUser",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "uniqueid", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "user", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
 			},
 			&revel.MethodType{
-				Name: "CdrWithParams",
+				Name: "IncommingDidCallsForDayDid",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "params", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "did", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-					113: []string{ 
-					},
-					122: []string{ 
-					},
+				},
+			},
+			&revel.MethodType{
+				Name: "IncommingDidCallsForDayByDid",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "PeersDatas",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "PeerDatas",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "user", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
 				},
 			},
 			
@@ -447,13 +447,13 @@ func main() {
 	}
 	revel.TestSuites = []interface{}{ 
 		(*tests.PeerTest)(nil),
-		(*tests.UserTest)(nil),
-		(*tests.CdrTest)(nil),
 		(*tests.DailyTest)(nil),
-		(*tests.YearlyTest)(nil),
-		(*tests.AppTest)(nil),
 		(*tests.MonthlyTest)(nil),
+		(*tests.AppTest)(nil),
 		(*tests.DidTest)(nil),
+		(*tests.YearlyTest)(nil),
+		(*tests.CdrTest)(nil),
+		(*tests.UserTest)(nil),
 	}
 
 	revel.Run(*port)
