@@ -20,6 +20,9 @@ go get github.com/robfig/config
 
 go get -u github.com/howeyc/fsnotify
 
+go get github.com/revel/cmd/revel
+
+
 
 =
 Execute revel run revor into your host system and see the result on the port 9001
