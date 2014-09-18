@@ -65,6 +65,15 @@ func (c Daily) IncommingDidCallsForDayByDid(day string) revel.Result {
 	return c.RenderJson(results)
 }
 
+//Fetch all incomming calls by did for given day
+//return a json stream with calls on success otherwise http status 500
+func (c Daily) IncommingDidCallsByHourForDayByDid(day string) revel.Result {
+	revel.TRACE.Printf("[Daily DID] Get incomming call by hour by did for the given date [%s].\r\n", day)
+	results := mongo.GetDidCallsByHours(day, c.MongoDatabase)
+	revel.TRACE.Printf("[Daily DID] Send to the client response of %d records.\r\n", len(results))
+	return c.RenderJson(results)
+}
+
 //Fetch all datas for peers
 //return a json stream with calls on success otherwise http status 500
 func (c Daily) PeersDatas(day string) revel.Result {
