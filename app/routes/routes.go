@@ -250,96 +250,6 @@ func (_ tStatic) ServeModule(
 }
 
 
-type tMonthly struct {}
-var Monthly tMonthly
-
-
-func (_ tMonthly) IncommingDidCallsForMonthDid(
-		day string,
-		did string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	revel.Unbind(args, "did", did)
-	return revel.MainRouter.Reverse("Monthly.IncommingDidCallsForMonthDid", args).Url
-}
-
-func (_ tMonthly) IncommingDidCallsForMonthByDid(
-		day string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	return revel.MainRouter.Reverse("Monthly.IncommingDidCallsForMonthByDid", args).Url
-}
-
-func (_ tMonthly) PeersDatas(
-		day string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	return revel.MainRouter.Reverse("Monthly.PeersDatas", args).Url
-}
-
-func (_ tMonthly) PeerDatas(
-		day string,
-		user string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	revel.Unbind(args, "user", user)
-	return revel.MainRouter.Reverse("Monthly.PeerDatas", args).Url
-}
-
-
-type tYearly struct {}
-var Yearly tYearly
-
-
-func (_ tYearly) IncommingDidCallsForYearDid(
-		year int,
-		did string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "year", year)
-	revel.Unbind(args, "did", did)
-	return revel.MainRouter.Reverse("Yearly.IncommingDidCallsForYearDid", args).Url
-}
-
-func (_ tYearly) IncommingDidCallsForYearByDid(
-		year int,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "year", year)
-	return revel.MainRouter.Reverse("Yearly.IncommingDidCallsForYearByDid", args).Url
-}
-
-func (_ tYearly) PeersDatas(
-		year int,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "year", year)
-	return revel.MainRouter.Reverse("Yearly.PeersDatas", args).Url
-}
-
-func (_ tYearly) PeerDatas(
-		year int,
-		user string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "year", year)
-	revel.Unbind(args, "user", user)
-	return revel.MainRouter.Reverse("Yearly.PeerDatas", args).Url
-}
-
-
 type tDaily struct {}
 var Daily tDaily
 
@@ -418,6 +328,96 @@ func (_ tDaily) PeerDatas(
 	revel.Unbind(args, "day", day)
 	revel.Unbind(args, "user", user)
 	return revel.MainRouter.Reverse("Daily.PeerDatas", args).Url
+}
+
+
+type tYearly struct {}
+var Yearly tYearly
+
+
+func (_ tYearly) IncommingDidCallsForYearDid(
+		year int,
+		did string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "year", year)
+	revel.Unbind(args, "did", did)
+	return revel.MainRouter.Reverse("Yearly.IncommingDidCallsForYearDid", args).Url
+}
+
+func (_ tYearly) IncommingDidCallsForYearByDid(
+		year int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "year", year)
+	return revel.MainRouter.Reverse("Yearly.IncommingDidCallsForYearByDid", args).Url
+}
+
+func (_ tYearly) PeersDatas(
+		year int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "year", year)
+	return revel.MainRouter.Reverse("Yearly.PeersDatas", args).Url
+}
+
+func (_ tYearly) PeerDatas(
+		year int,
+		user string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "year", year)
+	revel.Unbind(args, "user", user)
+	return revel.MainRouter.Reverse("Yearly.PeerDatas", args).Url
+}
+
+
+type tMonthly struct {}
+var Monthly tMonthly
+
+
+func (_ tMonthly) IncommingDidCallsForMonthDid(
+		day string,
+		did string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "did", did)
+	return revel.MainRouter.Reverse("Monthly.IncommingDidCallsForMonthDid", args).Url
+}
+
+func (_ tMonthly) IncommingDidCallsForMonthByDid(
+		day string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	return revel.MainRouter.Reverse("Monthly.IncommingDidCallsForMonthByDid", args).Url
+}
+
+func (_ tMonthly) PeersDatas(
+		day string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	return revel.MainRouter.Reverse("Monthly.PeersDatas", args).Url
+}
+
+func (_ tMonthly) PeerDatas(
+		day string,
+		user string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "user", user)
+	return revel.MainRouter.Reverse("Monthly.PeerDatas", args).Url
 }
 
 
