@@ -34,7 +34,8 @@ GET     /daily/incomming/:day						Daily.IncommingCallsByDay
 GET     /daily/incomming/:day/:user					Daily.IncommingCallsByDayUser
 GET     /daily/didincomming/:day/				    Daily.IncommingDidCallsForDayByDid
 GET     /daily/didincomming/:day/:did				Daily.IncommingDidCallsForDayDid
-GET     /daily/didincommingcallsbyhours/:day/		Daily.IncommingDidCallsByHourForDayByDid
+GET     /daily/didincommingcallsbyhours/:day/		Daily.IncommingDidCallsByHourByDid
+GET     /daily/didincommingcallsbyhours/:day/:did	Daily.IncommingDidCallsByHourByDayAndDid
 #
 GET     /monthly/didincomming/:day/				    Monthly.IncommingDidCallsForMonthByDid
 GET     /monthly/didincomming/:day/:did				Monthly.IncommingDidCallsForMonthDid

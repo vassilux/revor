@@ -301,13 +301,24 @@ func (_ tDaily) IncommingDidCallsForDayByDid(
 	return revel.MainRouter.Reverse("Daily.IncommingDidCallsForDayByDid", args).Url
 }
 
-func (_ tDaily) IncommingDidCallsByHourForDayByDid(
+func (_ tDaily) IncommingDidCallsByHourByDid(
 		day string,
 		) string {
 	args := make(map[string]string)
 	
 	revel.Unbind(args, "day", day)
-	return revel.MainRouter.Reverse("Daily.IncommingDidCallsByHourForDayByDid", args).Url
+	return revel.MainRouter.Reverse("Daily.IncommingDidCallsByHourByDid", args).Url
+}
+
+func (_ tDaily) IncommingDidCallsByHourByDayAndDid(
+		day string,
+		did string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "did", did)
+	return revel.MainRouter.Reverse("Daily.IncommingDidCallsByHourByDayAndDid", args).Url
 }
 
 func (_ tDaily) PeersDatas(
