@@ -27,8 +27,11 @@ if [ -f "${DEPLOY_APP}.tar.gz" ]; then
 fi
 
 mkdir "${DEPLOY_DIR}"
+mkdir "${DEPLOY_DIR}/samples"
 
 revel package "${DEPLOY_APP}"
+mkdir "${DEPLOY_DIR}/samples"
+cp "./samples" " "${DEPLOY_DIR}/samples"
 #
 pandoc -o "$DEPLOY_DIR/INSTALL.html" ./docs/Install.md
 #
