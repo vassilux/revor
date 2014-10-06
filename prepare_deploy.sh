@@ -28,23 +28,23 @@ fi
 
 mkdir "${DEPLOY_DIR}"
 mkdir "${DEPLOY_DIR}/samples"
+cp -R "./samples/revor.supervisor.conf" "${DEPLOY_DIR}/samples/revor.supervisor.conf"
 
 revel package "${DEPLOY_APP}"
-mkdir "${DEPLOY_DIR}/samples"
-cp "./samples" " "${DEPLOY_DIR}/samples"
+
 #
 pandoc -o "$DEPLOY_DIR/INSTALL.html" ./docs/Install.md
 #
+cp "$DEPLOY_DIR/INSTALL.html" .
+#
 mv "${DEPLOY_APP}.tar.gz" "$DEPLOY_DIR"
 cd "${DEPLOY_DIR}"
-tar xvzf revor.tar.gz
+tar xzf "${DEPLOY_APP}.tar.gz"
 rm -rf "${DEPLOY_APP}.tar.gz"
 cd ..
-tar cvzf "${DEPLOY_APP_VER}.tar.gz" ${DEPLOY_APP_VER}
+tar czf "${DEPLOY_APP_VER}.tar.gz" ${DEPLOY_DIR}
 
 
 rm -rf "${DEPLOY_APP_VER}"
-#
-pandoc -o "INSTALL.html" ./docs/Install.md
 
 echo "Deploy finished."

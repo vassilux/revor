@@ -220,33 +220,44 @@ func (_ tStatic) ServeModule(
 }
 
 
-type tTestRunner struct {}
-var TestRunner tTestRunner
+type tCdrs struct {}
+var Cdrs tCdrs
 
 
-func (_ tTestRunner) Index(
+func (_ tCdrs) Cdrs(
 		) string {
 	args := make(map[string]string)
 	
-	return revel.MainRouter.Reverse("TestRunner.Index", args).Url
+	return revel.MainRouter.Reverse("Cdrs.Cdrs", args).Url
 }
 
-func (_ tTestRunner) Run(
-		suite string,
-		test string,
+func (_ tCdrs) CdrsWithDate(
+		start string,
+		end string,
 		) string {
 	args := make(map[string]string)
 	
-	revel.Unbind(args, "suite", suite)
-	revel.Unbind(args, "test", test)
-	return revel.MainRouter.Reverse("TestRunner.Run", args).Url
+	revel.Unbind(args, "start", start)
+	revel.Unbind(args, "end", end)
+	return revel.MainRouter.Reverse("Cdrs.CdrsWithDate", args).Url
 }
 
-func (_ tTestRunner) List(
+func (_ tCdrs) CdrDetails(
+		uniqueid string,
 		) string {
 	args := make(map[string]string)
 	
-	return revel.MainRouter.Reverse("TestRunner.List", args).Url
+	revel.Unbind(args, "uniqueid", uniqueid)
+	return revel.MainRouter.Reverse("Cdrs.CdrDetails", args).Url
+}
+
+func (_ tCdrs) CdrWithParams(
+		params string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "params", params)
+	return revel.MainRouter.Reverse("Cdrs.CdrWithParams", args).Url
 }
 
 
@@ -429,47 +440,6 @@ func (_ tDaily) PeerDatas(
 	revel.Unbind(args, "day", day)
 	revel.Unbind(args, "user", user)
 	return revel.MainRouter.Reverse("Daily.PeerDatas", args).Url
-}
-
-
-type tCdrs struct {}
-var Cdrs tCdrs
-
-
-func (_ tCdrs) Cdrs(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("Cdrs.Cdrs", args).Url
-}
-
-func (_ tCdrs) CdrsWithDate(
-		start string,
-		end string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "start", start)
-	revel.Unbind(args, "end", end)
-	return revel.MainRouter.Reverse("Cdrs.CdrsWithDate", args).Url
-}
-
-func (_ tCdrs) CdrDetails(
-		uniqueid string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "uniqueid", uniqueid)
-	return revel.MainRouter.Reverse("Cdrs.CdrDetails", args).Url
-}
-
-func (_ tCdrs) CdrWithParams(
-		params string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "params", params)
-	return revel.MainRouter.Reverse("Cdrs.CdrWithParams", args).Url
 }
 
 
