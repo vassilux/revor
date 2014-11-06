@@ -71,43 +71,67 @@ func (c Yearly) IncommingDidCallsByMonthAndDid(year int, did string) revel.Resul
 	return c.RenderJson(results)
 }
 
-func (c Yearly) DidCallsDataByMonthForYear(year int) revel.Result {
+func (c Yearly) DidCallsDataByMonthForYear(year int, tm int) revel.Result {
 	revel.TRACE.Printf("[Yearly DID] Get calls data for dids for the given year [%d].\r\n", year)
 	results := mongo.GetDidCallsDataByMonthForYearAndDid(year, "", c.MongoDatabase)
 	return c.RenderJson(results)
 }
 
-func (c Yearly) DidCallsDataByMonthForYearAndDid(year int, did string) revel.Result {
+func (c Yearly) DidCallsDataByMonthForYearAndDid(year int, did string, tm int) revel.Result {
 	revel.TRACE.Printf("[Yearly DID] Get calls data for dids for the given year [%d].\r\n", year)
 	results := mongo.GetDidCallsDataByMonthForYearAndDid(year, did, c.MongoDatabase)
-	c.Response.Out.Header().Add("Cache-Control", "no-cache")
 	return c.RenderJson(results)
 }
 
 func (c Yearly) PeersInCallsByMonth(year int) revel.Result {
 	revel.TRACE.Printf("[Yearly Peer] Get peers incomming calls groupped by month for the given year [%d].\r\n", year)
-	results := mongo.GetPeerYearInCallsByMonth(year, c.MongoDatabase)
+	results := mongo.GetPeerYearInOutCallsByMonthAndPeer(year, "", "in", c.MongoDatabase)
 	revel.TRACE.Printf("[Yearly Peer] Get peers incomming calls groupped by month response of %d records.\r\n", len(results))
 	return c.RenderJson(results)
 }
 
 func (c Yearly) PeersInCallsByMonthAndPeer(year int, peer string) revel.Result {
 	revel.TRACE.Printf("[Yearly Peer] Get peers incomming calls groupped by month for the given year [%d] and peer[%s].\r\n", year, peer)
-	results := mongo.GetPeerYearInCallsByMonthAndPeer(year, peer, c.MongoDatabase)
+	results := mongo.GetPeerYearInOutCallsByMonthAndPeer(year, peer, "in", c.MongoDatabase)
 	revel.TRACE.Printf("[Yearly Peer] Get peers incomming calls groupped by month response of %d records.\r\n", len(results))
 	return c.RenderJson(results)
 }
 
 func (c Yearly) PeersOutCallsByMonth(year int) revel.Result {
 	revel.TRACE.Printf("[Yearly Peer] Get peers outging calls groupped by month for the given year [%d].\r\n", year)
-	results := mongo.GetPeerYearOutCallsByMonth(year, c.MongoDatabase)
+	results := mongo.GetPeerYearInOutCallsByMonthAndPeer(year, "", "out", c.MongoDatabase)
 	revel.TRACE.Printf("[Yearly Peer] Get peers outgoing calls groupped by month response of %d records.\r\n", len(results))
 	return c.RenderJson(results)
 }
 
 func (c Yearly) PeersOutCallsByMonthAndPeer(year int, peer string) revel.Result {
 	revel.TRACE.Printf("[Yearly Peer] Get peer incomming calls groupped by month for the given year [%s] and peer[%s].\r\n", year, peer)
-	results := mongo.GetPeerYearOutCallsByMonthAndPeer(year, peer, c.MongoDatabase)
+	results := mongo.GetPeerYearInOutCallsByMonthAndPeer(year, peer, "out", c.MongoDatabase)
 	revel.TRACE.Printf("[Yearly Peer] Get peer incomming calls groupped by month response of %d records.\r\n", len(results))
+	return c.RenderJson(results)
+}
+
+//
+func (c Yearly) PeerInCallsDataByMonthForYear(year int, tm int) revel.Result {
+	revel.TRACE.Printf("[Yearly Peer] Get calls data for dids for the given year [%d].\r\n", year)
+	results := mongo.GetPeerInCallsDataByMonthForYearAndPeer(year, "", c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Yearly) PeerInCallsDataByMonthForYearAndDid(year int, did string, tm int) revel.Result {
+	revel.TRACE.Printf("[Yearly Peer] Get calls data for dids for the given year [%d].\r\n", year)
+	results := mongo.GetPeerInCallsDataByMonthForYearAndPeer(year, did, c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Yearly) PeerOutCallsDataByMonthForYear(year int, tm int) revel.Result {
+	revel.TRACE.Printf("[Yearly Peer] Get calls data for dids for the given year [%d].\r\n", year)
+	results := mongo.GetPeerOutCallsDataByMonthForYearAndPeer(year, "", c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Yearly) PeerOutCallsDataByMonthForYearAndDid(year int, did string, tm int) revel.Result {
+	revel.TRACE.Printf("[Yearly Peer] Get calls data for dids for the given year [%d].\r\n", year)
+	results := mongo.GetPeerOutCallsDataByMonthForYearAndPeer(year, did, c.MongoDatabase)
 	return c.RenderJson(results)
 }

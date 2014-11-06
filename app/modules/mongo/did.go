@@ -41,14 +41,14 @@ func doGetDidCallsByDayAndDid(day string, did string, mongoDb *mgo.Database) []b
 		"$project": bson.M{
 			"did":         "$metadata.dst",
 			"disposition": "$metadata.disposition",
-			"call_daily":  "$call_daily",
+			"calls":       "$calls",
 		},
 	}
 
 	myGroup := bson.M{
 		"$group": bson.M{
 			"_id":          "$did",
-			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_daily"}},
+			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$calls"}},
 		},
 	}
 
@@ -107,16 +107,16 @@ func doGetDidCallsByHoursAndDid(day string, did string, mongoDb *mgo.Database) [
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"did":         "$metadata.dst",
-			"disposition": "$metadata.disposition",
-			"call_hourly": "$call_hourly",
+			"did":             "$metadata.dst",
+			"disposition":     "$metadata.disposition",
+			"calls_per_hours": "$calls_per_hours",
 		},
 	}
 
 	myGroup := bson.M{
 		"$group": bson.M{
 			"_id":          "$did",
-			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callHourly": "$call_hourly"}},
+			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callHourly": "$calls_per_hours"}},
 		},
 	}
 
@@ -204,16 +204,16 @@ func doGetDidCallsByMonthAndDid(day string, did string, mongoDb *mgo.Database) [
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"did":          "$metadata.dst",
-			"disposition":  "$metadata.disposition",
-			"call_monthly": "$call_monthly",
+			"did":         "$metadata.dst",
+			"disposition": "$metadata.disposition",
+			"calls":       "$calls",
 		},
 	}
 
 	myGroup := bson.M{
 		"$group": bson.M{
 			"_id":          "$did",
-			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_monthly"}},
+			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$calls"}},
 		},
 	}
 
@@ -274,15 +274,15 @@ func doGetMonthCallsByDayAndDid(day string, did string, mongoDb *mgo.Database) [
 		"$project": bson.M{
 			"disposition":      "$metadata.disposition",
 			"duration_monthly": "$duration_monthly",
-			"calls_daily":      "$calls_daily",
-			"durations_daily":  "$durations_daily",
+			"calls":            "$calls_per_days",
+			"durations":        "$durations_per_days",
 		},
 	}
 
 	myGroup := bson.M{
 		"$group": bson.M{
 			"_id":   "$disposition",
-			"datas": bson.M{"$addToSet": bson.M{"callsDaily": "$calls_daily", "durationsDaily": "$durations_daily"}},
+			"datas": bson.M{"$addToSet": bson.M{"callsDaily": "$calls", "durationsDaily": "$durations"}},
 		},
 	}
 
@@ -343,16 +343,16 @@ func doGetDidCallsByYearAndDid(year int, did string, mongoDb *mgo.Database) []bs
 	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"did":          "$metadata.dst",
-			"disposition":  "$metadata.disposition",
-			"call_monthly": "$call_monthly",
+			"did":         "$metadata.dst",
+			"disposition": "$metadata.disposition",
+			"calls":       "$calls",
 		},
 	}
 
 	myGroup := bson.M{
 		"$group": bson.M{
 			"_id":          "$did",
-			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_monthly"}},
+			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$calls"}},
 		},
 	}
 
@@ -384,8 +384,9 @@ func GetDidYearCalls(year int, mongoDb *mgo.Database) []bson.M {
 
 //helper to get dids data for a given year by month of the year and filtred if the did provided
 func doGetDidYearCallsByMonthAndDid(year int, did string, mongoDb *mgo.Database) []bson.M {
-	incomming := mongoDb.C("monthlydid_incomming")
-	results := []bson.M{}
+	incomming := mongoDb.C("monthlydid_summary")
+	rawDatas := []bson.M{}
+
 	startDayDate := time.Date(year, 1, 1, 0, 0, 0, 0, time.UTC)
 	endDayDate := time.Date(year, 12, 31, 23, 59, 59, 0, time.UTC)
 
@@ -395,7 +396,7 @@ func doGetDidYearCallsByMonthAndDid(year int, did string, mongoDb *mgo.Database)
 		myMatch = bson.M{
 			"$match": bson.M{
 				"metadata.dt":  bson.M{"$gte": startDayDate, "$lte": endDayDate},
-				"metadata.dst": bson.RegEx{did, "i"},
+				"metadata.did": bson.RegEx{did, "i"},
 			},
 		}
 	} else {
@@ -406,37 +407,47 @@ func doGetDidYearCallsByMonthAndDid(year int, did string, mongoDb *mgo.Database)
 		}
 	}
 
-	//
 	myProject := bson.M{
 		"$project": bson.M{
-			"month":            bson.M{"$month": "$metadata.dt"},
-			"disposition":      "$metadata.disposition",
-			"call_monthly":     "$call_monthly",
-			"duration_monthly": "$duration_monthly",
+			"_id":     bson.M{"$month": "$metadata.dt"},
+			"calls":   "$calls",
+			"missing": "$missing",
 		},
 	}
 
 	myGroup := bson.M{
 		"$group": bson.M{
-			"_id":   "$month",
-			"datas": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_monthly", "duration": "$duration_monthly"}},
+			"_id":     "$_id",
+			"calls":   bson.M{"$sum": "$calls"},
+			"missing": bson.M{"$sum": "$missing"},
 		},
 	}
 
-	mySort := bson.M{
+	mySortByMonth := bson.M{
 		"$sort": bson.M{
 			"_id": 1,
 		},
 	}
+
+	myProjectFinal := bson.M{
+		"$project": bson.M{
+			"_id":     0,
+			"month":   "$_id",
+			"calls":   1,
+			"missing": 1,
+		},
+	}
+
 	//
-	operations := []bson.M{myMatch, myProject, myGroup, mySort}
+	operations := []bson.M{myMatch, myProject, myGroup, mySortByMonth, myProjectFinal}
 	pipe := incomming.Pipe(operations)
-	err := pipe.All(&results)
+
+	err := pipe.All(&rawDatas)
 	if err != nil {
 		panic(err)
 	}
 
-	return results
+	return rawDatas
 
 }
 
@@ -531,6 +542,81 @@ func GetDidCallsDataByMonthForYearAndDid(year int, did string, mongoDb *mgo.Data
 	}
 
 	return rawDatas
+}
+
+//To get general statistics for one day an if the did number provide filter by the did
+func GetDidGenStatsByDayAndDid(day string, did string, mongoDb *mgo.Database) []bson.M {
+	incomming := mongoDb.C("dailydid_incomming")
+	results := []bson.M{}
+	startDate, err := time.Parse(time.RFC3339, day)
+	if err != nil {
+		panic(err)
+	}
+	startDayDate := time.Date(startDate.Year(), startDate.Month(), startDate.Day(), 0, 0, 0, 0, time.UTC)
+	endDayDate := time.Date(startDate.Year(), startDate.Month(), startDate.Day(), 23, 59, 59, 0, time.UTC)
+	var myMatch bson.M
+
+	if len(did) > 0 {
+		myMatch = bson.M{
+			"$match": bson.M{
+				"metadata.dt":  bson.M{"$gte": startDayDate, "$lte": endDayDate},
+				"metadata.dst": bson.RegEx{did, "i"},
+			},
+		}
+	} else {
+		myMatch = bson.M{
+			"$match": bson.M{
+				"metadata.dt": bson.M{"$gte": startDayDate, "$lte": endDayDate},
+			},
+		}
+	}
+
+	//
+	myProject := bson.M{
+		"$project": bson.M{
+			"did":              "$metadata.dst",
+			"disposition":      "$metadata.disposition",
+			"calls":            "$calls",
+			"duration":         "$duration",
+			"answer_wait_time": "$answer_wait_time",
+		},
+	}
+
+	myGroup := bson.M{
+		"$group": bson.M{
+			"_id":              bson.M{"did": "$did", "disposition": "$disposition"},
+			"calls":            bson.M{"$sum": "$calls"},
+			"durations":        bson.M{"$sum": "$duration"},
+			"answer_wait_time": bson.M{"$sum": "$answer_wait_time"},
+		},
+	}
+
+	mySort := bson.M{
+		"$sort": bson.M{
+			"_id": 1,
+		},
+	}
+
+	myProjectFinal := bson.M{
+		"$project": bson.M{
+			"_id":            0,
+			"did":            "$_id.did",
+			"disposition":    "$_id.disposition",
+			"calls":          "$calls",
+			"duration":       "$durations",
+			"answerWaitTime": "$answer_wait_time",
+		},
+	}
+
+	//
+	operations := []bson.M{myMatch, myProject, myGroup, mySort, myProjectFinal}
+	pipe := incomming.Pipe(operations)
+	err = pipe.All(&results)
+	if err != nil {
+		panic(err)
+	}
+
+	return results
 }
 
 //Extract the numbers of calls by did for given date
