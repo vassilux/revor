@@ -53,3 +53,61 @@ func (c Yearly) PeerDatas(year int, user string) revel.Result {
 	revel.TRACE.Printf("[Yearly PEERDATAS] Send to the client response of %d records.\r\n", len(results))
 	return c.RenderJson(results)
 }
+
+//
+//return a json stream with calls on success otherwise http status 500
+func (c Yearly) IncommingDidCallsByMonth(year int) revel.Result {
+	revel.TRACE.Printf("[Yearly DID] Get dids incomming calls groupped by month for the given year [%s].\r\n", year)
+	results := mongo.GetDidYearCallsByMonth(year, c.MongoDatabase)
+	revel.TRACE.Printf("[Yearly DID] Get dids incomming calls groupped by month response of %d records.\r\n", len(results))
+	return c.RenderJson(results)
+}
+
+//return a json stream with calls on success otherwise http status 500
+func (c Yearly) IncommingDidCallsByMonthAndDid(year int, did string) revel.Result {
+	revel.TRACE.Printf("[Yearly DID] Get dids incomming calls groupped by month for the given year [%s] and did [%s].\r\n", year, did)
+	results := mongo.GetDidYearCallsByMonthAndDid(year, did, c.MongoDatabase)
+	revel.TRACE.Printf("[Yearly DID] Get dids incomming calls groupped by month response of %d records.\r\n", len(results))
+	return c.RenderJson(results)
+}
+
+func (c Yearly) DidCallsDataByMonthForYear(year int) revel.Result {
+	revel.TRACE.Printf("[Yearly DID] Get calls data for dids for the given year [%d].\r\n", year)
+	results := mongo.GetDidCallsDataByMonthForYearAndDid(year, "", c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Yearly) DidCallsDataByMonthForYearAndDid(year int, did string) revel.Result {
+	revel.TRACE.Printf("[Yearly DID] Get calls data for dids for the given year [%d].\r\n", year)
+	results := mongo.GetDidCallsDataByMonthForYearAndDid(year, did, c.MongoDatabase)
+	c.Response.Out.Header().Add("Cache-Control", "no-cache")
+	return c.RenderJson(results)
+}
+
+func (c Yearly) PeersInCallsByMonth(year int) revel.Result {
+	revel.TRACE.Printf("[Yearly Peer] Get peers incomming calls groupped by month for the given year [%d].\r\n", year)
+	results := mongo.GetPeerYearInCallsByMonth(year, c.MongoDatabase)
+	revel.TRACE.Printf("[Yearly Peer] Get peers incomming calls groupped by month response of %d records.\r\n", len(results))
+	return c.RenderJson(results)
+}
+
+func (c Yearly) PeersInCallsByMonthAndPeer(year int, peer string) revel.Result {
+	revel.TRACE.Printf("[Yearly Peer] Get peers incomming calls groupped by month for the given year [%d] and peer[%s].\r\n", year, peer)
+	results := mongo.GetPeerYearInCallsByMonthAndPeer(year, peer, c.MongoDatabase)
+	revel.TRACE.Printf("[Yearly Peer] Get peers incomming calls groupped by month response of %d records.\r\n", len(results))
+	return c.RenderJson(results)
+}
+
+func (c Yearly) PeersOutCallsByMonth(year int) revel.Result {
+	revel.TRACE.Printf("[Yearly Peer] Get peers outging calls groupped by month for the given year [%d].\r\n", year)
+	results := mongo.GetPeerYearOutCallsByMonth(year, c.MongoDatabase)
+	revel.TRACE.Printf("[Yearly Peer] Get peers outgoing calls groupped by month response of %d records.\r\n", len(results))
+	return c.RenderJson(results)
+}
+
+func (c Yearly) PeersOutCallsByMonthAndPeer(year int, peer string) revel.Result {
+	revel.TRACE.Printf("[Yearly Peer] Get peer incomming calls groupped by month for the given year [%s] and peer[%s].\r\n", year, peer)
+	results := mongo.GetPeerYearOutCallsByMonthAndPeer(year, peer, c.MongoDatabase)
+	revel.TRACE.Printf("[Yearly Peer] Get peer incomming calls groupped by month response of %d records.\r\n", len(results))
+	return c.RenderJson(results)
+}

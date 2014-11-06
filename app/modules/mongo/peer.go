@@ -104,8 +104,103 @@ func GetPeerInCallsByHours(day string, mongoDb *mgo.Database) []bson.M {
 }
 
 //Extract the numbers of calls by peer for given date
+func GetPeerOutCallsByHours(day string, mongoDb *mgo.Database) []bson.M {
+	incomming := mongoDb.C("dailyanalytics_outgoing")
+	results := []bson.M{}
+	startDate, err := time.Parse(time.RFC3339, day)
+	if err != nil {
+		panic(err)
+	}
+	startDayDate := time.Date(startDate.Year(), startDate.Month(), startDate.Day(), 0, 0, 0, 0, time.UTC)
+	endDayDate := time.Date(startDate.Year(), startDate.Month(), startDate.Day(), 23, 59, 59, 0, time.UTC)
+	myMatch := bson.M{
+		"$match": bson.M{
+			"metadata.dt": bson.M{"$gte": startDayDate, "$lte": endDayDate},
+		},
+	}
+	//
+	myProject := bson.M{
+		"$project": bson.M{
+			"peer":        "$metadata.dst",
+			"disposition": "$metadata.disposition",
+			"call_hourly": "$call_hourly",
+		},
+	}
+
+	myGroup := bson.M{
+		"$group": bson.M{
+			"_id":          "$peer",
+			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callHourly": "$call_hourly"}},
+		},
+	}
+
+	mySort := bson.M{
+		"$sort": bson.M{
+			"_id": 1,
+		},
+	}
+	//
+	operations := []bson.M{myMatch, myProject, myGroup, mySort}
+	pipe := incomming.Pipe(operations)
+	err = pipe.All(&results)
+	if err != nil {
+		panic(err)
+	}
+
+	return results
+}
+
+//Extract the numbers of calls by peer for given date
 func GetPeerInCallsByHoursAndPeer(day string, user string, mongoDb *mgo.Database) []bson.M {
 	incomming := mongoDb.C("dailyanalytics_incomming")
+	results := []bson.M{}
+	startDate, err := time.Parse(time.RFC3339, day)
+	if err != nil {
+		panic(err)
+	}
+	startDayDate := time.Date(startDate.Year(), startDate.Month(), startDate.Day(), 0, 0, 0, 0, time.UTC)
+	endDayDate := time.Date(startDate.Year(), startDate.Month(), startDate.Day(), 23, 59, 59, 0, time.UTC)
+	myMatch := bson.M{
+		"$match": bson.M{
+			"metadata.dt":  bson.M{"$gte": startDayDate, "$lte": endDayDate},
+			"metadata.dst": bson.RegEx{user, "i"},
+		},
+	}
+	//
+	myProject := bson.M{
+		"$project": bson.M{
+			"peer":        "$metadata.dst",
+			"disposition": "$metadata.disposition",
+			"call_hourly": "$call_hourly",
+		},
+	}
+
+	myGroup := bson.M{
+		"$group": bson.M{
+			"_id":          "$peer",
+			"dispositions": bson.M{"$addToSet": bson.M{"status": "$disposition", "callHourly": "$call_hourly"}},
+		},
+	}
+
+	mySort := bson.M{
+		"$sort": bson.M{
+			"_id": 1,
+		},
+	}
+	//
+	operations := []bson.M{myMatch, myProject, myGroup, mySort}
+	pipe := incomming.Pipe(operations)
+	err = pipe.All(&results)
+	if err != nil {
+		panic(err)
+	}
+
+	return results
+}
+
+//Extract the numbers of calls by peer for given date
+func GetPeerOutCallsByHoursAndPeer(day string, user string, mongoDb *mgo.Database) []bson.M {
+	incomming := mongoDb.C("dailyanalytics_outgoing")
 	results := []bson.M{}
 	startDate, err := time.Parse(time.RFC3339, day)
 	if err != nil {
@@ -711,6 +806,323 @@ func GetPeer(id string, mongoDb *mgo.Database) (*models.Peer, error) {
 	return &peer, nil
 }
 
+//Extract the numbers of calls by did for given date
+func GetPeerYearInCallsByMonth(year int, mongoDb *mgo.Database) []bson.M {
+	incomming := mongoDb.C("monthlyanalytics_incomming")
+	results := []bson.M{}
+	startDayDate := time.Date(year, 1, 1, 0, 0, 0, 0, time.UTC)
+	endDayDate := time.Date(year, 12, 31, 23, 59, 59, 0, time.UTC)
+
+	myMatch := bson.M{
+		"$match": bson.M{
+			"metadata.dt": bson.M{"$gte": startDayDate, "$lte": endDayDate},
+		},
+	}
+	//
+	myProject := bson.M{
+		"$project": bson.M{
+			"month":            bson.M{"$month": "$metadata.dt"},
+			"disposition":      "$metadata.disposition",
+			"call_monthly":     "$call_monthly",
+			"duration_monthly": "$duration_monthly",
+		},
+	}
+
+	myGroup := bson.M{
+		"$group": bson.M{
+			"_id":   "$month",
+			"datas": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_monthly", "duration": "$duration_monthly"}},
+		},
+	}
+
+	mySort := bson.M{
+		"$sort": bson.M{
+			"_id": 1,
+		},
+	}
+	//
+	operations := []bson.M{myMatch, myProject, myGroup, mySort}
+	pipe := incomming.Pipe(operations)
+	err := pipe.All(&results)
+	if err != nil {
+		panic(err)
+	}
+
+	return results
+}
+
+//Extract the numbers of calls by did for given date
+func GetPeerYearInCallsByMonthAndPeer(year int, peer string, mongoDb *mgo.Database) []bson.M {
+	incomming := mongoDb.C("monthlyanalytics_incomming")
+	results := []bson.M{}
+	startDayDate := time.Date(year, 1, 1, 0, 0, 0, 0, time.UTC)
+	endDayDate := time.Date(year, 12, 31, 23, 59, 59, 0, time.UTC)
+
+	myMatch := bson.M{
+		"$match": bson.M{
+			"metadata.dt":  bson.M{"$gte": startDayDate, "$lte": endDayDate},
+			"metadata.dst": bson.RegEx{peer, "i"},
+		},
+	}
+	//
+	myProject := bson.M{
+		"$project": bson.M{
+			"month":            bson.M{"$month": "$metadata.dt"},
+			"disposition":      "$metadata.disposition",
+			"call_monthly":     "$call_monthly",
+			"duration_monthly": "$duration_monthly",
+		},
+	}
+
+	myGroup := bson.M{
+		"$group": bson.M{
+			"_id":   "$month",
+			"datas": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_monthly", "duration": "$duration_monthly"}},
+		},
+	}
+
+	mySort := bson.M{
+		"$sort": bson.M{
+			"_id": 1,
+		},
+	}
+	//
+	operations := []bson.M{myMatch, myProject, myGroup, mySort}
+	pipe := incomming.Pipe(operations)
+	err := pipe.All(&results)
+	if err != nil {
+		panic(err)
+	}
+
+	return results
+}
+
+// peer years outcalls
+//Extract the numbers of calls by did for given date
+func GetPeerYearOutCallsByMonth(year int, mongoDb *mgo.Database) []bson.M {
+	incomming := mongoDb.C("monthlyanalytics_outgoing")
+	results := []bson.M{}
+	startDayDate := time.Date(year, 1, 1, 0, 0, 0, 0, time.UTC)
+	endDayDate := time.Date(year, 12, 31, 23, 59, 59, 0, time.UTC)
+
+	myMatch := bson.M{
+		"$match": bson.M{
+			"metadata.dt": bson.M{"$gte": startDayDate, "$lte": endDayDate},
+		},
+	}
+	//
+	myProject := bson.M{
+		"$project": bson.M{
+			"month":            bson.M{"$month": "$metadata.dt"},
+			"disposition":      "$metadata.disposition",
+			"call_monthly":     "$call_monthly",
+			"duration_monthly": "$duration_monthly",
+		},
+	}
+
+	myGroup := bson.M{
+		"$group": bson.M{
+			"_id":   "$month",
+			"datas": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_monthly", "duration": "$duration_monthly"}},
+		},
+	}
+
+	mySort := bson.M{
+		"$sort": bson.M{
+			"_id": 1,
+		},
+	}
+	//
+	operations := []bson.M{myMatch, myProject, myGroup, mySort}
+	pipe := incomming.Pipe(operations)
+	err := pipe.All(&results)
+	if err != nil {
+		panic(err)
+	}
+
+	return results
+}
+
+//Extract the numbers of calls by did for given date
+func GetPeerYearOutCallsByMonthAndPeer(year int, peer string, mongoDb *mgo.Database) []bson.M {
+	incomming := mongoDb.C("monthlyanalytics_outgoing")
+	results := []bson.M{}
+	startDayDate := time.Date(year, 1, 1, 0, 0, 0, 0, time.UTC)
+	endDayDate := time.Date(year, 12, 31, 23, 59, 59, 0, time.UTC)
+
+	myMatch := bson.M{
+		"$match": bson.M{
+			"metadata.dt":  bson.M{"$gte": startDayDate, "$lte": endDayDate},
+			"metadata.dst": bson.RegEx{peer, "i"},
+		},
+	}
+	//
+	myProject := bson.M{
+		"$project": bson.M{
+			"month":            bson.M{"$month": "$metadata.dt"},
+			"disposition":      "$metadata.disposition",
+			"call_monthly":     "$call_monthly",
+			"duration_monthly": "$duration_monthly",
+		},
+	}
+
+	myGroup := bson.M{
+		"$group": bson.M{
+			"_id":   "$month",
+			"datas": bson.M{"$addToSet": bson.M{"status": "$disposition", "callsCount": "$call_monthly", "duration": "$duration_monthly"}},
+		},
+	}
+
+	mySort := bson.M{
+		"$sort": bson.M{
+			"_id": 1,
+		},
+	}
+	//
+	operations := []bson.M{myMatch, myProject, myGroup, mySort}
+	pipe := incomming.Pipe(operations)
+	err := pipe.All(&results)
+	if err != nil {
+		panic(err)
+	}
+
+	return results
+}
+
+//month part for peers
+func doGetPeersMonthInDatasByDayAndPeer(day string, peer string, mongoDb *mgo.Database) []bson.M {
+	incomming := mongoDb.C("monthlyanalytics_incomming")
+	results := []bson.M{}
+	startDate, err := time.Parse(time.RFC3339, day)
+	if err != nil {
+		panic(err)
+	}
+	//
+	var myMatch bson.M
+	startDayDate := time.Date(startDate.Year(), startDate.Month(), 1, 1, 0, 0, 0, time.UTC)
+	//check if the did is set and use it
+	if len(peer) > 0 {
+		myMatch = bson.M{
+			"$match": bson.M{
+				"metadata.dt":  startDayDate,
+				"metadata.dst": bson.RegEx{peer, "i"},
+			},
+		}
+	} else {
+		myMatch = bson.M{
+			"$match": bson.M{
+				"metadata.dt": startDayDate,
+			},
+		}
+	}
+	//
+	myProject := bson.M{
+		"$project": bson.M{
+			"disposition":      "$metadata.disposition",
+			"duration_monthly": "$duration_monthly",
+			"calls_daily":      "$calls_daily",
+			"durations_daily":  "$durations_daily",
+		},
+	}
+
+	myGroup := bson.M{
+		"$group": bson.M{
+			"_id":   "$disposition",
+			"datas": bson.M{"$addToSet": bson.M{"callsDaily": "$calls_daily", "durationsDaily": "$durations_daily"}},
+		},
+	}
+
+	mySort := bson.M{
+		"$sort": bson.M{
+			"_id": 1,
+		},
+	}
+	//
+	operations := []bson.M{myMatch, myProject, myGroup, mySort}
+	pipe := incomming.Pipe(operations)
+	err = pipe.All(&results)
+	if err != nil {
+		panic(err)
+	}
+
+	return results
+}
+
+func GetPeersMonthInDatasByDay(day string, mongoDb *mgo.Database) []bson.M {
+	return doGetPeersMonthInDatasByDayAndPeer(day, "", mongoDb)
+}
+
+func GetPeersMonthInDatasByDayAndPeer(day string, peer string, mongoDb *mgo.Database) []bson.M {
+	return doGetPeersMonthInDatasByDayAndPeer(day, peer, mongoDb)
+}
+
+// outgoing peer datas
+func doGetPeersMonthOutDatasByDayAndPeer(day string, peer string, mongoDb *mgo.Database) []bson.M {
+	incomming := mongoDb.C("monthlyanalytics_outgoing")
+	results := []bson.M{}
+	startDate, err := time.Parse(time.RFC3339, day)
+	if err != nil {
+		panic(err)
+	}
+	//
+	var myMatch bson.M
+	startDayDate := time.Date(startDate.Year(), startDate.Month(), 1, 1, 0, 0, 0, time.UTC)
+	//check if the did is set and use it
+	if len(peer) > 0 {
+		myMatch = bson.M{
+			"$match": bson.M{
+				"metadata.dt":  startDayDate,
+				"metadata.dst": bson.RegEx{peer, "i"},
+			},
+		}
+	} else {
+		myMatch = bson.M{
+			"$match": bson.M{
+				"metadata.dt": startDayDate,
+			},
+		}
+	}
+	//
+	myProject := bson.M{
+		"$project": bson.M{
+			"disposition":      "$metadata.disposition",
+			"duration_monthly": "$duration_monthly",
+			"calls_daily":      "$calls_daily",
+			"durations_daily":  "$durations_daily",
+		},
+	}
+
+	myGroup := bson.M{
+		"$group": bson.M{
+			"_id":   "$disposition",
+			"datas": bson.M{"$addToSet": bson.M{"callsDaily": "$calls_daily", "durationsDaily": "$durations_daily"}},
+		},
+	}
+
+	mySort := bson.M{
+		"$sort": bson.M{
+			"_id": 1,
+		},
+	}
+	//
+	operations := []bson.M{myMatch, myProject, myGroup, mySort}
+	pipe := incomming.Pipe(operations)
+	err = pipe.All(&results)
+	if err != nil {
+		panic(err)
+	}
+
+	return results
+}
+
+func GetPeersMonthOutDatasByDay(day string, mongoDb *mgo.Database) []bson.M {
+	return doGetPeersMonthOutDatasByDayAndPeer(day, "", mongoDb)
+}
+
+func GetPeersMonthOutDatasByDayAndPeer(day string, peer string, mongoDb *mgo.Database) []bson.M {
+	return doGetPeersMonthOutDatasByDayAndPeer(day, peer, mongoDb)
+}
+
 //CRUD part
 func CreatePeer(id, value, comment string, mongoDb *mgo.Database) error {
 	peer, err := GetPeer(id, mongoDb)
@@ -718,7 +1130,6 @@ func CreatePeer(id, value, comment string, mongoDb *mgo.Database) error {
 		return err
 	}
 	var collection = mongoDb.C("peers")
-	//
 	//
 	newPeer := models.Peer{}
 	newPeer.Peer = id

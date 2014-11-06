@@ -19,8 +19,10 @@ Vérifier si l'application est en cours d'execution via console de supervisor : 
 Si l'application est en court d'exécution arrêter l'application : stop revor
 Quitter le console : exit
 
-Crée un lien symbolic ln -s /opt/revor/revor_[version] /opt/revor/current 
-
+Crée un lien symbolic ln -s /opt/revor/revor_[version]/opt/revor/current 
+> **NOTE:**
+>
+> - En cas si le répertoire existe /opt/vorimport/current. Supprimer rm -rf /opt/vorimport/current
 > **NOTE:**
 >
 > - En cas si le répertoire existe /opt/revor/current. Supprimer rm -rf /opt/revor/current

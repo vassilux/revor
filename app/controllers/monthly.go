@@ -29,6 +29,24 @@ func (c Monthly) IncommingDidCallsForMonthByDid(day string) revel.Result {
 	return c.RenderJson(results)
 }
 
+//Fetch all incomming calls for all dids by month days
+//return a json stream with calls on success otherwise http status 500
+func (c Monthly) IncommingDidCallsForMonthByMonthDays(day string) revel.Result {
+	revel.TRACE.Printf("[Monthly DID] Get month incomming call for all peers by month days [%s].\r\n", day)
+	results := mongo.GetDidsMonthCallsByDay(day, c.MongoDatabase)
+	revel.TRACE.Printf("[Monthly DID] Send to the client response of %d records.\r\n", len(results))
+	return c.RenderJson(results)
+}
+
+//Fetch all incomming calls for all dids by month days
+//return a json stream with calls on success otherwise http status 500
+func (c Monthly) IncommingDidCallsForMonthByMonthDaysAndDid(day string, did string) revel.Result {
+	revel.TRACE.Printf("[Monthly DID] Get month incomming call for the did [%s] and for the month [%s].\r\n", did, day)
+	results := mongo.GetDidsMonthCallsByDayAndDid(day, did, c.MongoDatabase)
+	revel.TRACE.Printf("[Monthly DID] Send to the client response of %d records.\r\n", len(results))
+	return c.RenderJson(results)
+}
+
 //Fetch all datas for peers
 //return a json stream with calls on success otherwise http status 500
 func (c Monthly) PeersDatas(day string) revel.Result {
@@ -53,5 +71,34 @@ func (c Monthly) PeerDatas(day string, user string) revel.Result {
 	results["inCalls"] = inCalls
 	results["outCalls"] = outCalls
 	revel.TRACE.Printf("[Monthly PEERDATAS] Send to the client response of %d records.\r\n", len(results))
+	return c.RenderJson(results)
+}
+
+//
+func (c Monthly) IncommingPeerDatasForMonthByMonthDays(day string) revel.Result {
+	revel.TRACE.Printf("[Monthly Peer] Incomming peers data for the month [%s].\r\n", day)
+	results := mongo.GetPeersMonthInDatasByDay(day, c.MongoDatabase)
+	revel.TRACE.Printf("[Monthly Peer] Send to the client response of %d records.\r\n", len(results))
+	return c.RenderJson(results)
+}
+
+func (c Monthly) IncommingPeerDatasForMonthByMonthDaysAndPeer(day string, peer string) revel.Result {
+	revel.TRACE.Printf("[Monthly Peer] Incomming peers data for the month [%s].\r\n", day)
+	results := mongo.GetPeersMonthInDatasByDayAndPeer(day, peer, c.MongoDatabase)
+	revel.TRACE.Printf("[Monthly Peer] Send to the client response of %d records.\r\n", len(results))
+	return c.RenderJson(results)
+}
+
+func (c Monthly) OutgoingPeerDatasForMonthByMonthDays(day string) revel.Result {
+	revel.TRACE.Printf("[Monthly Peer] Outgoing peers data for the month [%s].\r\n", day)
+	results := mongo.GetPeersMonthOutDatasByDay(day, c.MongoDatabase)
+	revel.TRACE.Printf("[Monthly Peer] Send to the client response of %d records.\r\n", len(results))
+	return c.RenderJson(results)
+}
+
+func (c Monthly) OutgoingPeerDatasForMonthByMonthDaysAndPeer(day string, peer string) revel.Result {
+	revel.TRACE.Printf("[Monthly Peer] Outgoing peers data for the month [%s].\r\n", day)
+	results := mongo.GetPeersMonthOutDatasByDayAndPeer(day, peer, c.MongoDatabase)
+	revel.TRACE.Printf("[Monthly Peer] Send to the client response of %d records.\r\n", len(results))
 	return c.RenderJson(results)
 }

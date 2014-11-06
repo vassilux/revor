@@ -39,13 +39,27 @@ GET     /daily/didincommingcallsbyhours/:day/:did	Daily.IncommingDidCallsByHourB
 #
 GET     /monthly/didincomming/:day/				    Monthly.IncommingDidCallsForMonthByDid
 GET     /monthly/didincomming/:day/:did				Monthly.IncommingDidCallsForMonthDid
+GET     /monthly/did/in/bydays/:day					Monthly.IncommingDidCallsForMonthByMonthDays
+GET     /monthly/did/in/bydays/:day/:did			Monthly.IncommingDidCallsForMonthByMonthDaysAndDid
 GET     /monthly/peerdatas/:day						Monthly.PeersDatas
 GET     /monthly/peerdatas/:day/:user			    Monthly.PeerDatas
+GET     /monthly/peer/in/bydays/:day				Monthly.IncommingPeerDatasForMonthByMonthDays
+GET     /monthly/peer/in/bydays/:day/:peer			Monthly.IncommingPeerDatasForMonthByMonthDaysAndPeer
+GET     /monthly/peer/out/bydays/:day				Monthly.OutgoingPeerDatasForMonthByMonthDays
+GET     /monthly/peer/out/bydays/:day/:peer			Monthly.OutgoingPeerDatasForMonthByMonthDaysAndPeer
 #
 GET     /yearly/didincomming/:year/				    Yearly.IncommingDidCallsForYearByDid
 GET     /yearly/didincomming/:year/:did				Yearly.IncommingDidCallsForYearDid
+GET     /yearly/did/in/bymonth/:year/				Yearly.IncommingDidCallsByMonth
+GET     /yearly/did/in/bymonth/:year/:did			Yearly.IncommingDidCallsByMonthAndDid
+GET		/yearly/did/bymonth/calls/:year				Yearly.DidCallsDataByMonthForYear
+GET		/yearly/did/bymonth/calls/:year/:did		Yearly.DidCallsDataByMonthForYearAndDid
 GET     /yearly/peerdatas/:year						Yearly.PeersDatas
 GET     /yearly/peerdatas/:year/:user			    Yearly.PeerDatas
+GET     /yearly/peer/in/bymonth/:year				Yearly.PeersInCallsByMonth
+GET     /yearly/peer/in/bymonth/:year/:peer		    Yearly.PeersInCallsByMonthAndPeer
+GET     /yearly/peer/out/bymonth/:year				Yearly.PeersOutCallsByMonth
+GET     /yearly/peer/out/bymonth/:year/:peer		Yearly.PeersOutCallsByMonthAndPeer
 #
 GET		/events										App.EventStream
 GET		/poll										App.EventPoll

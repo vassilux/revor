@@ -90,10 +90,12 @@ func (c Daily) PeersDatas(day string) revel.Result {
 	results := bson.M{}
 	inCalls := mongo.GetPeerInCalls(day, c.MongoDatabase)
 	outCalls := mongo.GetPeerOutCalls(day, c.MongoDatabase)
-	hourlyCalls := mongo.GetPeerInCallsByHours(day, c.MongoDatabase)
+	hourlyInCalls := mongo.GetPeerInCallsByHours(day, c.MongoDatabase)
+	hourlyOutCalls := mongo.GetPeerOutCallsByHours(day, c.MongoDatabase)
 	results["inCalls"] = inCalls
 	results["outCalls"] = outCalls
-	results["hourlyCalls"] = hourlyCalls
+	results["hourlyInCalls"] = hourlyInCalls
+	results["hourlyOutCalls"] = hourlyOutCalls
 	revel.TRACE.Printf("[Daily PEERSDATAS] Send to the client response of %d records.\r\n", len(results))
 	return c.RenderJson(results)
 }
@@ -106,10 +108,12 @@ func (c Daily) PeerDatas(day string, user string) revel.Result {
 	inCalls := mongo.GetPeerInCallsForUser(day, user, c.MongoDatabase)
 	revel.TRACE.Printf("[Daily PEERSDATAS] Get outgoing call for the given date [%s].\r\n", day)
 	outCalls := mongo.GetPeerOutCallsForUser(day, user, c.MongoDatabase)
-	hourlyCalls := mongo.GetPeerInCallsByHoursAndPeer(day, user, c.MongoDatabase)
+	hourlyInCalls := mongo.GetPeerInCallsByHoursAndPeer(day, user, c.MongoDatabase)
+	hourlyOutCalls := mongo.GetPeerOutCallsByHoursAndPeer(day, user, c.MongoDatabase)
 	results["inCalls"] = inCalls
 	results["outCalls"] = outCalls
-	results["hourlyCalls"] = hourlyCalls
+	results["hourlyInCalls"] = hourlyInCalls
+	results["hourlyOutCalls"] = hourlyOutCalls
 	revel.TRACE.Printf("[Daily PEERDATAS] Send to the client response of %d records.\r\n", len(results))
 	return c.RenderJson(results)
 }
