@@ -29,6 +29,10 @@ GET     /cdrs/:params                         	    Cdrs.CdrWithParams
 GET     /cdrdetails/:uniqueid                      	Cdrs.CdrDetails
 GET     /daily/peerdatas/:day						Daily.PeersDatas
 GET     /daily/peerdatas/:day/:user					Daily.PeerDatas
+GET     /daily/peer/in/genstats/:day/:tm   	    	Daily.IncommingPeerGenStatsByDay
+GET     /daily/peer/in/genstats/:day/:peer/:tm    	Daily.IncommingPeerGenStatsByDayAndPeer
+GET     /daily/peer/out/genstats/:day/:tm   	   	Daily.OutgoingPeerGenStatsByDay
+GET     /daily/peer/out/genstats/:day/:peer/:tm    	Daily.OutgoingPeerGenStatsByDayAndPeer
 GET     /daily/incomming							Daily.IncommingCalls
 GET     /daily/incomming/:day						Daily.IncommingCallsByDay
 GET     /daily/incomming/:day/:user					Daily.IncommingCallsByDayUser
@@ -62,10 +66,10 @@ GET     /yearly/peer/in/bymonth/:year				Yearly.PeersInCallsByMonth
 GET     /yearly/peer/in/bymonth/:year/:peer		    Yearly.PeersInCallsByMonthAndPeer
 GET     /yearly/peer/out/bymonth/:year				Yearly.PeersOutCallsByMonth
 GET     /yearly/peer/out/bymonth/:year/:peer		Yearly.PeersOutCallsByMonthAndPeer
-GET		/yearly/peer/bymonth/incalls/:year/:tm		Yearly.PeerInCallsDataByMonthForYear
-GET		/yearly/peer/bymonth/incalls/:year/:did/:tm	Yearly.PeerInCallsDataByMonthForYearAndDid
-GET		/yearly/peer/bymonth/outcalls/:year/:tm		Yearly.PeerOutCallsDataByMonthForYear
-GET		/yearly/peer/bymonth/outcalls/:year/:did/:tm	Yearly.PeerOutCallsDataByMonthForYearAndDid
+GET		/yearly/peer/in/bymonth/calls/:year/:tm		Yearly.PeerInCallsDataByMonthForYear
+GET		/yearly/peer/in/bymonth/calls/:year/:did/:tm	Yearly.PeerInCallsDataByMonthForYearAndDid
+GET		/yearly/peer/out/bymonth/calls/:year/:tm		Yearly.PeerOutCallsDataByMonthForYear
+GET		/yearly/peer/out/bymonth/calls/:year/:did/:tm	Yearly.PeerOutCallsDataByMonthForYearAndDid
 #
 GET		/events										App.EventStream
 GET		/poll										App.EventPoll

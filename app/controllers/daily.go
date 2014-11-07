@@ -129,3 +129,27 @@ func (c Daily) PeerDatas(day string, user string) revel.Result {
 	revel.TRACE.Printf("[Daily PEERDATAS] Send to the client response of %d records.\r\n", len(results))
 	return c.RenderJson(results)
 }
+
+func (c Daily) IncommingPeerGenStatsByDay(day string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Daily Peer] Get general incomming stats for the given date [%s].\r\n", day)
+	results := mongo.GetPeerGenStatsByDayAndPeer(day, "", "in", c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Daily) IncommingPeerGenStatsByDayAndPeer(day string, peer string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Daily Peer] Get general incomming stats for the given date [%s] and peer [%s].\r\n", day, peer)
+	results := mongo.GetPeerGenStatsByDayAndPeer(day, peer, "in", c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Daily) OutgoingPeerGenStatsByDay(day string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Daily Peer] Get general outgoing stats for the given date [%s].\r\n", day)
+	results := mongo.GetPeerGenStatsByDayAndPeer(day, "", "out", c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Daily) OutgoingPeerGenStatsByDayAndPeer(day string, peer string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Daily Peer] Get general outgoing stats for the given date [%s] and peer [%s].\r\n", day, peer)
+	results := mongo.GetPeerGenStatsByDayAndPeer(day, peer, "out", c.MongoDatabase)
+	return c.RenderJson(results)
+}

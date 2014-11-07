@@ -1124,6 +1124,91 @@ func GetPeerOutCallsDataByMonthForYearAndPeer(year int, peer string, mongoDb *mg
 	return GetPeerInOutCallsDataByMonthForYearAndPeer(year, peer, "out", mongoDb)
 }
 
+//To get general statistics for one day an if the peer number provide filter by the peer
+func GetPeerGenStatsByDayAndPeer(day string, peer string, inout string, mongoDb *mgo.Database) []bson.M {
+	var collectiionName string
+	results := []bson.M{}
+	if inout == "in" {
+		collectiionName = "dailyanalytics_incomming"
+	} else if inout == "out" {
+		collectiionName = "dailyanalytics_outgoing"
+	} else {
+		return results
+	}
+
+	targetCollection := mongoDb.C(collectiionName)
+
+	startDate, err := time.Parse(time.RFC3339, day)
+	if err != nil {
+		panic(err)
+	}
+	startDayDate := time.Date(startDate.Year(), startDate.Month(), startDate.Day(), 0, 0, 0, 0, time.UTC)
+	endDayDate := time.Date(startDate.Year(), startDate.Month(), startDate.Day(), 23, 59, 59, 0, time.UTC)
+	var myMatch bson.M
+
+	if len(peer) > 0 {
+		myMatch = bson.M{
+			"$match": bson.M{
+				"metadata.dt":  bson.M{"$gte": startDayDate, "$lte": endDayDate},
+				"metadata.dst": bson.RegEx{peer, "i"},
+			},
+		}
+	} else {
+		myMatch = bson.M{
+			"$match": bson.M{
+				"metadata.dt": bson.M{"$gte": startDayDate, "$lte": endDayDate},
+			},
+		}
+	}
+
+	//
+	myProject := bson.M{
+		"$project": bson.M{
+			"peer":             "$metadata.dst",
+			"disposition":      "$metadata.disposition",
+			"calls":            "$calls",
+			"duration":         "$duration",
+			"answer_wait_time": "$answer_wait_time",
+		},
+	}
+
+	myGroup := bson.M{
+		"$group": bson.M{
+			"_id":              bson.M{"peer": "$peer", "disposition": "$disposition"},
+			"calls":            bson.M{"$sum": "$calls"},
+			"durations":        bson.M{"$sum": "$duration"},
+			"answer_wait_time": bson.M{"$sum": "$answer_wait_time"},
+		},
+	}
+
+	mySort := bson.M{
+		"$sort": bson.M{
+			"_id": 1,
+		},
+	}
+
+	myProjectFinal := bson.M{
+		"$project": bson.M{
+			"_id":            0,
+			"peer":           "$_id.peer",
+			"disposition":    "$_id.disposition",
+			"calls":          "$calls",
+			"duration":       "$durations",
+			"answerWaitTime": "$answer_wait_time",
+		},
+	}
+
+	//
+	operations := []bson.M{myMatch, myProject, myGroup, mySort, myProjectFinal}
+	pipe := targetCollection.Pipe(operations)
+	err = pipe.All(&results)
+	if err != nil {
+		panic(err)
+	}
+
+	return results
+}
+
 //CRUD part
 func CreatePeer(id, value, comment string, mongoDb *mgo.Database) error {
 	peer, err := GetPeer(id, mongoDb)
