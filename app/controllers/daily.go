@@ -153,3 +153,40 @@ func (c Daily) OutgoingPeerGenStatsByDayAndPeer(day string, peer string, tmp int
 	results := mongo.GetPeerGenStatsByDayAndPeer(day, peer, "out", c.MongoDatabase)
 	return c.RenderJson(results)
 }
+
+func (c Daily) DidGetWeekStatsByDay(day string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Daily DID] Get weekly stats for the given date [%s].\r\n", day)
+	results := mongo.GetDidWeekStatsByDayAndDid(day, "", c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Daily) DidGetWeekStatsByDayAndDid(day string, did string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Daily DID] Get weekly stats for the given date [%s] and did [%s].\r\n", day, did)
+	results := mongo.GetDidWeekStatsByDayAndDid(day, did, c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Daily) PeerGetIncallsWeekStatsByDay(day string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Daily Peer] Get weekly calls stats for the given date [%s].\r\n", day)
+	results := mongo.GetPeerWeekCallStatsByDayAndPeer(day, "", "in", c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Daily) PeerGetIncallsWeekStatsByDayAndPeer(day string, peer string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Daily Peer] Get weekly calls stats for the given date [%s] and peer .\r\n", day, peer)
+	results := mongo.GetPeerWeekCallStatsByDayAndPeer(day, peer, "in", c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+//
+func (c Daily) PeerGetOutcallsWeekStatsByDay(day string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Daily Peer] Get weekly calls stats for the given date [%s].\r\n", day)
+	results := mongo.GetPeerWeekCallStatsByDayAndPeer(day, "", "out", c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Daily) PeerGetOutcallsWeekStatsByDayAndPeer(day string, peer string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Daily Peer] Get weekly calls stats for the given date [%s] and peer .\r\n", day, peer)
+	results := mongo.GetPeerWeekCallStatsByDayAndPeer(day, peer, "out", c.MongoDatabase)
+	return c.RenderJson(results)
+}

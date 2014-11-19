@@ -5,9 +5,9 @@ import (
 	"flag"
 	"reflect"
 	"github.com/revel/revel"
-	controllers1 "github.com/revel/revel/modules/static/app/controllers"
+	controllers0 "github.com/revel/revel/modules/static/app/controllers"
 	_ "github.com/revel/revel/modules/testrunner/app"
-	controllers0 "github.com/revel/revel/modules/testrunner/app/controllers"
+	controllers1 "github.com/revel/revel/modules/testrunner/app/controllers"
 	_ "revor/app"
 	_ "revor/app/broker"
 	controllers "revor/app/controllers"
@@ -196,7 +196,31 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers0.TestRunner)(nil),
+	revel.RegisterController((*controllers0.Static)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Serve",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "ServeModule",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "moduleName", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
+	revel.RegisterController((*controllers1.TestRunner)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
 				Name: "Index",
@@ -230,25 +254,42 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers1.Static)(nil),
+	revel.RegisterController((*controllers.Cdrs)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
-				Name: "Serve",
+				Name: "Cdrs",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
 			},
 			&revel.MethodType{
-				Name: "ServeModule",
+				Name: "CdrsWithDate",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "moduleName", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "start", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "end", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "CdrDetails",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "uniqueid", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "CdrWithParams",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "params", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+					113: []string{ 
+					},
+					122: []string{ 
+					},
 				},
 			},
 			
@@ -625,45 +666,61 @@ func main() {
 				RenderArgNames: map[int][]string{ 
 				},
 			},
-			
-		})
-	
-	revel.RegisterController((*controllers.Cdrs)(nil),
-		[]*revel.MethodType{
 			&revel.MethodType{
-				Name: "Cdrs",
+				Name: "DidGetWeekStatsByDay",
 				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "tmp", Type: reflect.TypeOf((*int)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
 			},
 			&revel.MethodType{
-				Name: "CdrsWithDate",
+				Name: "DidGetWeekStatsByDayAndDid",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "start", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "end", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "did", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "tmp", Type: reflect.TypeOf((*int)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
 			},
 			&revel.MethodType{
-				Name: "CdrDetails",
+				Name: "PeerGetIncallsWeekStatsByDay",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "uniqueid", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "tmp", Type: reflect.TypeOf((*int)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
 			},
 			&revel.MethodType{
-				Name: "CdrWithParams",
+				Name: "PeerGetIncallsWeekStatsByDayAndPeer",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "params", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "peer", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "tmp", Type: reflect.TypeOf((*int)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-					113: []string{ 
-					},
-					122: []string{ 
-					},
+				},
+			},
+			&revel.MethodType{
+				Name: "PeerGetOutcallsWeekStatsByDay",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "tmp", Type: reflect.TypeOf((*int)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "PeerGetOutcallsWeekStatsByDayAndPeer",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "peer", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "tmp", Type: reflect.TypeOf((*int)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
 				},
 			},
 			
@@ -679,14 +736,14 @@ func main() {
 		},
 	}
 	revel.TestSuites = []interface{}{ 
-		(*tests.DidTest)(nil),
-		(*tests.YearlyTest)(nil),
-		(*tests.DailyTest)(nil),
-		(*tests.PeerTest)(nil),
 		(*tests.UserTest)(nil),
 		(*tests.CdrTest)(nil),
 		(*tests.AppTest)(nil),
 		(*tests.MonthlyTest)(nil),
+		(*tests.DidTest)(nil),
+		(*tests.YearlyTest)(nil),
+		(*tests.DailyTest)(nil),
+		(*tests.PeerTest)(nil),
 	}
 
 	revel.Run(*port)

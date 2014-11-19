@@ -3,6 +3,7 @@ package mongo
 import (
 	"errors"
 	"fmt"
+	"github.com/jinzhu/now"
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
 	"revor/app/models"
@@ -627,6 +628,102 @@ func GetDidYearCallsByMonth(year int, mongoDb *mgo.Database) []bson.M {
 //Extract the numbers of calls by did for given date
 func GetDidYearCallsByMonthAndDid(year int, did string, mongoDb *mgo.Database) []bson.M {
 	return doGetDidYearCallsByMonthAndDid(year, did, mongoDb)
+}
+
+func doGetDidWeekStatsByDayAndDid(day string, did string, mongoDb *mgo.Database) []models.HourByDaysRecord {
+	incomming := mongoDb.C("dailydid_incomming")
+	results := []models.DayOfWeekCalls{}
+	requestedDate, err := time.Parse(time.RFC3339, day)
+	if err != nil {
+		panic(err)
+	}
+	mondayDate := now.New(requestedDate).Monday()
+	sundayDate := now.New(requestedDate).EndOfSunday()
+	//fmt.Printf(" monday %v \n", mondayDate)
+	//fmt.Printf(" sunday %v \n", sundayDate)
+	var myMatch bson.M
+
+	if len(did) > 0 {
+		myMatch = bson.M{
+			"$match": bson.M{
+				"metadata.dt":          bson.M{"$gte": mondayDate, "$lte": sundayDate},
+				"metadata.dst":         bson.RegEx{did, "i"},
+				"metadata.disposition": 16,
+			},
+		}
+	} else {
+		myMatch = bson.M{
+			"$match": bson.M{
+				"metadata.dt":          bson.M{"$gte": mondayDate, "$lte": sundayDate},
+				"metadata.disposition": 16,
+			},
+		}
+	}
+
+	//
+	myProject := bson.M{
+		"$project": bson.M{
+			"day":              bson.M{"$dayOfWeek": "$metadata.dt"},
+			"date":             "$metadata.dt",
+			"disposition":      "$metadata.disposition",
+			"calls":            "$calls",
+			"duration":         "$duration",
+			"answer_wait_time": "$answer_wait_time",
+			"calls_per_hours":  "$calls_per_hours",
+		},
+	}
+
+	myGroup := bson.M{
+		"$group": bson.M{
+			"_id":              bson.M{"day": "$day", "disposition": "$disposition", "date": "$date"},
+			"calls":            bson.M{"$sum": "$calls"},
+			"durations":        bson.M{"$sum": "$duration"},
+			"answer_wait_time": bson.M{"$sum": "$answer_wait_time"},
+			"callsPerHours":    bson.M{"$addToSet": bson.M{"hourlyCalls": "$calls_per_hours"}},
+		},
+	}
+
+	mySort := bson.M{
+		"$sort": bson.M{
+			"_id": 1,
+		},
+	}
+
+	myProjectFinal := bson.M{
+		"$project": bson.M{
+			"_id":            0,
+			"dayOfWeek":      "$_id.day",
+			"disposition":    "$_id.disposition",
+			"calls":          "$calls",
+			"duration":       "$durations",
+			"answerWaitTime": "$answer_wait_time",
+			"date":           "$_id.date",
+			"callsPerHours":  "$callsPerHours",
+		},
+	}
+	//
+	operations := []bson.M{myMatch, myProject, myGroup, mySort, myProjectFinal}
+	pipe := incomming.Pipe(operations)
+	err = pipe.All(&results)
+	if err != nil {
+		panic(err)
+	}
+	//
+	finalResults := make([]models.HourByDaysRecord, 24)
+	for i := 0; i < 24; i++ {
+		finalResults[i].Hour = fmt.Sprintf("%02d:00", i)
+	}
+	//
+	for j := 0; j < len(results); j++ {
+		//
+		results[j].MakeSummaryCallsPerHours()
+		results[j].PopulateHoursByDays(finalResults)
+	}
+	return finalResults
+}
+
+func GetDidWeekStatsByDayAndDid(day string, did string, mongoDb *mgo.Database) []models.HourByDaysRecord {
+	return doGetDidWeekStatsByDayAndDid(day, did, mongoDb)
 }
 
 //

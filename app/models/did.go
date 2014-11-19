@@ -5,7 +5,7 @@ import (
 )
 
 type Did struct {
-	Did     string `bson:"did"			   json:"did"`
+	Did     string `bson:"did"			    json:"did"`
 	Value   string `json:"value"			bson:"value"`
 	Comment string `json:"comment"			bson:"comment"`
 }

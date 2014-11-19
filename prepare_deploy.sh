@@ -10,7 +10,7 @@ set -e
 
 VER_MAJOR="1"
 VER_MINOR="0"
-VER_PATCH="0"
+VER_PATCH="2"
 
 DEPLOY_APP="revor"
 
@@ -33,9 +33,11 @@ cp -R "./samples/revor.supervisor.conf" "${DEPLOY_DIR}/samples/revor.supervisor.
 revel package "${DEPLOY_APP}"
 
 #
-pandoc -o "$DEPLOY_DIR/INSTALL.html" ./docs/Install.md
+pandoc -o "$DEPLOY_DIR/INSTALL.html" ./docs/INSTALL.md
+pandoc -o "$DEPLOY_DIR/ReleaseNotes.html" ./docs/ReleaseNotes.md
 #
 cp "$DEPLOY_DIR/INSTALL.html" .
+cp "$DEPLOY_DIR/ReleaseNotes.html" .
 #
 mv "${DEPLOY_APP}.tar.gz" "$DEPLOY_DIR"
 cd "${DEPLOY_DIR}"
@@ -43,6 +45,16 @@ tar xzf "${DEPLOY_APP}.tar.gz"
 rm -rf "${DEPLOY_APP}.tar.gz"
 cd ..
 tar czf "${DEPLOY_APP_VER}.tar.gz" ${DEPLOY_DIR}
+
+if [ ! -d releases ]; then
+        mkdir releases
+fi
+
+mv "${DEPLOY_APP_VER}.tar.gz" ./releases
+mv INSTALL.* ./releases
+mv ReleaseNotes.* ./releases
+
+rm -rf "$DEPLOY_DIR"
 
 
 rm -rf "${DEPLOY_APP_VER}"

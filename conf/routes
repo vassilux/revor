@@ -33,6 +33,10 @@ GET     /daily/peer/in/genstats/:day/:tm   	    	Daily.IncommingPeerGenStatsByDa
 GET     /daily/peer/in/genstats/:day/:peer/:tm    	Daily.IncommingPeerGenStatsByDayAndPeer
 GET     /daily/peer/out/genstats/:day/:tm   	   	Daily.OutgoingPeerGenStatsByDay
 GET     /daily/peer/out/genstats/:day/:peer/:tm    	Daily.OutgoingPeerGenStatsByDayAndPeer
+GET     /daily/peer/in/week/:day/:tm				Daily.PeerGetIncallsWeekStatsByDay
+GET     /daily/peer/in/week/:day/:peer/:tm			Daily.PeerGetIncallsWeekStatsByDayAndPeer
+GET     /daily/peer/out/week/:day/:tm				Daily.PeerGetOutcallsWeekStatsByDay
+GET     /daily/peer/out/week/:day/:peer/:tm			Daily.PeerGetOutcallsWeekStatsByDayAndPeer
 GET     /daily/incomming							Daily.IncommingCalls
 GET     /daily/incomming/:day						Daily.IncommingCallsByDay
 GET     /daily/incomming/:day/:user					Daily.IncommingCallsByDayUser
@@ -42,6 +46,8 @@ GET     /daily/did/in/calls/byhours/:day/		    Daily.IncommingDidCallsByHourByDi
 GET     /daily/did/in/calls/byhours/:day/:did	    Daily.IncommingDidCallsByHourByDayAndDid
 GET     /daily/did/genstats/:day/:tm   	    		Daily.DidGenStatsByDay
 GET     /daily/did/genstats/:day/:did/:tm    		Daily.DidGenStatsByDayAndDid
+GET     /daily/did/week/:day/:tm					Daily.DidGetWeekStatsByDay
+GET     /daily/did/week/:day/:did/:tm				Daily.DidGetWeekStatsByDayAndDid
 #
 GET     /monthly/didincomming/:day/				    Monthly.IncommingDidCallsForMonthByDid
 GET     /monthly/didincomming/:day/:did				Monthly.IncommingDidCallsForMonthDid
