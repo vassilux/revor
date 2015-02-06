@@ -639,8 +639,7 @@ func doGetDidWeekStatsByDayAndDid(day string, did string, mongoDb *mgo.Database)
 	}
 	mondayDate := now.New(requestedDate).Monday()
 	sundayDate := now.New(requestedDate).EndOfSunday()
-	//fmt.Printf(" monday %v \n", mondayDate)
-	//fmt.Printf(" sunday %v \n", sundayDate)
+
 	var myMatch bson.M
 
 	if len(did) > 0 {

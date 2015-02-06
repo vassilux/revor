@@ -6,14 +6,11 @@ import (
 	"reflect"
 	"github.com/revel/revel"
 	controllers0 "github.com/revel/revel/modules/static/app/controllers"
-	_ "github.com/revel/revel/modules/testrunner/app"
-	controllers1 "github.com/revel/revel/modules/testrunner/app/controllers"
 	_ "revor/app"
 	_ "revor/app/broker"
 	controllers "revor/app/controllers"
 	_ "revor/app/modules/mongo"
 	_ "revor/app/modules/utils"
-	tests "revor/tests"
 )
 
 var (
@@ -215,81 +212,6 @@ func main() {
 					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-				},
-			},
-			
-		})
-	
-	revel.RegisterController((*controllers1.TestRunner)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Index",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					46: []string{ 
-						"testSuites",
-					},
-				},
-			},
-			&revel.MethodType{
-				Name: "Run",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "suite", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "test", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-					69: []string{ 
-						"error",
-					},
-				},
-			},
-			&revel.MethodType{
-				Name: "List",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			
-		})
-	
-	revel.RegisterController((*controllers.Cdrs)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Cdrs",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "CdrsWithDate",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "start", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "end", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "CdrDetails",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "uniqueid", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "CdrWithParams",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "params", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-					113: []string{ 
-					},
-					122: []string{ 
-					},
 				},
 			},
 			
@@ -726,6 +648,47 @@ func main() {
 			
 		})
 	
+	revel.RegisterController((*controllers.Cdrs)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Cdrs",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "CdrsWithDate",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "start", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "end", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "CdrDetails",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "uniqueid", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "CdrWithParams",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "params", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+					113: []string{ 
+					},
+					122: []string{ 
+					},
+				},
+			},
+			
+		})
+	
 	revel.DefaultValidationKeys = map[string]map[int]string{ 
 		"revor/app/models.(*User).Validate": { 
 			29: "user.Username",
@@ -736,14 +699,6 @@ func main() {
 		},
 	}
 	revel.TestSuites = []interface{}{ 
-		(*tests.UserTest)(nil),
-		(*tests.CdrTest)(nil),
-		(*tests.AppTest)(nil),
-		(*tests.MonthlyTest)(nil),
-		(*tests.DidTest)(nil),
-		(*tests.YearlyTest)(nil),
-		(*tests.DailyTest)(nil),
-		(*tests.PeerTest)(nil),
 	}
 
 	revel.Run(*port)

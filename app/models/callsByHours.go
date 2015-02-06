@@ -50,8 +50,11 @@ type DayOfWeekCalls struct {
 func (D *DayOfWeekCalls) PopulateHoursByDays(results []HourByDaysRecord) {
 	for i := 0; i < len(results); i++ {
 		hourName := fmt.Sprintf("H%d", i)
-		dayName := fmt.Sprintf("Day%d", D.DayOfWeek)
+
+		dayName := fmt.Sprintf("Day%d", D.DayOfWeek-1)
+
 		valueHour, _ := reflections.GetField(D.SummaryCallsPerHours, hourName)
+
 		_ = reflections.SetField(&results[i], dayName, valueHour)
 	}
 }
