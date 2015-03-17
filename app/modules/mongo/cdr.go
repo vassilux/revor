@@ -100,7 +100,7 @@ func GetCdrs(paramsMap map[string]models.CdrSearchParam, mongoDb *mgo.Database) 
 		fmt.Printf("Add did parameter [%s].\r\n",
 			did.Data)
 		query["inout_status"] = 2
-		query["dnid"] = did.Data
+		query["did"] = did.Data
 	}
 
 	cdrs := mongoDb.C("cdrs")
