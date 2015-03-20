@@ -10,7 +10,7 @@ set -e
 
 VER_MAJOR="1"
 VER_MINOR="0"
-VER_PATCH="6"
+VER_PATCH="7"
 
 DEPLOY_APP="revor"
 
