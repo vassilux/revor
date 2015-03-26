@@ -1311,6 +1311,232 @@ func GetPeerWeekCallStatsByDayAndPeer(day string, peer string, inout string, mon
 	return finalResults
 }
 
+func GetPeerDispositionByDay(day string, inout string, peer string, mongoDb *mgo.Database) []bson.M {
+	var collectiionName string
+	results := []bson.M{}
+	if inout == "in" {
+		collectiionName = "dailypeer_incomming"
+	} else if inout == "out" {
+		collectiionName = "dailypeer_outgoing"
+	} else {
+		return results
+	}
+
+	targetCollection := mongoDb.C(collectiionName)
+
+	startDate, err := time.Parse(time.RFC3339, day)
+	if err != nil {
+		panic(err)
+	}
+	startDayDate := time.Date(startDate.Year(), startDate.Month(), startDate.Day(), 0, 0, 0, 0, time.UTC)
+	endDayDate := time.Date(startDate.Year(), startDate.Month(), startDate.Day(), 23, 59, 59, 0, time.UTC)
+	var myMatch bson.M
+
+	if len(peer) > 0 {
+		myMatch = bson.M{
+			"$match": bson.M{
+				"metadata.dt":  bson.M{"$gte": startDayDate, "$lte": endDayDate},
+				"metadata.dst": bson.RegEx{peer, "i"},
+			},
+		}
+	} else {
+		myMatch = bson.M{
+			"$match": bson.M{
+				"metadata.dt": bson.M{"$gte": startDayDate, "$lte": endDayDate},
+			},
+		}
+	}
+
+	//
+	myProject := bson.M{
+		"$project": bson.M{
+			"disposition": "$metadata.disposition",
+			"calls":       "$calls",
+		},
+	}
+
+	myGroup := bson.M{
+		"$group": bson.M{
+			"_id":   bson.M{"disposition": "$disposition"},
+			"calls": bson.M{"$sum": "$calls"},
+		},
+	}
+
+	mySort := bson.M{
+		"$sort": bson.M{
+			"_id": 1,
+		},
+	}
+
+	myProjectFinal := bson.M{
+		"$project": bson.M{
+			"_id":         0,
+			"disposition": "$_id.disposition",
+			"calls":       "$calls",
+		},
+	}
+
+	//
+	operations := []bson.M{myMatch, myProject, myGroup, mySort, myProjectFinal}
+	pipe := targetCollection.Pipe(operations)
+	err = pipe.All(&results)
+	if err != nil {
+		panic(err)
+	}
+
+	return results
+}
+
+func GetPeerDispositionByMonth(day string, inout string, peer string, mongoDb *mgo.Database) []bson.M {
+	var collectiionName string
+	results := []bson.M{}
+	if inout == "in" {
+		collectiionName = "monthlypeer_incomming"
+	} else if inout == "out" {
+		collectiionName = "monthlypeer_outgoing"
+	} else {
+		return results
+	}
+
+	targetCollection := mongoDb.C(collectiionName)
+
+	startDate, err := time.Parse(time.RFC3339, day)
+	if err != nil {
+		panic(err)
+	}
+
+	startDayDate := time.Date(startDate.Year(), startDate.Month(), 1, 1, 0, 0, 0, time.UTC)
+
+	var myMatch bson.M
+
+	if len(peer) > 0 {
+		myMatch = bson.M{
+			"$match": bson.M{
+				"metadata.dt":  startDayDate,
+				"metadata.dst": bson.RegEx{peer, "i"},
+			},
+		}
+	} else {
+		myMatch = bson.M{
+			"$match": bson.M{
+				"metadata.dt": startDayDate,
+			},
+		}
+	}
+
+	//
+	myProject := bson.M{
+		"$project": bson.M{
+			"disposition": "$metadata.disposition",
+			"calls":       "$calls",
+		},
+	}
+
+	myGroup := bson.M{
+		"$group": bson.M{
+			"_id":   bson.M{"disposition": "$disposition"},
+			"calls": bson.M{"$sum": "$calls"},
+		},
+	}
+
+	mySort := bson.M{
+		"$sort": bson.M{
+			"_id": 1,
+		},
+	}
+
+	myProjectFinal := bson.M{
+		"$project": bson.M{
+			"_id":         0,
+			"disposition": "$_id.disposition",
+			"calls":       "$calls",
+		},
+	}
+
+	//
+	operations := []bson.M{myMatch, myProject, myGroup, mySort, myProjectFinal}
+	pipe := targetCollection.Pipe(operations)
+	err = pipe.All(&results)
+	if err != nil {
+		panic(err)
+	}
+
+	return results
+}
+
+func GetPeerDispositionByYear(year int, inout string, peer string, mongoDb *mgo.Database) []bson.M {
+	var collectiionName string
+	results := []bson.M{}
+	if inout == "in" {
+		collectiionName = "monthlypeer_incomming"
+	} else if inout == "out" {
+		collectiionName = "monthlypeer_outgoing"
+	} else {
+		return results
+	}
+
+	targetCollection := mongoDb.C(collectiionName)
+
+	startDayDate := time.Date(year, 1, 1, 0, 0, 0, 0, time.UTC)
+	endDayDate := time.Date(year, 12, 31, 23, 59, 59, 0, time.UTC)
+
+	var myMatch bson.M
+
+	if len(peer) > 0 {
+		myMatch = bson.M{
+			"$match": bson.M{
+				"metadata.dt":  bson.M{"$gte": startDayDate, "$lte": endDayDate},
+				"metadata.dst": bson.RegEx{peer, "i"},
+			},
+		}
+	} else {
+		myMatch = bson.M{
+			"$match": bson.M{
+				"metadata.dt": bson.M{"$gte": startDayDate, "$lte": endDayDate},
+			},
+		}
+	}
+
+	//
+	myProject := bson.M{
+		"$project": bson.M{
+			"disposition": "$metadata.disposition",
+			"calls":       "$calls",
+		},
+	}
+
+	myGroup := bson.M{
+		"$group": bson.M{
+			"_id":   bson.M{"disposition": "$disposition"},
+			"calls": bson.M{"$sum": "$calls"},
+		},
+	}
+
+	mySort := bson.M{
+		"$sort": bson.M{
+			"_id": 1,
+		},
+	}
+
+	myProjectFinal := bson.M{
+		"$project": bson.M{
+			"_id":         0,
+			"disposition": "$_id.disposition",
+			"calls":       "$calls",
+		},
+	}
+
+	//
+	operations := []bson.M{myMatch, myProject, myGroup, mySort, myProjectFinal}
+	pipe := targetCollection.Pipe(operations)
+	err := pipe.All(&results)
+	if err != nil {
+		panic(err)
+	}
+
+	return results
+}
+
 //CRUD part
 func CreatePeer(id, value, comment string, mongoDb *mgo.Database) error {
 	peer, err := GetPeer(id, mongoDb)

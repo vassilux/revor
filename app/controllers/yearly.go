@@ -135,3 +135,27 @@ func (c Yearly) PeerOutCallsDataByMonthForYearAndDid(year int, did string, tm in
 	results := mongo.GetPeerOutCallsDataByMonthForYearAndPeer(year, did, c.MongoDatabase)
 	return c.RenderJson(results)
 }
+
+func (c Yearly) PeerGetInDispositionByYear(year int, tmp int) revel.Result {
+	revel.TRACE.Printf("[Yearly Peer] Get incalls disposition by year [%d].\r\n", year)
+	results := mongo.GetPeerDispositionByYear(year, "in", "", c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Yearly) PeerGetInDispositionByYearAndPeer(year int, peer string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Yearly Peer] Get incalls disposition by year [%d] and peer [%s].\r\n", year, peer)
+	results := mongo.GetPeerDispositionByYear(year, "in", peer, c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Yearly) PeerGetOutDispositionByYear(year int, tmp int) revel.Result {
+	revel.TRACE.Printf("[Yearly Peer] Get outcalls disposition by year [%d].\r\n", year)
+	results := mongo.GetPeerDispositionByYear(year, "out", "", c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Yearly) PeerGetOutDispositionByYearAndPeer(year int, peer string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Yearly Peer] Get outcalls disposition by year [%d] and peer [%s].\r\n", year, peer)
+	results := mongo.GetPeerDispositionByYear(year, "out", peer, c.MongoDatabase)
+	return c.RenderJson(results)
+}

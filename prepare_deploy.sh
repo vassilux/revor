@@ -8,15 +8,17 @@
 
 set -e
 
-VER_MAJOR="1"
-VER_MINOR="0"
-VER_PATCH="7"
+VERSION=$(cat VERSION)
 
 DEPLOY_APP="revor"
 
 
-DEPLOY_APP_VER="${DEPLOY_APP}_${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}"
+DEPLOY_APP_VER="${DEPLOY_APP}_${VERSION}"
 DEPLOY_DIR="${DEPLOY_APP_VER}"
+#
+if [ -d releases ]; then
+        rm -rf  releases
+fi
 #
 if [ -d "${DEPLOY_DIR}" ]; then
 	rm -rf ${DEPLOY_DIR}

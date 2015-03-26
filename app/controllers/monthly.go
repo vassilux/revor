@@ -102,3 +102,27 @@ func (c Monthly) OutgoingPeerDatasForMonthByMonthDaysAndPeer(day string, peer st
 	revel.TRACE.Printf("[Monthly Peer] Send to the client response of %d records.\r\n", len(results))
 	return c.RenderJson(results)
 }
+
+func (c Monthly) PeerGetInDispositionByMonth(day string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Monthly Peer] Get incalls disposition by month [%s].\r\n", day)
+	results := mongo.GetPeerDispositionByMonth(day, "in", "", c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Monthly) PeerGetInDispositionByMonthAndPeer(day string, peer string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Monthly Peer] Get incalls disposition by month [%s] and peer [%s].\r\n", day, peer)
+	results := mongo.GetPeerDispositionByMonth(day, "in", peer, c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Monthly) PeerGetOutDispositionByMonth(day string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Monthly Peer] Get outcalls disposition by month [%s].\r\n", day)
+	results := mongo.GetPeerDispositionByMonth(day, "out", "", c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Monthly) PeerGetOutDispositionByMonthAndPeer(day string, peer string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Monthly Peer] Get outcalls disposition by month [%s] and peer [%s].\r\n", day, peer)
+	results := mongo.GetPeerDispositionByMonth(day, "out", peer, c.MongoDatabase)
+	return c.RenderJson(results)
+}

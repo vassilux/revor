@@ -186,7 +186,31 @@ func (c Daily) PeerGetOutcallsWeekStatsByDay(day string, tmp int) revel.Result {
 }
 
 func (c Daily) PeerGetOutcallsWeekStatsByDayAndPeer(day string, peer string, tmp int) revel.Result {
-	revel.TRACE.Printf("[Daily Peer] Get weekly calls stats for the given date [%s] and peer .\r\n", day, peer)
+	revel.TRACE.Printf("[Daily Peer] Get weekly calls stats for the given date [%s] and peer [%s].\r\n", day, peer)
 	results := mongo.GetPeerWeekCallStatsByDayAndPeer(day, peer, "out", c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Daily) PeerGetInDispositionByDay(day string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Daily Peer] Get incalls disposition by day [%s].\r\n", day)
+	results := mongo.GetPeerDispositionByDay(day, "in", "", c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Daily) PeerGetInDispositionByDayAndPeer(day string, peer string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Daily Peer] Get incalls disposition by day [%s] and peer [%s].\r\n", day, peer)
+	results := mongo.GetPeerDispositionByDay(day, "in", peer, c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Daily) PeerGetOutDispositionByDay(day string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Daily Peer] Get outcalls disposition by day [%s].\r\n", day)
+	results := mongo.GetPeerDispositionByDay(day, "out", "", c.MongoDatabase)
+	return c.RenderJson(results)
+}
+
+func (c Daily) PeerGetOutDispositionByDayAndPeer(day string, peer string, tmp int) revel.Result {
+	revel.TRACE.Printf("[Daily Peer] Get outcalls disposition by day [%s] and peer [%s].\r\n", day, peer)
+	results := mongo.GetPeerDispositionByDay(day, "out", peer, c.MongoDatabase)
 	return c.RenderJson(results)
 }

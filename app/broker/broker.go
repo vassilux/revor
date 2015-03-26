@@ -88,14 +88,18 @@ func (b *Broker) Start() {
 func processFetchEvens() {
 	session, db := mongo.GetDatabase()
 	timenow := time.Now()
-	var currentDateString = timenow.Format(time.RFC3339)
+	var currentDateString = timenow.Format(time.RFC3339) //"2015-03-21T23:59:59Z"
 	didCalls := mongo.GetDidCalls(currentDateString, db)
 	peerInCalls := mongo.GetPeerInCalls(currentDateString, db)
 	peerOutCalls := mongo.GetPeerOutCalls(currentDateString, db)
+	peerInCallsDisp := mongo.GetPeerDispositionByDay(currentDateString, "in", "", db)
+	peerOutCallsDisp := mongo.GetPeerDispositionByDay(currentDateString, "out", "", db)
 	results := bson.M{
-		"didCalls":     didCalls,
-		"peerInCalls":  peerInCalls,
-		"peerOutCalls": peerOutCalls,
+		"didCalls":         didCalls,
+		"peerInCalls":      peerInCalls,
+		"peerOutCalls":     peerOutCalls,
+		"peerInCallsDisp":  peerInCallsDisp,
+		"peerOutCallsDisp": peerOutCallsDisp,
 	}
 	data, err := json.Marshal(results)
 	if err == nil {

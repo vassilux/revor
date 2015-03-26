@@ -220,6 +220,159 @@ func (_ tStatic) ServeModule(
 }
 
 
+type tMonthly struct {}
+var Monthly tMonthly
+
+
+func (_ tMonthly) IncommingDidCallsForMonthDid(
+		day string,
+		did string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "did", did)
+	return revel.MainRouter.Reverse("Monthly.IncommingDidCallsForMonthDid", args).Url
+}
+
+func (_ tMonthly) IncommingDidCallsForMonthByDid(
+		day string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	return revel.MainRouter.Reverse("Monthly.IncommingDidCallsForMonthByDid", args).Url
+}
+
+func (_ tMonthly) IncommingDidCallsForMonthByMonthDays(
+		day string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	return revel.MainRouter.Reverse("Monthly.IncommingDidCallsForMonthByMonthDays", args).Url
+}
+
+func (_ tMonthly) IncommingDidCallsForMonthByMonthDaysAndDid(
+		day string,
+		did string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "did", did)
+	return revel.MainRouter.Reverse("Monthly.IncommingDidCallsForMonthByMonthDaysAndDid", args).Url
+}
+
+func (_ tMonthly) PeersDatas(
+		day string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	return revel.MainRouter.Reverse("Monthly.PeersDatas", args).Url
+}
+
+func (_ tMonthly) PeerDatas(
+		day string,
+		user string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "user", user)
+	return revel.MainRouter.Reverse("Monthly.PeerDatas", args).Url
+}
+
+func (_ tMonthly) IncommingPeerDatasForMonthByMonthDays(
+		day string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	return revel.MainRouter.Reverse("Monthly.IncommingPeerDatasForMonthByMonthDays", args).Url
+}
+
+func (_ tMonthly) IncommingPeerDatasForMonthByMonthDaysAndPeer(
+		day string,
+		peer string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "peer", peer)
+	return revel.MainRouter.Reverse("Monthly.IncommingPeerDatasForMonthByMonthDaysAndPeer", args).Url
+}
+
+func (_ tMonthly) OutgoingPeerDatasForMonthByMonthDays(
+		day string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	return revel.MainRouter.Reverse("Monthly.OutgoingPeerDatasForMonthByMonthDays", args).Url
+}
+
+func (_ tMonthly) OutgoingPeerDatasForMonthByMonthDaysAndPeer(
+		day string,
+		peer string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "peer", peer)
+	return revel.MainRouter.Reverse("Monthly.OutgoingPeerDatasForMonthByMonthDaysAndPeer", args).Url
+}
+
+func (_ tMonthly) PeerGetInDispositionByMonth(
+		day string,
+		tmp int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "tmp", tmp)
+	return revel.MainRouter.Reverse("Monthly.PeerGetInDispositionByMonth", args).Url
+}
+
+func (_ tMonthly) PeerGetInDispositionByMonthAndPeer(
+		day string,
+		peer string,
+		tmp int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "peer", peer)
+	revel.Unbind(args, "tmp", tmp)
+	return revel.MainRouter.Reverse("Monthly.PeerGetInDispositionByMonthAndPeer", args).Url
+}
+
+func (_ tMonthly) PeerGetOutDispositionByMonth(
+		day string,
+		tmp int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "tmp", tmp)
+	return revel.MainRouter.Reverse("Monthly.PeerGetOutDispositionByMonth", args).Url
+}
+
+func (_ tMonthly) PeerGetOutDispositionByMonthAndPeer(
+		day string,
+		peer string,
+		tmp int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "peer", peer)
+	revel.Unbind(args, "tmp", tmp)
+	return revel.MainRouter.Reverse("Monthly.PeerGetOutDispositionByMonthAndPeer", args).Url
+}
+
+
 type tYearly struct {}
 var Yearly tYearly
 
@@ -394,6 +547,54 @@ func (_ tYearly) PeerOutCallsDataByMonthForYearAndDid(
 	revel.Unbind(args, "did", did)
 	revel.Unbind(args, "tm", tm)
 	return revel.MainRouter.Reverse("Yearly.PeerOutCallsDataByMonthForYearAndDid", args).Url
+}
+
+func (_ tYearly) PeerGetInDispositionByYear(
+		year int,
+		tmp int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "year", year)
+	revel.Unbind(args, "tmp", tmp)
+	return revel.MainRouter.Reverse("Yearly.PeerGetInDispositionByYear", args).Url
+}
+
+func (_ tYearly) PeerGetInDispositionByYearAndPeer(
+		year int,
+		peer string,
+		tmp int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "year", year)
+	revel.Unbind(args, "peer", peer)
+	revel.Unbind(args, "tmp", tmp)
+	return revel.MainRouter.Reverse("Yearly.PeerGetInDispositionByYearAndPeer", args).Url
+}
+
+func (_ tYearly) PeerGetOutDispositionByYear(
+		year int,
+		tmp int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "year", year)
+	revel.Unbind(args, "tmp", tmp)
+	return revel.MainRouter.Reverse("Yearly.PeerGetOutDispositionByYear", args).Url
+}
+
+func (_ tYearly) PeerGetOutDispositionByYearAndPeer(
+		year int,
+		peer string,
+		tmp int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "year", year)
+	revel.Unbind(args, "peer", peer)
+	revel.Unbind(args, "tmp", tmp)
+	return revel.MainRouter.Reverse("Yearly.PeerGetOutDispositionByYearAndPeer", args).Url
 }
 
 
@@ -632,6 +833,54 @@ func (_ tDaily) PeerGetOutcallsWeekStatsByDayAndPeer(
 	return revel.MainRouter.Reverse("Daily.PeerGetOutcallsWeekStatsByDayAndPeer", args).Url
 }
 
+func (_ tDaily) PeerGetInDispositionByDay(
+		day string,
+		tmp int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "tmp", tmp)
+	return revel.MainRouter.Reverse("Daily.PeerGetInDispositionByDay", args).Url
+}
+
+func (_ tDaily) PeerGetInDispositionByDayAndPeer(
+		day string,
+		peer string,
+		tmp int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "peer", peer)
+	revel.Unbind(args, "tmp", tmp)
+	return revel.MainRouter.Reverse("Daily.PeerGetInDispositionByDayAndPeer", args).Url
+}
+
+func (_ tDaily) PeerGetOutDispositionByDay(
+		day string,
+		tmp int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "tmp", tmp)
+	return revel.MainRouter.Reverse("Daily.PeerGetOutDispositionByDay", args).Url
+}
+
+func (_ tDaily) PeerGetOutDispositionByDayAndPeer(
+		day string,
+		peer string,
+		tmp int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "peer", peer)
+	revel.Unbind(args, "tmp", tmp)
+	return revel.MainRouter.Reverse("Daily.PeerGetOutDispositionByDayAndPeer", args).Url
+}
+
 
 type tCdrs struct {}
 var Cdrs tCdrs
@@ -671,111 +920,6 @@ func (_ tCdrs) CdrWithParams(
 	
 	revel.Unbind(args, "params", params)
 	return revel.MainRouter.Reverse("Cdrs.CdrWithParams", args).Url
-}
-
-
-type tMonthly struct {}
-var Monthly tMonthly
-
-
-func (_ tMonthly) IncommingDidCallsForMonthDid(
-		day string,
-		did string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	revel.Unbind(args, "did", did)
-	return revel.MainRouter.Reverse("Monthly.IncommingDidCallsForMonthDid", args).Url
-}
-
-func (_ tMonthly) IncommingDidCallsForMonthByDid(
-		day string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	return revel.MainRouter.Reverse("Monthly.IncommingDidCallsForMonthByDid", args).Url
-}
-
-func (_ tMonthly) IncommingDidCallsForMonthByMonthDays(
-		day string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	return revel.MainRouter.Reverse("Monthly.IncommingDidCallsForMonthByMonthDays", args).Url
-}
-
-func (_ tMonthly) IncommingDidCallsForMonthByMonthDaysAndDid(
-		day string,
-		did string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	revel.Unbind(args, "did", did)
-	return revel.MainRouter.Reverse("Monthly.IncommingDidCallsForMonthByMonthDaysAndDid", args).Url
-}
-
-func (_ tMonthly) PeersDatas(
-		day string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	return revel.MainRouter.Reverse("Monthly.PeersDatas", args).Url
-}
-
-func (_ tMonthly) PeerDatas(
-		day string,
-		user string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	revel.Unbind(args, "user", user)
-	return revel.MainRouter.Reverse("Monthly.PeerDatas", args).Url
-}
-
-func (_ tMonthly) IncommingPeerDatasForMonthByMonthDays(
-		day string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	return revel.MainRouter.Reverse("Monthly.IncommingPeerDatasForMonthByMonthDays", args).Url
-}
-
-func (_ tMonthly) IncommingPeerDatasForMonthByMonthDaysAndPeer(
-		day string,
-		peer string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	revel.Unbind(args, "peer", peer)
-	return revel.MainRouter.Reverse("Monthly.IncommingPeerDatasForMonthByMonthDaysAndPeer", args).Url
-}
-
-func (_ tMonthly) OutgoingPeerDatasForMonthByMonthDays(
-		day string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	return revel.MainRouter.Reverse("Monthly.OutgoingPeerDatasForMonthByMonthDays", args).Url
-}
-
-func (_ tMonthly) OutgoingPeerDatasForMonthByMonthDaysAndPeer(
-		day string,
-		peer string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "day", day)
-	revel.Unbind(args, "peer", peer)
-	return revel.MainRouter.Reverse("Monthly.OutgoingPeerDatasForMonthByMonthDaysAndPeer", args).Url
 }
 
 
