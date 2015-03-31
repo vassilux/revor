@@ -372,6 +372,30 @@ func (_ tMonthly) PeerGetOutDispositionByMonthAndPeer(
 	return revel.MainRouter.Reverse("Monthly.PeerGetOutDispositionByMonthAndPeer", args).Url
 }
 
+func (_ tMonthly) PeerGetGlobalStatsByMonth(
+		day string,
+		tmp int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "tmp", tmp)
+	return revel.MainRouter.Reverse("Monthly.PeerGetGlobalStatsByMonth", args).Url
+}
+
+func (_ tMonthly) PeerGetGlobalStatsByMonthAndPeer(
+		day string,
+		peer string,
+		tmp int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "peer", peer)
+	revel.Unbind(args, "tmp", tmp)
+	return revel.MainRouter.Reverse("Monthly.PeerGetGlobalStatsByMonthAndPeer", args).Url
+}
+
 
 type tYearly struct {}
 var Yearly tYearly
@@ -512,17 +536,17 @@ func (_ tYearly) PeerInCallsDataByMonthForYear(
 	return revel.MainRouter.Reverse("Yearly.PeerInCallsDataByMonthForYear", args).Url
 }
 
-func (_ tYearly) PeerInCallsDataByMonthForYearAndDid(
+func (_ tYearly) PeerInCallsDataByMonthForYearAndPeer(
 		year int,
-		did string,
+		peer string,
 		tm int,
 		) string {
 	args := make(map[string]string)
 	
 	revel.Unbind(args, "year", year)
-	revel.Unbind(args, "did", did)
+	revel.Unbind(args, "peer", peer)
 	revel.Unbind(args, "tm", tm)
-	return revel.MainRouter.Reverse("Yearly.PeerInCallsDataByMonthForYearAndDid", args).Url
+	return revel.MainRouter.Reverse("Yearly.PeerInCallsDataByMonthForYearAndPeer", args).Url
 }
 
 func (_ tYearly) PeerOutCallsDataByMonthForYear(
@@ -536,17 +560,17 @@ func (_ tYearly) PeerOutCallsDataByMonthForYear(
 	return revel.MainRouter.Reverse("Yearly.PeerOutCallsDataByMonthForYear", args).Url
 }
 
-func (_ tYearly) PeerOutCallsDataByMonthForYearAndDid(
+func (_ tYearly) PeerOutCallsDataByMonthForYearAndPeer(
 		year int,
-		did string,
+		peer string,
 		tm int,
 		) string {
 	args := make(map[string]string)
 	
 	revel.Unbind(args, "year", year)
-	revel.Unbind(args, "did", did)
+	revel.Unbind(args, "peer", peer)
 	revel.Unbind(args, "tm", tm)
-	return revel.MainRouter.Reverse("Yearly.PeerOutCallsDataByMonthForYearAndDid", args).Url
+	return revel.MainRouter.Reverse("Yearly.PeerOutCallsDataByMonthForYearAndPeer", args).Url
 }
 
 func (_ tYearly) PeerGetInDispositionByYear(
@@ -595,6 +619,30 @@ func (_ tYearly) PeerGetOutDispositionByYearAndPeer(
 	revel.Unbind(args, "peer", peer)
 	revel.Unbind(args, "tmp", tmp)
 	return revel.MainRouter.Reverse("Yearly.PeerGetOutDispositionByYearAndPeer", args).Url
+}
+
+func (_ tYearly) PeerGetGlobalStatsByYear(
+		year int,
+		tmp int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "year", year)
+	revel.Unbind(args, "tmp", tmp)
+	return revel.MainRouter.Reverse("Yearly.PeerGetGlobalStatsByYear", args).Url
+}
+
+func (_ tYearly) PeerGetGlobalStatsByYearAndPeer(
+		year int,
+		peer string,
+		tmp int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "year", year)
+	revel.Unbind(args, "peer", peer)
+	revel.Unbind(args, "tmp", tmp)
+	return revel.MainRouter.Reverse("Yearly.PeerGetGlobalStatsByYearAndPeer", args).Url
 }
 
 
@@ -879,6 +927,30 @@ func (_ tDaily) PeerGetOutDispositionByDayAndPeer(
 	revel.Unbind(args, "peer", peer)
 	revel.Unbind(args, "tmp", tmp)
 	return revel.MainRouter.Reverse("Daily.PeerGetOutDispositionByDayAndPeer", args).Url
+}
+
+func (_ tDaily) PeerGetGlobalStatsByDay(
+		day string,
+		tmp int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "tmp", tmp)
+	return revel.MainRouter.Reverse("Daily.PeerGetGlobalStatsByDay", args).Url
+}
+
+func (_ tDaily) PeerGetGlobalStatsByDayAndPeer(
+		day string,
+		peer string,
+		tmp int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "day", day)
+	revel.Unbind(args, "peer", peer)
+	revel.Unbind(args, "tmp", tmp)
+	return revel.MainRouter.Reverse("Daily.PeerGetGlobalStatsByDayAndPeer", args).Url
 }
 
 

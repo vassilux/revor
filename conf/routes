@@ -41,6 +41,9 @@ GET     /daily/peer/in/disposition/:day/:tm			Daily.PeerGetInDispositionByDay
 GET     /daily/peer/in/disposition/:day/:peer/:tm   Daily.PeerGetInDispositionByDayAndPeer
 GET     /daily/peer/out/disposition/:day/:tm		Daily.PeerGetOutDispositionByDay
 GET     /daily/peer/out/disposition/:day/:peer/:tm	Daily.PeerGetOutDispositionByDayAndPeer
+GET     /daily/peer/globalstats/:day/:tm			Daily.PeerGetGlobalStatsByDay
+GET		/daily/peer/globalstats/:day/:peer/:tm		Daily.PeerGetGlobalStatsByDayAndPeer
+
 GET     /daily/incomming							Daily.IncommingCalls
 GET     /daily/incomming/:day						Daily.IncommingCallsByDay
 GET     /daily/incomming/:day/:user					Daily.IncommingCallsByDayUser
@@ -67,6 +70,8 @@ GET     /monthly/peer/in/disposition/:day/:tm			Monthly.PeerGetInDispositionByMo
 GET     /monthly/peer/in/disposition/:day/:peer/:tm     Monthly.PeerGetInDispositionByMonthAndPeer
 GET     /monthly/peer/out/disposition/:day/:tm		    Monthly.PeerGetOutDispositionByMonth
 GET     /monthly/peer/out/disposition/:day/:peer/:tm	Monthly.PeerGetOutDispositionByMonthAndPeer
+GET     /monthly/peer/globalstats/:day/:tm				Monthly.PeerGetGlobalStatsByMonth
+GET		/monthly/peer/globalstats/:day/:peer/:tm		Monthly.PeerGetGlobalStatsByMonthAndPeer
 #
 GET     /yearly/didincomming/:year/				    Yearly.IncommingDidCallsForYearByDid
 GET     /yearly/didincomming/:year/:did				Yearly.IncommingDidCallsForYearDid
@@ -81,14 +86,16 @@ GET     /yearly/peer/in/bymonth/:year/:peer		    Yearly.PeersInCallsByMonthAndPe
 GET     /yearly/peer/out/bymonth/:year				Yearly.PeersOutCallsByMonth
 GET     /yearly/peer/out/bymonth/:year/:peer		Yearly.PeersOutCallsByMonthAndPeer
 GET		/yearly/peer/in/bymonth/calls/:year/:tm		Yearly.PeerInCallsDataByMonthForYear
-GET		/yearly/peer/in/bymonth/calls/:year/:did/:tm	Yearly.PeerInCallsDataByMonthForYearAndDid
+GET		/yearly/peer/in/bymonth/calls/:year/:peer/:tm	Yearly.PeerInCallsDataByMonthForYearAndPeer
 GET		/yearly/peer/out/bymonth/calls/:year/:tm		Yearly.PeerOutCallsDataByMonthForYear
-GET		/yearly/peer/out/bymonth/calls/:year/:did/:tm	Yearly.PeerOutCallsDataByMonthForYearAndDid
+GET		/yearly/peer/out/bymonth/calls/:year/:peer/:tm	Yearly.PeerOutCallsDataByMonthForYearAndPeer
 
 GET     /yearly/peer/in/disposition/:year/:tm			Yearly.PeerGetInDispositionByYear
 GET     /yearly/peer/in/disposition/:year/:peer/:tm     Yearly.PeerGetInDispositionByYearAndPeer
 GET     /yearly/peer/out/disposition/:year/:tm		    Yearly.PeerGetOutDispositionByYear
 GET     /yearly/peer/out/disposition/:year/:peer/:tm	Yearly.PeerGetOutDispositionByYearAndPeer
+GET     /yearly/peer/globalstats/:year/:tm				Yearly.PeerGetGlobalStatsByYear
+GET		/yearly/peer/globalstats/:year/:peer/:tm		Yearly.PeerGetGlobalStatsByYearAndPeer
 
 #
 GET		/events										App.EventStream

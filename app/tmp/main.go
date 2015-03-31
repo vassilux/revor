@@ -342,6 +342,25 @@ func main() {
 				RenderArgNames: map[int][]string{ 
 				},
 			},
+			&revel.MethodType{
+				Name: "PeerGetGlobalStatsByMonth",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "tmp", Type: reflect.TypeOf((*int)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "PeerGetGlobalStatsByMonthAndPeer",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "peer", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "tmp", Type: reflect.TypeOf((*int)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
 			
 		})
 	
@@ -461,10 +480,10 @@ func main() {
 				},
 			},
 			&revel.MethodType{
-				Name: "PeerInCallsDataByMonthForYearAndDid",
+				Name: "PeerInCallsDataByMonthForYearAndPeer",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "year", Type: reflect.TypeOf((*int)(nil)) },
-					&revel.MethodArg{Name: "did", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "peer", Type: reflect.TypeOf((*string)(nil)) },
 					&revel.MethodArg{Name: "tm", Type: reflect.TypeOf((*int)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
@@ -480,10 +499,10 @@ func main() {
 				},
 			},
 			&revel.MethodType{
-				Name: "PeerOutCallsDataByMonthForYearAndDid",
+				Name: "PeerOutCallsDataByMonthForYearAndPeer",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "year", Type: reflect.TypeOf((*int)(nil)) },
-					&revel.MethodArg{Name: "did", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "peer", Type: reflect.TypeOf((*string)(nil)) },
 					&revel.MethodArg{Name: "tm", Type: reflect.TypeOf((*int)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
@@ -519,6 +538,25 @@ func main() {
 			},
 			&revel.MethodType{
 				Name: "PeerGetOutDispositionByYearAndPeer",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "year", Type: reflect.TypeOf((*int)(nil)) },
+					&revel.MethodArg{Name: "peer", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "tmp", Type: reflect.TypeOf((*int)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "PeerGetGlobalStatsByYear",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "year", Type: reflect.TypeOf((*int)(nil)) },
+					&revel.MethodArg{Name: "tmp", Type: reflect.TypeOf((*int)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "PeerGetGlobalStatsByYearAndPeer",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "year", Type: reflect.TypeOf((*int)(nil)) },
 					&revel.MethodArg{Name: "peer", Type: reflect.TypeOf((*string)(nil)) },
@@ -751,6 +789,25 @@ func main() {
 			},
 			&revel.MethodType{
 				Name: "PeerGetOutDispositionByDayAndPeer",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "peer", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "tmp", Type: reflect.TypeOf((*int)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "PeerGetGlobalStatsByDay",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "tmp", Type: reflect.TypeOf((*int)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "PeerGetGlobalStatsByDayAndPeer",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "day", Type: reflect.TypeOf((*string)(nil)) },
 					&revel.MethodArg{Name: "peer", Type: reflect.TypeOf((*string)(nil)) },

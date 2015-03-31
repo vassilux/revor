@@ -118,9 +118,9 @@ func (c Yearly) PeerInCallsDataByMonthForYear(year int, tm int) revel.Result {
 	return c.RenderJson(results)
 }
 
-func (c Yearly) PeerInCallsDataByMonthForYearAndDid(year int, did string, tm int) revel.Result {
-	revel.TRACE.Printf("[Yearly Peer] Get calls data for dids for the given year [%d].\r\n", year)
-	results := mongo.GetPeerInCallsDataByMonthForYearAndPeer(year, did, c.MongoDatabase)
+func (c Yearly) PeerInCallsDataByMonthForYearAndPeer(year int, peer string, tm int) revel.Result {
+	revel.TRACE.Printf("[Yearly Peer] Get calls data for dids for the given year [%d] and peer [%s].\r\n", year, peer)
+	results := mongo.GetPeerInCallsDataByMonthForYearAndPeer(year, peer, c.MongoDatabase)
 	return c.RenderJson(results)
 }
 
@@ -130,9 +130,9 @@ func (c Yearly) PeerOutCallsDataByMonthForYear(year int, tm int) revel.Result {
 	return c.RenderJson(results)
 }
 
-func (c Yearly) PeerOutCallsDataByMonthForYearAndDid(year int, did string, tm int) revel.Result {
-	revel.TRACE.Printf("[Yearly Peer] Get calls data for dids for the given year [%d].\r\n", year)
-	results := mongo.GetPeerOutCallsDataByMonthForYearAndPeer(year, did, c.MongoDatabase)
+func (c Yearly) PeerOutCallsDataByMonthForYearAndPeer(year int, peer string, tm int) revel.Result {
+	revel.TRACE.Printf("[Yearly Peer] Get calls data for dids for the given year [%d] and peer [%s].\r\n", year, peer)
+	results := mongo.GetPeerOutCallsDataByMonthForYearAndPeer(year, peer, c.MongoDatabase)
 	return c.RenderJson(results)
 }
 
@@ -158,4 +158,30 @@ func (c Yearly) PeerGetOutDispositionByYearAndPeer(year int, peer string, tmp in
 	revel.TRACE.Printf("[Yearly Peer] Get outcalls disposition by year [%d] and peer [%s].\r\n", year, peer)
 	results := mongo.GetPeerDispositionByYear(year, "out", peer, c.MongoDatabase)
 	return c.RenderJson(results)
+}
+
+func (c Yearly) doPeerGetGlobalStatsByYear(year int, peer string) revel.Result {
+	outCalls := mongo.GetYearPeerOutCallsAndDurationForYear(year, peer, c.MongoDatabase)
+	inCalls := mongo.GetYearPeerInCallsAndDurationForYear(year, peer, c.MongoDatabase)
+	totalInCalls := mongo.GetYearPeerTotalInCallsForYear(year, peer, c.MongoDatabase)
+
+	results := bson.M{
+		"outCallsNumber":           outCalls["outCallsNumber"],
+		"outCallsDuration":         outCalls["outCallsDuration"],
+		"outCallsAvgDuration":      outCalls["outCallsAvgDuration"],
+		"inCallsNumber":            totalInCalls["inCalls"],
+		"inCallsAnswered":          inCalls["inCallsAnswered"],
+		"inCallsDuration":          inCalls["inCallsDuration"],
+		"inCallsAvgDuration":       inCalls["inCallsAvgDuration"],
+		"inCallsAvgWaitAnswerTime": inCalls["inCallsAvgWaitAnswerTime"],
+	}
+	return c.RenderJson(results)
+}
+
+func (c Yearly) PeerGetGlobalStatsByYear(year int, tmp int) revel.Result {
+	return c.doPeerGetGlobalStatsByYear(year, "")
+}
+
+func (c Yearly) PeerGetGlobalStatsByYearAndPeer(year int, peer string, tmp int) revel.Result {
+	return c.doPeerGetGlobalStatsByYear(year, peer)
 }

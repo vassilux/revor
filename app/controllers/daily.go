@@ -214,3 +214,29 @@ func (c Daily) PeerGetOutDispositionByDayAndPeer(day string, peer string, tmp in
 	results := mongo.GetPeerDispositionByDay(day, "out", peer, c.MongoDatabase)
 	return c.RenderJson(results)
 }
+
+func (c Daily) doPeerGetGlobalStatsByDay(day string, peer string) revel.Result {
+	outCalls := mongo.GetPeerOutCallsAndDurationForDay(day, peer, c.MongoDatabase)
+	inCalls := mongo.GetPeerInCallsAndDurationForDay(day, peer, c.MongoDatabase)
+	totalInCalls := mongo.GetPeerTotalInCallsForDay(day, peer, c.MongoDatabase)
+
+	results := bson.M{
+		"outCallsNumber":           outCalls["outCallsNumber"],
+		"outCallsDuration":         outCalls["outCallsDuration"],
+		"outCallsAvgDuration":      outCalls["outCallsAvgDuration"],
+		"inCallsNumber":            totalInCalls["inCalls"],
+		"inCallsAnswered":          inCalls["inCallsAnswered"],
+		"inCallsDuration":          inCalls["inCallsDuration"],
+		"inCallsAvgDuration":       inCalls["inCallsAvgDuration"],
+		"inCallsAvgWaitAnswerTime": inCalls["inCallsAvgWaitAnswerTime"],
+	}
+	return c.RenderJson(results)
+}
+
+func (c Daily) PeerGetGlobalStatsByDay(day string, tmp int) revel.Result {
+	return c.doPeerGetGlobalStatsByDay(day, "")
+}
+
+func (c Daily) PeerGetGlobalStatsByDayAndPeer(day string, peer string, tmp int) revel.Result {
+	return c.doPeerGetGlobalStatsByDay(day, peer)
+}

@@ -126,3 +126,29 @@ func (c Monthly) PeerGetOutDispositionByMonthAndPeer(day string, peer string, tm
 	results := mongo.GetPeerDispositionByMonth(day, "out", peer, c.MongoDatabase)
 	return c.RenderJson(results)
 }
+
+func (c Monthly) doPeerGetGlobalStatsByMonth(day string, peer string) revel.Result {
+	outCalls := mongo.GetMonthPeerOutCallsAndDurationForDay(day, peer, c.MongoDatabase)
+	inCalls := mongo.GetMonthPeerInCallsAndDurationForDay(day, peer, c.MongoDatabase)
+	totalInCalls := mongo.GetMonthPeerTotalInCallsForDay(day, peer, c.MongoDatabase)
+
+	results := bson.M{
+		"outCallsNumber":           outCalls["outCallsNumber"],
+		"outCallsDuration":         outCalls["outCallsDuration"],
+		"outCallsAvgDuration":      outCalls["outCallsAvgDuration"],
+		"inCallsNumber":            totalInCalls["inCalls"],
+		"inCallsAnswered":          inCalls["inCallsAnswered"],
+		"inCallsDuration":          inCalls["inCallsDuration"],
+		"inCallsAvgDuration":       inCalls["inCallsAvgDuration"],
+		"inCallsAvgWaitAnswerTime": inCalls["inCallsAvgWaitAnswerTime"],
+	}
+	return c.RenderJson(results)
+}
+
+func (c Monthly) PeerGetGlobalStatsByMonth(day string, tmp int) revel.Result {
+	return c.doPeerGetGlobalStatsByMonth(day, "")
+}
+
+func (c Monthly) PeerGetGlobalStatsByMonthAndPeer(day string, peer string, tmp int) revel.Result {
+	return c.doPeerGetGlobalStatsByMonth(day, peer)
+}
